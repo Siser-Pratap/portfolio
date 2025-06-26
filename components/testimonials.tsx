@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
+import { Card, CardContent } from "@/components/ui/card"
 import { Quote } from "lucide-react"
 
 const Testimonials = () => {
@@ -10,57 +11,69 @@ const Testimonials = () => {
   const testimonials = [
     {
       quote:
-        "Sam's creative vision and technical expertise brought our project to life in ways we never imagined possible.",
-      author: "Sarah Johnson",
-      position: "Creative Director, Studio XYZ",
+        "Sorem ipsum dolor sit amet, sea in odio erat, volumus oporteat his at, mei ocurreret vulputate ex. Clita prodesset Rem ipsum dolor sit amet, sea in odio erat, volumus oporteat his at, mei ocurreret vulputate ex. Clita prodesset oportere patrioque ne nec Duo cu partem omnesque..",
+      author: "LUI JOSEPH",
+      role: "WordPress",
     },
     {
       quote:
-        "Working with Sam was an absolute pleasure. His attention to detail and innovative approach exceeded our expectations.",
-      author: "Michael Chen",
-      position: "CEO, TechStart Inc.",
+        "Lorem ipsum dolor sit amet, sea in odio era Clita prodesset Rem ipsum dolor sit amet, s vulputate ex. Clita prodesset oporter",
+      author: "JOSEPH L",
+      role: "Developer",
     },
   ]
 
   useEffect(() => {
+    if (!sectionRef.current) return
+
     const ctx = gsap.context(() => {
-      gsap.from(".testimonial-card", {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse",
+      gsap.fromTo(
+        ".testimonial-card",
+        { opacity: 0, scale: 0.9 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: "back.out(1.2)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
         },
-      })
+      )
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-light text-stone-800 mb-16 text-center">Testimonials</h2>
+    <section ref={sectionRef} className="py-24 bg-gray-800/50">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="fade-up text-4xl md:text-6xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+              WHAT PEOPLE SAY.
+            </span>
+          </h2>
+        </div>
 
-          <div className="space-y-12">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="testimonial-card text-center">
-                <Quote className="w-12 h-12 text-amber-600 mx-auto mb-6" />
-                <blockquote className="text-2xl font-light text-stone-700 leading-relaxed mb-8 italic">
-                  "{testimonial.quote}"
-                </blockquote>
+        <div className="grid md:grid-cols-2 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <Card
+              key={index}
+              className="testimonial-card bg-gray-800/50 border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 interactive"
+            >
+              <CardContent className="p-8">
+                <Quote className="w-12 h-12 text-orange-400 mb-6" />
+                <blockquote className="text-white/80 leading-relaxed mb-6 italic">"{testimonial.quote}"</blockquote>
                 <div>
-                  <p className="text-lg font-medium text-stone-800">{testimonial.author}</p>
-                  <p className="text-stone-600">{testimonial.position}</p>
+                  <p className="text-white font-bold">{testimonial.author}</p>
+                  <p className="text-orange-400">{testimonial.role}</p>
                 </div>
-              </div>
-            ))}
-          </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

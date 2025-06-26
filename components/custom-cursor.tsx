@@ -48,7 +48,7 @@ const CustomCursor = () => {
     document.addEventListener("mousemove", moveCursor)
 
     // Add hover effects to interactive elements
-    const interactiveElements = document.querySelectorAll(".interactive")
+    const interactiveElements = document.querySelectorAll("a, button, .interactive")
     interactiveElements.forEach((el) => {
       el.addEventListener("mouseenter", handleMouseEnter)
       el.addEventListener("mouseleave", handleMouseLeave)
@@ -67,12 +67,12 @@ const CustomCursor = () => {
     <>
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-4 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full pointer-events-none z-50 mix-blend-difference"
+        className="fixed top-0 left-0 w-4 h-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full pointer-events-none z-50 mix-blend-difference"
         style={{ transform: "translate(-50%, -50%)" }}
       />
       <div
         ref={followerRef}
-        className="fixed top-0 left-0 w-8 h-8 border border-white/30 rounded-full pointer-events-none z-50 backdrop-blur-sm bg-white/10"
+        className="fixed top-0 left-0 w-8 h-8 border border-purple-500/50 rounded-full pointer-events-none z-50 backdrop-blur-sm bg-gradient-to-r from-cyan-500/10 to-purple-500/10"
         style={{ transform: "translate(-50%, -50%)" }}
       />
     </>

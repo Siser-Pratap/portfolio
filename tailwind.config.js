@@ -75,8 +75,8 @@ module.exports = {
           "50%": { transform: "translateY(-10px)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)" },
-          "50%": { boxShadow: "0 0 40px rgba(139, 92, 246, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(249, 115, 22, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(249, 115, 22, 0.6)" },
         },
       },
       backdropBlur: {
