@@ -11,23 +11,12 @@ const Team = () => {
 
   const teamMembers = [
     {
-      name: "JOSEPH LUI",
-      role: "PHP DEVELOPER",
+      name: "SISER PRATAP",
+      role: "SOFTWARE DEVELOPER",
       image: "/placeholder.svg?height=300&width=300",
       social: [Facebook, Twitter, Dribbble, Instagram, Linkedin],
     },
-    {
-      name: "JOSEPH LUI",
-      role: "PHP DEVELOPER",
-      image: "/placeholder.svg?height=300&width=300",
-      social: [Facebook, Twitter, Dribbble, Instagram, Linkedin],
-    },
-    {
-      name: "JOSEPH LUI",
-      role: "PHP DEVELOPER",
-      image: "/placeholder.svg?height=300&width=300",
-      social: [Facebook, Twitter, Dribbble, Instagram, Linkedin],
-    },
+    
   ]
 
   useEffect(() => {
@@ -58,9 +47,9 @@ const Team = () => {
     <section id="team" ref={sectionRef} className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="fade-up text-4xl md:text-6xl font-bold mb-8">
-            <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-              CREATIVE TEAM
+          <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
+            <span className="text-purple-600/75 rounded-full p-5 pr-7 pl-7 shadow-lg shadow-purple-500/25">
+              SOCIALS
             </span>
           </h2>
           <p className="fade-up text-xl text-white/70">
@@ -69,11 +58,11 @@ const Team = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex justify-center items-center">
           {teamMembers.map((member, index) => (
             <Card
               key={index}
-              className="team-card bg-gray-800/50 border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 group interactive"
+              className="team-card bg-black  border-transparent shadow-lg shadow-purple-500/25"
             >
               <CardContent className="p-8 text-center">
                 <div className="relative mb-6 group-hover:scale-105 transition-transform duration-300">
@@ -82,21 +71,21 @@ const Team = () => {
                     alt={member.name}
                     width={300}
                     height={300}
-                    className="w-32 h-32 mx-auto rounded-full object-cover border-4 border-orange-500/20"
+                    className="w-32 h-32 mx-auto rounded-full object-cover border-4 border-purple-600/75"
                   />
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors duration-300">
+                <h3 className="text-xl font-bold text-white mb-2 ">
                   {member.name}
                 </h3>
-                <p className="text-orange-400 mb-6">{member.role}</p>
+                <p className="text-white/80 mb-6">{member.role}</p>
 
                 <div className="flex justify-center space-x-3">
                   {member.social.map((Social, socialIndex) => (
                     <a
                       key={socialIndex}
                       href="#"
-                      className="w-10 h-10 bg-gray-700/50 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors duration-300 interactive"
+                      className="w-10 h-10 bg-gray-700/50 rounded-full flex items-center justify-center hover:bg-purple-600/75 transition-colors duration-300 interactive"
                     >
                       <Social className="w-4 h-4 text-white" />
                     </a>

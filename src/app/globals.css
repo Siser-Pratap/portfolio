@@ -12,20 +12,47 @@ html {
   scroll-behavior: smooth;
 }
 
+
+
+
+
 body {
-  font-family: "Inter", sans-serif;
-  line-height: 1.6;
-  color: #ffffff;
-  overflow-x: hidden;
-  background: #000000;
+    line-height: 24px;
+    color: #ffffff;
+    background: #000000;
+    overflow-x: hidden;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
 
-/* Hide default cursor */
+.latest-works-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.latest-works-btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--btn-bg-height, 0%);
+  background: #4204c7;
+  z-index: -1;
+  transition: none;
+  pointer-events: none;
+  border-radius: inherit;
+  /* Optional: smooth corners */
+}
+
 * {
   cursor: none !important;
 }
 
-/* Custom scrollbar */
+
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -35,13 +62,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #06b6d4, #8b5cf6, #ec4899);
+  background: linear-gradient(to bottom, #4204c7);
   border-radius: 6px;
   border: 2px solid rgba(0, 0, 0, 0.8);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #0891b2, #7c3aed, #db2777);
+  background: linear-gradient(to bottom, #6d28d9);
 }
 
 /* Custom selection color */
@@ -126,6 +153,53 @@ body {
   }
 }
 
+@keyframes bg-fade-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+    
+  }
+  100% {
+    opacity: 1;
+        transform: none;
+    
+    
+  }
+}
+
+@-webkit-keyframes fadeInUp {
+ from {
+ opacity: 0;
+ -webkit-transform: translate3d(0, 100%, 0);
+ transform: translate3d(0, 100%, 0);
+}
+to {
+	opacity: 1;
+	-webkit-transform: none;
+	transform: none;
+}
+}
+ @keyframes fadeInUp {
+ from {
+ opacity: 0;
+ /* -webkit-transform: translate3d(0, 100%, 0); */
+ transform: translate3d(0, 100%, 0);
+}
+to {
+	opacity: 1;
+	/* -webkit-transform: none; */
+	transform: none;
+}
+}
+.fadeInUp {
+	-webkit-animation-name: fadeInUp;
+	animation-name: fadeInUp;
+}
+
+.button-bg-animate:hover {
+  animation: bg-fade-in 1s ease-out forwards;
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -133,6 +207,7 @@ body {
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+
 
 .animate-blink {
   animation: blink 1s infinite;

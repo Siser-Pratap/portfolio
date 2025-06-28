@@ -56,26 +56,26 @@ const Skills = () => {
     return () => ctx.revert()
   }, [])
 
+ 
+
   return (
-    <section ref={sectionRef} className="py-24 bg-gray-800/50">
+    <section ref={sectionRef} className="py-24 ">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {skills.map((skill, index) => (
             <div key={index} className="skill-item">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-lg font-medium text-white">{skill.name}</span>
-                <span className="text-orange-400 font-bold">{skill.level}%</span>
+              <div className="flex justify-between items-center mb-3 rounded-full text-center p-8 bg-purple-600/25">
+                <span className="text-lg font-medium text-white text-center">{skill.name}</span>
+
               </div>
-              <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-                <div
-                  className="skill-bar bg-gradient-to-r from-orange-500 to-orange-600 h-3 rounded-full"
-                  data-width={skill.level}
-                ></div>
-              </div>
+              
             </div>
           ))}
         </div>
       </div>
+     
+
+
     </section>
   )
 }

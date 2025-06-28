@@ -3,16 +3,20 @@
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
+import BubbleBackground from "./bubble-background"
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
   const typingRef = useRef<HTMLSpanElement>(null)
   const cursorRef = useRef<HTMLSpanElement>(null)
+  const latestWorksBtnRef = useRef<HTMLButtonElement>(null);
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
+  
 
   const words = ["Developer", "Designer", "Freelancer", "Entrepreneur"]
 
   useEffect(() => {
+    
     if (!heroRef.current) return
 
     const ctx = gsap.context(() => {
@@ -72,6 +76,8 @@ const Hero = () => {
 
     return () => ctx.revert()
   }, [])
+
+  
 
   useEffect(() => {
     if (!typingRef.current) return
@@ -147,58 +153,62 @@ const Hero = () => {
   }, [currentWordIndex, words])
 
   return (
-    <section id="home" ref={heroRef} className="min-h-screen flex items-center justify-center relative pt-20">
-      <div className="max-w-4xl mx-auto text-center px-6">
-        <div className="backdrop-blur-md bg-black/40 border border-white/10 rounded-3xl p-12 shadow-2xl">
-          <h1 className="hero-title text-5xl md:text-7xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Using Our Reputation
-            </span>
-            <br />
-            <span className="text-white">To Help You!</span>
-          </h1>
+    <>
+    <BubbleBackground />
+      <section id="home" ref={heroRef} className="min-h-screen  flex items-center justify-center relative pt-20">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
 
-          <div className="hero-subtitle mb-8">
-            <h2 className="text-2xl md:text-3xl text-white/90 font-light">
-              I'm a{" "}
-              <span className="relative inline-block">
-                <span
-                  ref={typingRef}
-                  className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent font-bold"
-                >
-                  Developer
+        <div className="max-w-4xl mx-auto text-center px-6">
+          <div className=" bg-transparent rounded-3xl p-12 shadow-2xl">
+            
+
+            <div className="hero-subtitle mb-8 bg-inherit ">
+              <h2 className="text-2xl md:text-4xl border border-transparent font-bold text-[#4204c7]  bg-transparent">
+                I'm <span className="text-white/80">a</span>{" "}
+                <span className="relative inline-block">
+                  <span
+                    ref={typingRef}
+                    className="text-white/80 hover:scale-105 hover:text-5xl text-4xl "
+                  >
+                    Developer
+                  </span>
+                  <span
+                    ref={cursorRef}
+                    className="absolute hidden -right-1 top-0 text-purple-400 font-thin"
+                    style={{ animation: "blink 1s infinite" }}
+                  >
+                    |
+                  </span>
                 </span>
-                <span
-                  ref={cursorRef}
-                  className="absolute -right-1 top-0 text-purple-400 font-thin"
-                  style={{ animation: "blink 1s infinite" }}
-                >
-                  |
-                </span>
-              </span>
-            </h2>
-          </div>
+              </h2>
+            </div>
 
-          <p className="hero-description text-lg text-white/70 mb-8 max-w-3xl mx-auto leading-relaxed">
-            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in
-            some form, by injected humour, or randomised words which don't look even slightly believable. If you are
-            going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the
-            middle of text.
-          </p>
+            
 
-          <div className="hero-cta">
-            <Button className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 text-white px-8 py-6 text-lg rounded-full interactive shadow-lg shadow-purple-500/25 transform hover:scale-105 transition-all duration-300">
-              VIEW PORTFOLIO
-            </Button>
+            <div className="hero-cta">
+              <Button
+                ref={latestWorksBtnRef}
+                style={{
+                  visibility: "visible",
+                  animationDelay: "0.2s",
+                  animationName: "fadeInUp"
+                }}
+                className="border fadeInUp border-white border-spacing-7 relative group interactive text-white px-8 py-6 text-lg interactive shadow-lg shadow-purple-500/25 transform transition-all duration-300 hover:bg-white/80 hover:text-black "
+              >
+                Latest Works
+                
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Floating Elements */}
-      <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-      <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-purple-500 rounded-full animate-pulse opacity-40"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-pink-400 rounded-full animate-bounce opacity-50"></div>
-    </section>
+        {/* Floating Elements */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-purple-500 rounded-full animate-pulse opacity-40"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-pink-400 rounded-full animate-bounce opacity-50"></div>
+      </section>
+    </>
   )
 }
 

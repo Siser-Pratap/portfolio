@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Palette, Smile, Eye, Settings, Globe, Lightbulb } from "lucide-react"
 
 const RecentWork = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const servicesRef = useRef<HTMLDivElement>(null)
 
   const services = [
     {
@@ -41,38 +41,38 @@ const RecentWork = () => {
     },
   ]
 
-  useEffect(() => {
-    if (!sectionRef.current) return
+  useEffect(()=>{
+    const ctx = gsap.context(()=>{
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".service-card",
-        { opacity: 0, y: 50, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "back.out(1.2)",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
-      )
-    }, sectionRef)
+      gsap.from('.service-card', {
+        opacity:0,
+        x:-50,
+      })
 
-    return () => ctx.revert()
-  }, [])
+      gsap.to('.service-card', {
+        opacity:1,
+        duration:0.5,
+        x:0,
+        stagger:0.5,
+        ease:"back.out(1.2)",
+        scrollTrigger:{
+          trigger:servicesRef.current,
+          start:"top 10%"
+        }
+      })
+    }, servicesRef);
+
+    return ()=> ctx.revert();
+
+  })
 
   return (
-    <section id="services" ref={sectionRef} className="py-24">
+    <section id="services" ref={servicesRef} className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="fade-up text-4xl md:text-6xl font-bold mb-8">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              RECENT WORK.
+          <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
+            <span className="text-purple-600/75 rounded-full p-5 shadow-lg shadow-purple-500/25">
+              SERVICES.
             </span>
           </h2>
         </div>
@@ -81,7 +81,7 @@ const RecentWork = () => {
           {services.map((service, index) => (
             <Card
               key={index}
-              className="service-card bg-black/50 border-white/10 hover:border-purple-500/40 transition-all duration-300 group interactive"
+              className="service-card bg-black/50 border-white/10 hover:border-purple-500/40 transition-all duration-300 group interactive "
             >
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -98,12 +98,12 @@ const RecentWork = () => {
 
         <div className="text-center mt-16">
           <div className="fade-up backdrop-blur-md bg-black/50 border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">WANT TO WORK WITH US ?</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">WANT TO CONNECT ?</h3>
             <p className="text-white/70 mb-6">
               The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic
               words e
             </p>
-            <button className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-medium interactive shadow-lg shadow-purple-500/25">
+            <button className="hover:text-black hover:bg-white/80 hover:shadow-transparent  text-white px-8 py-3 rounded-full font-medium interactive shadow-lg shadow-purple-500/25">
               LET'S WORK TOGETHER!
             </button>
           </div>

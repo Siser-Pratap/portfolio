@@ -2,9 +2,9 @@
 
 const Footer = () => {
   return (
-    <footer className="py-8 bg-gray-800/50 border-t border-orange-500/20">
+    <footer className="py-8">
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <p className="text-white/60">Copy Right © By Lionode 2017 | All Rights Reserved.</p>
+        <p className="text-white/60">Siser Pratap</p>
       </div>
     </footer>
   )

@@ -18,6 +18,7 @@ import Testimonials from "@/components/testimonials"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SectionIndicator from "@/components/section-indicator"
+import SectionWithStars from "@/components/sectionWrapper"
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -92,25 +93,26 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="bg-black text-white overflow-x-hidden">
+    <div
+      className="bg-black text-white overflow-x-hidden"
+      
+    >
       <CustomCursor />
-      <BubbleBackground />
       <SectionIndicator />
-
       <div ref={smoothWrapperRef} id="smooth-wrapper">
-        <div ref={smoothContentRef} id="smooth-content">
-          <Header />
-          <Hero />
+      <div ref={smoothContentRef} id="smooth-content">
+        <Header />
+        <Hero />
+        <SectionWithStars>
           <WhatIDo />
           <RecentWork />
           <Portfolio />
           <Team />
           <Skills />
-          <Blog />
-          <Testimonials />
           <Contact />
           <Footer />
-        </div>
+        </SectionWithStars>
+      </div>
       </div>
     </div>
   )

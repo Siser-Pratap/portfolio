@@ -74,7 +74,7 @@ const SectionIndicator = () => {
             <div
               className={`w-4 h-4 rounded-full transition-all duration-300 ${
                 activeSection === index
-                  ? "bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/50"
+                  ? "bg-purple-600 shadow-lg shadow-purple-500/50"
                   : "bg-white/20 hover:bg-white/30 border border-white/30"
               }`}
             />

@@ -20,7 +20,7 @@ const WhatIDo = () => {
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 80%",
+            start:"top 20%"
           },
         },
       )
@@ -36,7 +36,7 @@ const WhatIDo = () => {
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 80%",
+            start: "top 25%",
           },
         },
       )
@@ -46,16 +46,15 @@ const WhatIDo = () => {
   }, [])
 
   return (
-    <section id="about" ref={sectionRef} className="py-24 bg-gray-900/30">
+    <section id="about" ref={sectionRef} className="py-24 bg-black/80">
       <div className="max-w-4xl mx-auto text-center px-6">
-        <h2 className="section-title text-4xl md:text-6xl font-bold mb-8">
-          <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+        <h2 className="section-title text-4xl md:text-3xl font-bold mb-8 hover:scale-125">
+          <span className="text-purple-600/75 transition-colors duration-300 shadow-purple-500/25 rounded-full p-4 shadow-lg shadow-">
             WHAT I DO.
           </span>
         </h2>
-        <p className="section-description text-xl text-white/70 leading-relaxed">
-          The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic
-          words etc.
+        <p className="section-description text-xl text-white leading-relaxed">
+          Anything about me
         </p>
       </div>
     </section>

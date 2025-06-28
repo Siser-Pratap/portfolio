@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card"
 import Image from "next/image"
 
 const Portfolio = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const projectRef = useRef<HTMLDivElement>(null)
   const [activeFilter, setActiveFilter] = useState("All")
 
   const filters = ["All", "Illustration", "Vector Design", "Photography", "Web Design"]
@@ -23,7 +23,7 @@ const Portfolio = () => {
   ]
 
   useEffect(() => {
-    if (!sectionRef.current) return
+    if (!projectRef.current) return
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -36,12 +36,12 @@ const Portfolio = () => {
           stagger: 0.1,
           ease: "back.out(1.2)",
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
+            trigger: projectRef.current,
+            start: "top 20%",
           },
         },
       )
-    }, sectionRef)
+    }, projectRef)
 
     return () => ctx.revert()
   }, [])
@@ -50,12 +50,12 @@ const Portfolio = () => {
     activeFilter === "All" ? portfolioItems : portfolioItems.filter((item) => item.category === activeFilter)
 
   return (
-    <section id="portfolio" ref={sectionRef} className="py-24 bg-gray-800/50">
+    <section id="portfolio" ref={projectRef} className="py-24 bg-black">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="fade-up text-4xl md:text-6xl font-bold mb-8">
-            <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-              PORTFOLIO
+          <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
+            <span className="text-purple-600/75 rounded-full p-5 shadow-lg shadow-purple-500/25">
+              PROJECTS
             </span>
           </h2>
 
@@ -65,10 +65,10 @@ const Portfolio = () => {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`px-6 py-2 rounded-full transition-all duration-300 interactive ${
+                className={`px-6 py-2  transition-all duration-300 interactive ${
                   activeFilter === filter
-                    ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
-                    : "bg-gray-800/50 text-white/70 hover:text-orange-400 border border-orange-500/20"
+                    ? "text-purple-600/75 rounded-full p-4 shadow-lg shadow-purple-500/25"
+                    : " text-white/80 bg-black"
                 }`}
               >
                 {filter}
@@ -92,7 +92,7 @@ const Portfolio = () => {
                   height={300}
                   className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-orange-500/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-600/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                   <span className="text-white font-medium">{item.category}</span>
                 </div>
               </div>
@@ -100,11 +100,7 @@ const Portfolio = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <button className="fade-up bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-3 rounded-full font-medium interactive">
-            VIEW MORE PORTFOLIO
-          </button>
-        </div>
+        
       </div>
     </section>
   )
