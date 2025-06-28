@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { Preload } from "@react-three/drei";
 
 // Import your Stars component from contact.tsx or move it to its own file
-import { Stars } from "./Stars"; // Adjust path as needed
+import { Stars } from "./stars"; // Adjust path as needed
 
 type SectionWithStarsProps = React.PropsWithChildren<{
   className?: string;
