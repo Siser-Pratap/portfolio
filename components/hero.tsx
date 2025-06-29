@@ -155,7 +155,8 @@ const Hero = () => {
   return (
     <>
     <BubbleBackground />
-      <section id="home" ref={heroRef} className="min-h-screen  flex items-center justify-center relative pt-20">
+      <section id="home" ref={heroRef} className="min-h-screen flex items-center inset-0 z-10 relative justify-center  pt-20">
+
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
 
@@ -164,9 +165,9 @@ const Hero = () => {
             
 
             <div className="hero-subtitle mb-8 bg-inherit ">
-              <h2 className="text-2xl md:text-4xl border border-transparent font-bold text-[#4204c7]  bg-transparent">
+              <h2 className="text-2xl md:text-4xl border relative border-transparent font-bold text-[#4204c7]  bg-transparent">
                 I'm <span className="text-white/80">a</span>{" "}
-                <span className="relative inline-block">
+                <span className=" inline-block">
                   <span
                     ref={typingRef}
                     className="text-white/80 hover:scale-105 hover:text-5xl text-4xl "
@@ -175,7 +176,7 @@ const Hero = () => {
                   </span>
                   <span
                     ref={cursorRef}
-                    className="absolute hidden -right-1 top-0 text-purple-400 font-thin"
+                    className=" relative hidden -right-1 top-0 text-purple-400 font-thin"
                     style={{ animation: "blink 1s infinite" }}
                   >
                     |
@@ -194,7 +195,7 @@ const Hero = () => {
                   animationDelay: "0.2s",
                   animationName: "fadeInUp"
                 }}
-                className="border fadeInUp border-white border-spacing-7 relative group interactive text-white px-8 py-6 text-lg interactive shadow-lg shadow-purple-500/25 transform transition-all duration-300 hover:bg-white/80 hover:text-black "
+                className="border relative fadeInUp inset-0 z-10 cursor-pointer border-white border-spacing-7  group interactive text-white px-8 py-6 text-lg interactive shadow-lg shadow-purple-500/25 transform transition-all duration-300 hover:bg-white/80 hover:text-black  "
               >
                 Latest Works
                 
@@ -204,9 +205,7 @@ const Hero = () => {
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-purple-500 rounded-full animate-pulse opacity-40"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-pink-400 rounded-full animate-bounce opacity-50"></div>
+       
       </section>
     </>
   )

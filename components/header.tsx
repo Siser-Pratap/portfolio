@@ -94,7 +94,7 @@ const Header = () => {
   }
 
   return (
-    <header ref={headerRef} className="fixed inset-1 top-0 left-0 right-0 z-40 p-6">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-40 p-6">
       <div className="max-w-7xl mx-auto">
         <div className=" bg-black/60 rounded-2xl px-6 py-4 shadow-xl">
           <div className="flex items-center justify-between">

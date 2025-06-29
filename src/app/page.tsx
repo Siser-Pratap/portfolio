@@ -13,12 +13,14 @@ import RecentWork from "@/components/recent-work"
 import Portfolio from "@/components/portfolio"
 import Team from "@/components/team"
 import Skills from "@/components/skills"
-import Blog from "@/components/blog"
-import Testimonials from "@/components/testimonials"
+import Check from "@/components/check"
+
+
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SectionIndicator from "@/components/section-indicator"
 import SectionWithStars from "@/components/sectionWrapper"
+
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {

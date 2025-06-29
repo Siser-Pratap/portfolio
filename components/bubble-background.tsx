@@ -28,36 +28,23 @@ const BubbleBackground = () => {
         })
 
         // Floating animation
-        // gsap.to(bubble, {
-        //   x: `+=${Math.random() * 200 - 100}`,
-        //   y: `+=${Math.random() * 200 - 100}`,
-        //   duration: Math.random() * 10 + 10,
-        //   repeat: -1,
-        //   yoyo: true,
-        //   ease: "sine.inOut",
-        //   delay: index * 0.1,
-        // })
-
         gsap.to(bubble, {
-        x: "+=50",
-        y: "+=30",
-        rotation: "+=15",
-        duration: 8,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.1,
-      })
+          x: `+=${Math.random() * 200 - 100}`,
+          y: `+=${Math.random() * 200 - 100}`,
+          duration: Math.random() * 10 + 10,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: index * 0.1,
+        })
 
         // Rotation animation
         gsap.to(bubble, {
           rotation: 360,
-          // duration: Math.random() * 20 + 20,
-          duration: 3,
+          duration: Math.random() * 20 + 20,
           repeat: -1,
           ease: "none",
         })
-        
       })
     }, containerRef)
 
@@ -112,7 +99,7 @@ const BubbleBackground = () => {
 
   return (
     <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {Array.from({ length: 27 }).map((_, index) => (
+      {Array.from({ length: 15 }).map((_, index) => (
         <div
           key={index}
           ref={(el) => {
@@ -121,10 +108,6 @@ const BubbleBackground = () => {
           className={`absolute w-16 h-16 rounded-full bg-gradient-to-br ${
             bubbleColors[index % bubbleColors.length]
           } backdrop-blur-sm border border-white/10`}
-           style={{
-            width: `${10 + index * 0.5 * 10 + 25}px`,
-            height: `${10 + index * 0.5* 10 + 25}px`,
-          }}
         />
       ))}
     </div>
