@@ -39,7 +39,7 @@ export default function Home() {
       smoother = ScrollSmoother.create({
         wrapper: smoothWrapperRef.current,
         content: smoothContentRef.current,
-        smooth: 2,
+        smooth: 6,
         effects: true,
         smoothTouch: 0.1,
       })
