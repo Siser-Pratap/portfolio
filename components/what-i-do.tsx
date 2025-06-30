@@ -22,7 +22,6 @@ const WhatIDo = () => {
           scrollTrigger: {
             trigger: sectionRef.current,
             start:"top 25%",
-            markers:true,
           },
         },
       )
@@ -39,7 +38,6 @@ const WhatIDo = () => {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 27%",
-            markers:true,
           },
         },
       )

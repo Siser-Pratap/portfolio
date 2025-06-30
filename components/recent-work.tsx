@@ -7,6 +7,7 @@ import { Palette, Smile, Eye, Settings, Globe, Lightbulb } from "lucide-react"
 
 const RecentWork = () => {
   const servicesRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLSpanElement>(null)
 
   const services = [
     {
@@ -44,12 +45,28 @@ const RecentWork = () => {
   useEffect(()=>{
     const ctx = gsap.context(()=>{
 
-      gsap.from('.service-card', {
+      const tl = gsap.timeline();
+
+      tl.fromTo(
+        sectionRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start:"top 50%",
+            
+          },
+        },
+      )
+      .from('.service-card', {
         opacity:0,
         x:-50,
       })
-
-      gsap.to('.service-card', {
+      .to('.service-card', {
         opacity:1,
         duration:0.5,
         x:0,
@@ -57,7 +74,8 @@ const RecentWork = () => {
         ease:"back.out(1.2)",
         scrollTrigger:{
           trigger:servicesRef.current,
-          start:"top 10%"
+          start:"top 55%",
+          markers:true
         }
       })
     }, servicesRef);
@@ -71,7 +89,7 @@ const RecentWork = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
-            <span className="text-purple-600/75 rounded-full p-5 shadow-lg shadow-purple-500/25">
+            <span ref={sectionRef} className="text-purple-600/75 section-title rounded-full p-5 shadow-lg shadow-purple-500/25">
               SERVICES.
             </span>
           </h2>
