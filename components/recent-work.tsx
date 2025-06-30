@@ -4,6 +4,11 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { Card, CardContent } from "@/components/ui/card"
 import { Palette, Smile, Eye, Settings, Globe, Lightbulb } from "lucide-react"
+import Image from "next/image"
+import { backend, creator, web, mobile } from "@/public"
+import { ScrollSmoother } from "gsap/ScrollSmoother"
+
+
 
 const RecentWork = () => {
   const servicesRef = useRef<HTMLDivElement>(null)
@@ -11,35 +16,22 @@ const RecentWork = () => {
 
   const services = [
     {
-      icon: Palette,
-      title: "PERFECT DESIGN",
-      description: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+      icon: backend,
+      title: "Frontend",
     },
     {
-      icon: Smile,
-      title: "EASY & FUN",
-      description: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+      icon: creator,
+      title: "Backend",
     },
     {
-      icon: Eye,
-      title: "RETINA READY",
-      description: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+      icon: web,
+      title: "Full Stack Software",
     },
     {
-      icon: Settings,
-      title: "EASY TO CUSTOMIZE",
-      description: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+      icon: mobile,
+      title: "UI Design and 3D",
     },
-    {
-      icon: Globe,
-      title: "TRANSLATION READY",
-      description: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
-    },
-    {
-      icon: Lightbulb,
-      title: "INVENTIVE ELEMENTS",
-      description: "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
-    },
+    
   ]
 
   useEffect(()=>{
@@ -84,31 +76,37 @@ const RecentWork = () => {
 
   })
 
+  const scrollToSection = (href: string) => {
+      const smoother = ScrollSmoother.get()
+      if(smoother){
+        smoother.scrollTo(href, true);
+      }
+    }
+
   return (
     <section id="services" ref={servicesRef} className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
-            <span ref={sectionRef} className="text-purple-600/75 section-title rounded-full p-5 shadow-lg shadow-purple-500/25">
+          <h2 className="text-2xl md:text-2xl font-bold mb-8">
+            <span ref={sectionRef} className="text-purple-600/75 section-title hover:text-white/80 rounded-full px-6 py-4 shadow-lg shadow-purple-500/25">
               SERVICES.
             </span>
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
             <Card
               key={index}
-              className="service-card bg-black/50 border-white/10 hover:border-purple-500/40 transition-all duration-300 group interactive "
+              className="service-card bg-black/50 border-transparent transition-all duration-300 group interactive "
             >
-              <CardContent className="p-8 text-center">
+              <CardContent className="p-8 text-center hover:text-purple-600/75 hover:scale-125">
                 <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <service.icon className="w-8 h-8 text-purple-400" />
+                  <Image width="8" height="8" alt='technologies' src={service.icon}  className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4 group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-purple-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                <h3 className="text-xl font-bold text-white/80 mb-4 hover:text-purple-600/75 transition-all duration-300">
                   {service.title}
                 </h3>
-                <p className="text-white/70 leading-relaxed">{service.description}</p>
               </CardContent>
             </Card>
           ))}
@@ -118,10 +116,14 @@ const RecentWork = () => {
           <div className="fade-up backdrop-blur-md bg-black/50 border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
             <h3 className="text-2xl font-bold text-white mb-4">WANT TO CONNECT ?</h3>
             <p className="text-white/70 mb-6">
-              The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic
-              words e
+              'Cause connection builds Future
             </p>
-            <button className="hover:text-black hover:bg-white/80 hover:shadow-transparent  text-white px-8 py-3 rounded-full font-medium interactive shadow-lg shadow-purple-500/25">
+            <button
+              onClick={() => {
+                scrollToSection('#contact')
+              }}
+              className="hover:text-black hover:bg-white/80 hover:shadow-transparent  text-white px-8 py-3 rounded-full font-medium interactive shadow-lg shadow-purple-500/25"
+            >
               LET'S WORK TOGETHER!
             </button>
           </div>
