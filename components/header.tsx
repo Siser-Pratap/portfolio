@@ -4,13 +4,15 @@ import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { Menu, X } from "lucide-react"
 import { ScrollSmoother } from "gsap/ScrollSmoother"
-import {useGSAP} from '@gsap/react';
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
 
 const Header = () => {
   const headerRef = useRef<HTMLElement>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const backRef = useRef<HTMLDivElement>(null)
   const menuTl = useRef<gsap.core.Timeline | null>(null)
+  gsap.registerPlugin(ScrollTrigger);
   
 
   const navItems = [
@@ -18,7 +20,9 @@ const Header = () => {
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
     { name: "Experience", href: "#experience" },
-    { name: "Works", href: "#work" },
+    { name: "Works", href: "#services" },
+    { name: "Socials", href: "#socials" },
+    { name: "Skills", href: "#skills" },
     { name: "Contact", href: "#contact" },
   ]
 
@@ -140,15 +144,39 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
+useEffect(()=>{
+    const ctx = gsap.context(()=>{
+      gsap.to(".cool", {
+        padding:"0",
+        width:"100vw",
+        scrollTrigger:{
+          trigger:".cool",
+          start:"bottom 10%",
+          scrub:true,
+        },
+      });
+      gsap.to(".color", {
+        backgroundColor:"black",
+        borderRadius:0,
+        scrollTrigger:{
+          trigger:'.color',
+          start:"bottom 10%",
+          scrub:true,
+        }
+      });
+    });
+    return ()=> ctx.revert();
+  }, []);
+
 
  
 
 
 
   return (
-    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-40 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className=" bg-black/60 rounded-2xl px-6 py-4 shadow-xl">
+    <header ref={headerRef} className="fixed cool top-0 left-0 right-0 z-40 p-6">
+      <div className="max-w-7xl mx-auto ">
+        <div className=" color bg-black/60 rounded-2xl px-6 py-4 ">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex flex-row gap-0 hover:scale-105 name">
@@ -179,7 +207,7 @@ const Header = () => {
           </div>
 
           { isMenuOpen && 
-          <div ref={backRef} className="back w-full h-[80vh]  overflow-y-hidden rounded-sm relative bg-black border border-purple-500/25  mt-10 mr-10">
+          <div ref={backRef} className="back overflow-x-hidden w-full h-[80vh]  overflow-y-hidden rounded-sm relative bg-black border border-purple-500/25  mt-10 mr-10">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
             <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
             <div className='flex items-center back-nav justify-center gap-[20px]  h-full w-full flex-col'>

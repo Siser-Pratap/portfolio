@@ -39,7 +39,7 @@ export default function Home() {
       smoother = ScrollSmoother.create({
         wrapper: smoothWrapperRef.current,
         content: smoothContentRef.current,
-        smooth: 6,
+        smooth: 1,
         effects: true,
         smoothTouch: 0.1,
       })
@@ -101,9 +101,9 @@ export default function Home() {
     >
       <CustomCursor />
       <SectionIndicator />
+      <Header />
       <div ref={smoothWrapperRef} id="smooth-wrapper">
       <div ref={smoothContentRef} id="smooth-content">
-        <Header />
         <Hero />
         <SectionWithStars>
           <WhatIDo />

@@ -59,7 +59,7 @@ const Skills = () => {
  
 
   return (
-    <section ref={sectionRef} className="py-24 ">
+    <section ref={sectionRef} id="skills" className="py-24 ">
       <div className="max-w-4xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8">
           {skills.map((skill, index) => (

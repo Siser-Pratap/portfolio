@@ -152,6 +152,13 @@ const Hero = () => {
     startTypingCycle()
   }, [currentWordIndex, words])
 
+  const scrollToSection = (href: string) => {
+    const smoother = ScrollSmoother.get()
+    if(smoother){
+      smoother.scrollTo(href, true);
+    }
+  }
+
   return (
     <>
     <BubbleBackground />
@@ -195,6 +202,7 @@ const Hero = () => {
                   animationDelay: "0.2s",
                   animationName: "fadeInUp"
                 }}
+                onClick={()=>scrollToSection('projects')}
                 className="border relative fadeInUp inset-0 z-10 cursor-pointer border-white border-spacing-7  group interactive text-white px-8 py-6 text-lg interactive shadow-lg shadow-purple-500/25 transform transition-all duration-300 hover:bg-white/80 hover:text-black  "
               >
                 Latest Works

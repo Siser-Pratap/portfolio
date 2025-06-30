@@ -98,8 +98,8 @@ const BubbleBackground = () => {
   ]
 
   return (
-    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {Array.from({ length: 15 }).map((_, index) => (
+    <div ref={containerRef} className=" inset-0 pointer-events-none z-0 overflow-hidden">
+      {Array.from({ length: 27 }).map((_, index) => (
         <div
           key={index}
           ref={(el) => {

@@ -44,7 +44,7 @@ const Team = () => {
   }, [])
 
   return (
-    <section id="team" ref={sectionRef} className="py-24">
+    <section id="socials" ref={sectionRef} className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
