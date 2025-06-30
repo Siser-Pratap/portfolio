@@ -10,6 +10,7 @@ const WhatIDo = () => {
     if (!sectionRef.current) return
 
     const ctx = gsap.context(() => {
+      if(sectionRef){
       gsap.fromTo(
         ".section-title",
         { opacity: 0, y: 50 },
@@ -20,7 +21,8 @@ const WhatIDo = () => {
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start:"top 20%"
+            start:"top 25%",
+            markers:true,
           },
         },
       )
@@ -36,10 +38,12 @@ const WhatIDo = () => {
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 25%",
+            start: "top 27%",
+            markers:true,
           },
         },
       )
+    }
     }, sectionRef)
 
     return () => ctx.revert()
@@ -48,15 +52,16 @@ const WhatIDo = () => {
   return (
     <section id="about" ref={sectionRef} className="py-24 bg-black/80">
       <div className="max-w-4xl mx-auto text-center px-6">
-        <h2 className="section-title text-4xl md:text-3xl font-bold mb-8 hover:scale-125">
-          <span className="text-purple-600/75 transition-colors duration-300 shadow-purple-500/25 rounded-full p-4 shadow-lg shadow-">
-            WHAT I DO.
+        <h2 className="section-title text-3xl md:text-2xl font-bold mb-8 hover:scale-125">
+          <span className="text-purple-600/75 hover:text-white/80 transition-colors duration-300 shadow-purple-500/25 rounded-full px-6 py-4 shadow-lg shadow-">
+            My Life
           </span>
         </h2>
-        <p className="section-description text-xl text-white leading-relaxed">
-          Anything about me
+        <p className="section-description text-lg pt-2 text-white leading-relaxed">
+          I build software applications that drive technological advancement and contribute to a better, more connected society.
         </p>
       </div>
+      
     </section>
   )
 }

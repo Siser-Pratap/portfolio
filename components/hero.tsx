@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
 import BubbleBackground from "./bubble-background"
+import {ScrollSmoother} from "gsap/ScrollSmoother"
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -191,9 +192,6 @@ const Hero = () => {
                 </span>
               </h2>
             </div>
-
-            
-
             <div className="hero-cta">
               <Button
                 ref={latestWorksBtnRef}
@@ -202,7 +200,7 @@ const Hero = () => {
                   animationDelay: "0.2s",
                   animationName: "fadeInUp"
                 }}
-                onClick={()=>scrollToSection('projects')}
+                onClick={()=>scrollToSection('#portfolio')}
                 className="border relative fadeInUp inset-0 z-10 cursor-pointer border-white border-spacing-7  group interactive text-white px-8 py-6 text-lg interactive shadow-lg shadow-purple-500/25 transform transition-all duration-300 hover:bg-white/80 hover:text-black  "
               >
                 Latest Works
