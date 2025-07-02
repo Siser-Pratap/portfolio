@@ -20,6 +20,8 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SectionIndicator from "@/components/section-indicator"
 import SectionWithStars from "@/components/sectionWrapper"
+import Experience from "@/components/experience"
+import Exp from "@/components/experience"
 
 
 // Register GSAP plugins
@@ -104,16 +106,17 @@ export default function Home() {
       <Header />
       <div ref={smoothWrapperRef} id="smooth-wrapper">
       <div ref={smoothContentRef} id="smooth-content">
-        <Hero />
-        <SectionWithStars>
-          <WhatIDo />
+        {/* <Hero /> */}
+        {/* <SectionWithStars> */}
+          {/* <WhatIDo />
           <RecentWork />
+          <Experience />
           <Portfolio />
-          <Team />
+          <Team /> */}
           <Skills />
           <Contact />
           <Footer />
-        </SectionWithStars>
+        {/* </SectionWithStars> */}
       </div>
       </div>
     </div>

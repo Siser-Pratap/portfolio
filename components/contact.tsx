@@ -163,34 +163,92 @@ const Contact = () => {
     <section id="contact" ref={sectionRef} className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
-            <span className="rounded-full p-5 px-7 shadow-lg shadow-purple-500/25 text-purple-600/75">
-              GET IN TOUCH
+          <h2 className="works text-3xl md:text-2xl font-bold mb-8">
+            <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
+              Get In Touch
             </span>
           </h2>
-          <p className="fade-up text-xl text-white/70">
-            The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic
-            words etc.
-          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="flex items-center justify-center md:flex-row flex-col gap-[4px]">
           {/* Contact Info */}
-          <div className="space-y-8">
-            <Card className="contact-item bg-black border-purple-500/20">
-              <CardContent className="p-6 flex items-center space-x-4">
+            <div className="h-[100vh] w-auto pb-32">
+                <Canvas camera={{ position: [0, 0, 5] }}>
+                  <ambientLight intensity={0.5} />
+                  <directionalLight position={[5, 5, 5]} intensity={1} />
+                    <MyModel />
+                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
+                </Canvas>
+              </div>
+          
+              
+            
+              <div className="xl:flex-row flex-col-reverse pb-0  flex gap-10 overflow-hidden">
+                <div className="flex-[0.75] bg-black-100 rounded-2xl">
+                  <Card className="contact-item bg-black border-transparent">
+                    <CardContent >
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <Input
+                          name="name"
+                          placeholder="Name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          className="bg-black hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          required
+                        />
+                        <Input
+                          name="email"
+                          type="email"
+                          placeholder="Email Address"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          className="bg-black hover:shadow-lg rounded-lg  hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          required
+                        />
+                        <Input
+                          name="phone"
+                          placeholder="Phone Number"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          className="bg-black hover:shadow-lg rounded-lg  hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                        />
+                        <Textarea
+                          name="message"
+                          placeholder="Message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          rows={5}
+                          className="bg-black hover:shadow-lg rounded-lg  hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          required
+                        />
+                        <Button
+                          type="submit"
+                          className="w-full rounded-full border-purple-600/75 shadow-lg shadow-purple-500/25 text-white interactive"
+                        >
+                          {loading?"Sending...":"SEND MESSAGE"}
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+
+        <div className="flex items-center justify-center md:flex-row flex-col gap-8 mt-8" >
+            <Card className="contact-item bg-black border-transparent ">
+              <CardContent className="p-6 flex items-center space-x-4 shadow-lg shadow-purple-500/25">
                 <div className="w-12 h-12 bg-purple-500/25 rounded-full flex items-center justify-center">
                   <MapPin className="w-6 h-6 text-purple-600/75" />
                 </div>
-                <div>
+                <div >
                   <h3 className="text-white font-bold mb-1">MY LOCATION</h3>
                   <p className="text-white/70">New Delhi, India</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card onClick={handleEmail} className="contact-item email bg-black border-purple-500/20 cursor-pointer ">
-              <CardContent className="p-6 flex items-center space-x-4">
+            <Card onClick={handleEmail} className="contact-item email bg-black border-transparent cursor-pointer ">
+              <CardContent className="p-6 flex items-center space-x-4 shadow-lg shadow-purple-500/25">
                 <div className="w-12 h-12 bg-purple-500/25 rounded-full flex items-center justify-center">
                   <Mail className="w-6 h-6 text-purple-600/75" />
                 </div>
@@ -202,76 +260,12 @@ const Contact = () => {
             </Card>
           </div>
 
-          <div className="xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
-            <div className="flex-[0.75] bg-black-100 p-8 rounded-2xl">
-              <Card className="contact-item bg-black border-transparent">
-                <CardContent className="p-8">
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <Input
-                      name="name"
-                      placeholder="Name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="bg-black  text-white placeholder-white/50 focus:border-purple-600/75 border-transparent"
-                      required
-                    />
-                    <Input
-                      name="email"
-                      type="email"
-                      placeholder="Email Address"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="bg-black  text-white placeholder-white/50 focus:border-purple-600/75 border-transparent"
-                      required
-                    />
-                    <Input
-                      name="phone"
-                      placeholder="Phone Number"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="bg-black  text-white placeholder-white/50 focus:border-purple-600/75 border-transparent"
-                    />
-                    <Textarea
-                      name="message"
-                      placeholder="Message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      rows={5}
-                      className="bg-black  text-white placeholder-white/50 focus:border-purple-600/75 border-transparent"
-                      required
-                    />
-                    <Button
-                      type="submit"
-                      className="w-full rounded-full border-purple-600/75 shadow-lg shadow-purple-500/25 text-white interactive"
-                    >
-                      {loading?"Sending...":"SEND MESSAGE"}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
-            
-          </div>
         </div>
-        <div className="">
-              <div className=" h-[100vh] w-[100vw] my-10">
-                <Canvas camera={{ position: [0, 0, 5] }}>
-                  <ambientLight intensity={0.5} />
-                  <directionalLight position={[5, 5, 5]} intensity={1} />
-                    <MyModel />
-                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
-                </Canvas>
-              </div>
-        </div>
-        {/* <div className='w-full h-full absolute inset-0 z-[-1]'>
-              <Canvas camera={{ position: [0, 0, 1] }}>
-                <Suspense fallback={null}>
-                  <Stars />
-                </Suspense>
-                <Preload all />
-              </Canvas>
-        </div> */}
-      </div>
+        
+        
+
+        
+      
     </section>
   )
 }

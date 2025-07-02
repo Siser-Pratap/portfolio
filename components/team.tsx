@@ -47,15 +47,11 @@ const Team = () => {
     <section id="socials" ref={sectionRef} className="py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="fade-up text-4xl md:text-3xl font-bold mb-8">
-            <span className="text-purple-600/75 rounded-full p-5 pr-7 pl-7 shadow-lg shadow-purple-500/25">
+          <h2 className="c text-2xl md:text-2xl font-bold mb-8">
+            <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
               SOCIALS
             </span>
           </h2>
-          <p className="fade-up text-xl text-white/70">
-            The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic
-            words etc.
-          </p>
         </div>
 
         <div className="flex justify-center items-center">

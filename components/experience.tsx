@@ -60,33 +60,30 @@ const Experience = () => {
   }, [])
 
   return (
-    <div ref={sectionRef} className="h-full flex items-center justify-center p-8">
+    <div id="experience" ref={sectionRef} className="h-full flex items-center justify-center p-8">
       <div className="max-w-4xl mx-auto w-full">
         <div className="text-center mb-16">
-          <h2 className="text-6xl md:text-7xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+          <h2 className="works text-3xl md:text-2xl font-bold mb-8">
+            <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
               Experience
             </span>
           </h2>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            My professional journey and the experiences that shaped my career
-          </p>
         </div>
 
         <div className="relative">
           {/* Timeline Line */}
-          <div className="timeline-line absolute left-8 top-0 w-0.5 h-full bg-gradient-to-b from-green-400 to-emerald-400"></div>
+          <div className="timeline-line absolute left-8 top-0 w-0.5 h-full bg-gradient-to-b from-purple-600  to-purple-500/25"></div>
 
           <div className="space-y-12">
             {experiences.map((exp, index) => (
               <div key={index} className="timeline-item relative pl-20">
                 {/* Timeline Dot */}
-                <div className="absolute left-6 top-6 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full border-4 border-gray-900"></div>
+                <div className="absolute left-6 top-6 w-4 h-4 bg-black rounded-full border-2 shadow-lg shadow-purple-600/75 border-purple-600"></div>
 
-                <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                <div className="backdrop-blur-sm bg-black border border-purple-500/25 shadow-sm shadow-purple-600/75 rounded-2xl p-8 hover:bg-gradient-to-t from-purple-500/25 to-transparent transition-all duration-300">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                     <h3 className="text-2xl font-bold text-white mb-2 md:mb-0">{exp.title}</h3>
-                    <div className="flex items-center text-green-400 text-sm">
+                    <div className="flex items-center text-purple-600 text-sm">
                       <Calendar className="w-4 h-4 mr-1" />
                       {exp.period}
                     </div>
@@ -106,7 +103,7 @@ const Experience = () => {
                     {exp.technologies.map((tech, techIndex) => (
                       <span
                         key={techIndex}
-                        className="px-3 py-1 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-full text-green-300 text-sm"
+                        className="px-3 py-1 bg-black border-transparent shadow-lg shadow-purple-500/25 rounded-full text-white  text-sm"
                       >
                         {tech}
                       </span>

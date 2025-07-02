@@ -67,7 +67,21 @@ const RecentWork = () => {
         scrollTrigger:{
           trigger:servicesRef.current,
           start:"top 55%",
-          markers:true
+        }
+      })
+      .from('.hello', {
+        opacity:0,
+        x:-50,
+      })
+      .to('.hello', {
+        opacity:1,
+        duration:0.5,
+        x:0,
+        stagger:0.5,
+        ease:"back.out(1.2)",
+        scrollTrigger:{
+          trigger:servicesRef.current,
+          start:"top 80%",
         }
       })
     }, servicesRef);
@@ -100,7 +114,7 @@ const RecentWork = () => {
               key={index}
               className="service-card bg-black/50 border-transparent transition-all duration-300 group interactive "
             >
-              <CardContent className="p-8 text-center hover:text-purple-600/75 hover:scale-125">
+              <CardContent className="p-8 text-center hover:text-white hover:scale-125">
                 <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <Image width="8" height="8" alt='technologies' src={service.icon}  className="w-8 h-8" />
                 </div>
@@ -112,8 +126,8 @@ const RecentWork = () => {
           ))}
         </div>
 
-        <div className="text-center mt-16">
-          <div className="fade-up backdrop-blur-md bg-black/50 border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
+        <div className="text-center mt- 6 rounded-full">
+          <div className=" hello bg-cover bg-black/50 border-transparent rounded-full p-8 max-w-2xl mx-auto">
             <h3 className="text-2xl font-bold text-white mb-4">WANT TO CONNECT ?</h3>
             <p className="text-white/70 mb-6">
               'Cause connection builds Future

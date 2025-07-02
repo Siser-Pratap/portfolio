@@ -293,3 +293,7 @@ to {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
 } 
+
+.hello{
+  background-image:url("/herobg.png");
+}
