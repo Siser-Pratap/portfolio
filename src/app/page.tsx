@@ -123,17 +123,17 @@ export default function Home() {
       <Header />
       <div ref={smoothWrapperRef} id="smooth-wrapper">
       <div ref={smoothContentRef} id="smooth-content">
-        {/* <Hero /> */}
-        {/* <SectionWithStars> */}
-          {/* <WhatIDo />e */}
+        <Hero />
+        <SectionWithStars>
+          <WhatIDo />
           <RecentWork />
           <Experience />
           <Portfolio />
-          {/* <Team />
+          <Team />
           <Skills />
           <Contact />
-          <Footer /> */}
-        {/* </SectionWithStars> */}
+          <Footer />
+        </SectionWithStars>
       </div>
       </div>
     </div>
