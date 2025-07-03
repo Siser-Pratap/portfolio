@@ -170,9 +170,9 @@ const Contact = () => {
           </h2>
         </div>
 
-        <div className="flex items-center justify-center md:flex-row flex-col gap-[4px]">
+        <div className="flex items-center justify-center md:flex-row flex-col  gap-[16px]">
           {/* Contact Info */}
-            <div className="h-[100vh] w-auto pb-32">
+            <div className="h-[100vh] w-auto p-[2rem]">
                 <Canvas camera={{ position: [0, 0, 5] }}>
                   <ambientLight intensity={0.5} />
                   <directionalLight position={[5, 5, 5]} intensity={1} />
@@ -183,17 +183,17 @@ const Contact = () => {
           
               
             
-              <div className="xl:flex-row flex-col-reverse pb-0  flex gap-10 overflow-hidden">
+              <div className="xl:flex-row flex-col-reverse pb-0  flex gap-10 ">
                 <div className="flex-[0.75] bg-black-100 rounded-2xl">
                   <Card className="contact-item bg-black border-transparent">
                     <CardContent >
-                      <form onSubmit={handleSubmit} className="space-y-6">
+                      <form onSubmit={handleSubmit} className="space-y-8">
                         <Input
                           name="name"
                           placeholder="Name"
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="bg-black hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          className="bg-black w-[30vw] hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
                           required
                         />
                         <Input
@@ -202,7 +202,7 @@ const Contact = () => {
                           placeholder="Email Address"
                           value={formData.email}
                           onChange={handleInputChange}
-                          className="bg-black hover:shadow-lg rounded-lg  hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          className="bg-black w-full hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent  "
                           required
                         />
                         <Input
@@ -210,22 +210,22 @@ const Contact = () => {
                           placeholder="Phone Number"
                           value={formData.phone}
                           onChange={handleInputChange}
-                          className="bg-black hover:shadow-lg rounded-lg  hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          className="bg-black w-full hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent  "
                         />
                         <Textarea
                           name="message"
                           placeholder="Message"
                           value={formData.message}
                           onChange={handleInputChange}
-                          rows={5}
-                          className="bg-black hover:shadow-lg rounded-lg  hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
+                          rows={8}
+                          className="bg-black w-full hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent  py-4"
                           required
                         />
                         <Button
                           type="submit"
-                          className="w-full rounded-full border-purple-600/75 shadow-lg shadow-purple-500/25 text-white interactive"
+                          className="w-full rounded-full border-purple-600/75 shadow-lg shadow-purple-500/25 text-white interactive "
                         >
-                          {loading?"Sending...":"SEND MESSAGE"}
+                          {loading ? "Sending..." : "SEND MESSAGE"}
                         </Button>
                       </form>
                     </CardContent>

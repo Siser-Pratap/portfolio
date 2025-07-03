@@ -96,6 +96,23 @@ export default function Home() {
     }
   }, [])
 
+   useEffect(() => {
+    const items = document.querySelectorAll('.animate-slide-in-x');
+    const observer = new window.IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target); // Only animate once
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    items.forEach(item => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
       className="bg-black text-white overflow-x-hidden"
@@ -108,14 +125,14 @@ export default function Home() {
       <div ref={smoothContentRef} id="smooth-content">
         {/* <Hero /> */}
         {/* <SectionWithStars> */}
-          {/* <WhatIDo />
+          {/* <WhatIDo />e */}
           <RecentWork />
           <Experience />
           <Portfolio />
-          <Team /> */}
+          {/* <Team />
           <Skills />
           <Contact />
-          <Footer />
+          <Footer /> */}
         {/* </SectionWithStars> */}
       </div>
       </div>

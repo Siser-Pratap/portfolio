@@ -131,7 +131,7 @@ const Portfolio = () => {
           {filteredItems.map((project, index) => (
             <Card
               key={index}
-              className="portfolio-item border border-purple-500/25 rounded-lg p-8 transition-all duration-300 group" >
+              className="portfolio-item animate-slide-in-x border border-purple-500/25 rounded-lg p-8 transition-all duration-300 group" >
 
                 <div className="relative overflow-hidden">
                     <Image

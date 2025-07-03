@@ -9,28 +9,28 @@ const Experience = () => {
 
   const experiences = [
     {
-      title: "Senior Full Stack Developer",
-      company: "TechCorp Inc.",
-      location: "San Francisco, CA",
-      period: "2022 - Present",
+      title: "FreeLancer",
+      company: "Self Employed",
+      location: "New Delhi, India",
+      period: "2023 - Present",
       description:
         "Leading development of scalable web applications using React, Node.js, and cloud technologies. Mentoring junior developers and architecting solutions for complex business requirements.",
-      technologies: ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL"],
+      technologies: ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "Next.js", "SpringBoot"],
     },
     {
-      title: "Frontend Developer",
-      company: "Digital Agency",
-      location: "New York, NY",
-      period: "2020 - 2022",
+      title: "Software Development Intern",
+      company: "Synapsis Medical Technologies",
+      location: "Edmonton, Canada",
+      period: "February 2025 - April 2025",
       description:
         "Developed responsive web applications and collaborated with design teams to create pixel-perfect user interfaces. Improved application performance by 40%.",
       technologies: ["React", "Vue.js", "SASS", "JavaScript", "Figma"],
     },
     {
-      title: "Junior Developer",
-      company: "StartupXYZ",
-      location: "Austin, TX",
-      period: "2019 - 2020",
+      title: "Web Development Intern",
+      company: "DC Infotech",
+      location: "Mumbai, India",
+      period: "Sept 2024 - November 2024",
       description:
         "Built and maintained web applications, participated in code reviews, and contributed to the development of the company's main product platform.",
       technologies: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
@@ -39,25 +39,28 @@ const Experience = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".timeline-item", {
-        opacity: 0,
-        x: -50,
-        duration: 0.8,
-        stagger: 0.2,
-        delay: 0.3,
-      })
+     
+      const tl = gsap.timeline();
 
-      // Animate timeline line
-      gsap.from(".timeline-line", {
-        height: 0,
-        duration: 1.5,
-        ease: "power2.out",
-        delay: 0.5,
+      tl.fromTo('.works', {
+        opacity:0, 
+        y:-50
+      }, {
+        opacity:1,
+        y:0,
+        scrollTrigger:{
+          trigger:'.works', 
+          start:'top 50%',
+        }
       })
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
+
+  
+
+
 
   return (
     <div id="experience" ref={sectionRef} className="h-full flex items-center justify-center p-8">
@@ -76,7 +79,7 @@ const Experience = () => {
 
           <div className="space-y-12">
             {experiences.map((exp, index) => (
-              <div key={index} className="timeline-item relative pl-20">
+              <div key={index} className="timeline-item animate-slide-in-x relative pl-20">
                 {/* Timeline Dot */}
                 <div className="absolute left-6 top-6 w-4 h-4 bg-black rounded-full border-2 shadow-lg shadow-purple-600/75 border-purple-600"></div>
 

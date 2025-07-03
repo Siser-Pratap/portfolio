@@ -177,7 +177,7 @@ useEffect(()=>{
     <header ref={headerRef} className="fixed cool top-0 left-0 right-0 z-40 p-6">
       <div className="max-w-7xl mx-auto ">
         <div className=" color bg-black/60 rounded-2xl px-6 py-4 ">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-[32px]">
             {/* Logo */}
             <div className="flex flex-row gap-0 hover:scale-105 name">
               <h1 className="text-4xl nav underline font-bold text-white/80 hover:text-white interactive">

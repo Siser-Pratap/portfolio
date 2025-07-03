@@ -297,3 +297,25 @@ to {
 .hello{
   background-image:url("/herobg.png");
 }
+
+
+@keyframes slideInX {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-x {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.animate-slide-in-x.in-view {
+  animation: slideInX 0.8s cubic-bezier(0.4,0,0.2,1) forwards;
+}
