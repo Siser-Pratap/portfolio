@@ -63,7 +63,7 @@ const Experience = () => {
 
 
   return (
-    <div id="experience" ref={sectionRef} className="h-full flex items-center justify-center p-8">
+    <div id="experience" ref={sectionRef} className="h-full flex items-center justify-center p-8 overflow-x-hidden">
       <div className="max-w-4xl mx-auto w-full">
         <div className="text-center mb-16">
           <h2 className="works text-3xl md:text-2xl font-bold mb-8">
@@ -92,7 +92,7 @@ const Experience = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center text-white/70 mb-4">
+                  <div className="flex items-center flex-col md:gap-1 md:flex-row  text-white/70 mb-4">
                     <span className="text-lg font-medium mr-4">{exp.company}</span>
                     <div className="flex items-center text-sm">
                       <MapPin className="w-4 h-4 mr-1" />

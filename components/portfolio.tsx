@@ -72,21 +72,7 @@ const Portfolio = () => {
           start:"top 45%",
         }
       })
-      tl.from('.portfolio-item', {
-        opacity:0,
-        x:-500
-      })
-       tl.to('.portfolio-item', {
-          opacity:1,
-          x:0,
-          duration:2,
-          ease:"power2.in",
-          stagger:0.5,
-          scrollTrigger:{
-            trigger:projectRef.current, 
-            start:"top 40%",
-          }
-        })
+      
 
     }, projectRef)
     
@@ -99,7 +85,7 @@ const Portfolio = () => {
     activeFilter === "All" ? portfolioItems : portfolioItems.filter((item) => item.category === activeFilter)
 
   return (
-    <section id="works" ref={projectRef} className="py-24 bg-black">
+    <section id="works" ref={projectRef} className="py-24 bg-black overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="works text-3xl md:text-2xl font-bold mb-8">
@@ -131,7 +117,7 @@ const Portfolio = () => {
           {filteredItems.map((project, index) => (
             <Card
               key={index}
-              className="portfolio-item animate-slide-in-x border border-purple-500/25 rounded-lg p-8 transition-all duration-300 group" >
+              className=" animate-slide-in-x border border-purple-500/25 rounded-lg p-8 transition-all duration-300 group" >
 
                 <div className="relative overflow-hidden">
                     <Image

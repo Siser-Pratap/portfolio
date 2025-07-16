@@ -16,14 +16,14 @@ const Header = () => {
   
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Services", href: "#services" },
-    { name: "Experience", href: "#experience" },
-    { name: "Works", href: "#works" },
-    { name: "Socials", href: "#socials" },
-    { name: "Skills", href: "#skills" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "home" },
+    { name: "About", href: "about" },
+    { name: "Services", href: "services" },
+    { name: "Experience", href: "experience" },
+    { name: "Works", href: "works" },
+    { name: "Socials", href: "socials" },
+    { name: "Skills", href: "skills" },
+    { name: "Contact", href: "contact" },
   ]
 
 
@@ -94,13 +94,11 @@ const Header = () => {
     return () => ctx.revert()
   }, [])
 
-  const scrollToSection = (href: string) => {
-    const smoother = ScrollSmoother.get()
-    if(smoother){
-      smoother.scrollTo(href, true);
-    }
+  const scrollToAbout = (href:string)=> {
+  document.getElementById(`${href}`)?.scrollIntoView({
+    behavior: "smooth"
+    });
   }
-
  
   useEffect(() => {
     if (!backRef.current) return
@@ -191,7 +189,7 @@ useEffect(()=>{
               {navItems.map((item, index) => (
                 <button
                   key={index}
-                  onClick={() => scrollToSection(item.href)}
+                  onClick={() => scrollToAbout(item.href)}
                   className="nav-item text-white/80  hover:text-white hover:scale-105 hover:text-2xl transition-all duration-300 relative group interactive"
                 >
                   {item.name}
@@ -216,7 +214,7 @@ useEffect(()=>{
                         <button 
                           key={index}
                           onClick={()=>{
-                            setIsMenuOpen(false); scrollToSection(item.href)}}
+                            setIsMenuOpen(false); scrollToAbout(item.href)}}
                           className="m-[0.3rem] back-nav-item opacity-0 text-white/80  hover:text-white hover:scale-105 hover:text-2xl transition-all duration-300 relative group interactive"
                         >
                           {item.name}

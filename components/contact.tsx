@@ -160,7 +160,7 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="py-24">
+    <section id="contact" ref={sectionRef} className="py-24 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="works text-3xl md:text-2xl font-bold mb-8">
@@ -170,9 +170,9 @@ const Contact = () => {
           </h2>
         </div>
 
-        <div className="flex items-center justify-center md:flex-row flex-col  gap-[16px]">
+        <div className="flex items-center justify-center md:flex-row flex-col md:gap-[4rem] gap-8">
           {/* Contact Info */}
-            <div className="h-[100vh] w-auto p-[2rem]">
+            <div className="h-[50vh] md:w-[50vw] w-[60vw] ">
                 <Canvas camera={{ position: [0, 0, 5] }}>
                   <ambientLight intensity={0.5} />
                   <directionalLight position={[5, 5, 5]} intensity={1} />

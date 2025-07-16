@@ -12,9 +12,10 @@ const SectionIndicator = () => {
     { id: "home" },
     { id: "about" },
     { id: "services" },
-    { id: "portfolio" },
-    { id: "team" },
-    { id: "blog" },
+    { id: "experience" },
+    { id: "works" },
+    { id: "socials" },
+    { id: "skills" },
     { id: "contact" },
   ]
 

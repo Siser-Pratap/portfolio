@@ -90,15 +90,14 @@ const RecentWork = () => {
 
   })
 
-  const scrollToSection = (href: string) => {
-      const smoother = ScrollSmoother.get()
-      if(smoother){
-        smoother.scrollTo(href, true);
-      }
-    }
+  const scrollToAbout = (href:string)=> {
+  document.getElementById(`${href}`)?.scrollIntoView({
+    behavior: "smooth"
+    });
+  }  
 
   return (
-    <section id="services" ref={servicesRef} className="py-24">
+    <section id="services" ref={servicesRef} className="py-24 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-2xl font-bold mb-8">
@@ -112,7 +111,7 @@ const RecentWork = () => {
           {services.map((service, index) => (
             <Card
               key={index}
-              className="service-card bg-black/50 border-transparent transition-all duration-300 group interactive "
+              className="animate-slide-in-y bg-black/50 border-transparent transition-all duration-300 group interactive "
             >
               <CardContent className="p-8 text-center hover:text-white hover:scale-125">
                 <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -134,7 +133,7 @@ const RecentWork = () => {
             </p>
             <button
               onClick={() => {
-                scrollToSection('#contact')
+                scrollToAbout('contact')
               }}
               className="hover:text-black hover:bg-white/80 hover:shadow-transparent  text-white px-8 py-3 rounded-full font-medium interactive shadow-lg shadow-purple-500/25"
             >

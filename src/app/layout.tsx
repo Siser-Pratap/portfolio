@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import Preloader from "@/components/preloader"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,9 +11,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Portfolio - Creative Agency",
-  description: "Using Our Reputation To Help You! Creative portfolio and agency website.",
-    generator: 'v0.dev'
+  title: "Siser Pratap",
+  description: "",
+    
 }
 
 export default function RootLayout({
@@ -21,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} font-sans cursor-none`}>{children}</body>
+    <html lang="en" className="overflow-x-hidden">
+      <body className={`${inter.className} font-sans cursor-none`}><Preloader>{children}</Preloader></body>
     </html>
   )
 }

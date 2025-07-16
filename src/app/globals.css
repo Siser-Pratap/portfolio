@@ -142,6 +142,25 @@ body {
   }
 }
 
+@keyframes loaderPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes loaderSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -318,4 +337,26 @@ to {
 
 .animate-slide-in-x.in-view {
   animation: slideInX 0.8s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+
+@keyframes slideInY {
+  from {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-y {
+  opacity: 0;
+  transform: translateY(-100px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.animate-slide-in-y.in-view {
+  animation: slideInY 0.8s cubic-bezier(0.4,0,0.2,1) forwards;
 }

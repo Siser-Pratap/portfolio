@@ -153,17 +153,16 @@ const Hero = () => {
     startTypingCycle()
   }, [currentWordIndex, words])
 
-  const scrollToSection = (href: string) => {
-    const smoother = ScrollSmoother.get()
-    if(smoother){
-      smoother.scrollTo(href, true);
-    }
+  const scrollToAbout = ()=> {
+  document.getElementById("works")?.scrollIntoView({
+    behavior: "smooth"
+    });
   }
 
   return (
     <>
     <BubbleBackground />
-      <section id="home" ref={heroRef} className="min-h-screen flex items-center inset-0 z-10 relative justify-center  pt-20">
+      <section id="home" ref={heroRef} className="min-h-screen flex items-center inset-0 z-10 relative justify-center  pt-20 overflow-x-hidden">
 
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
@@ -178,7 +177,7 @@ const Hero = () => {
                 <span className=" inline-block">
                   <span
                     ref={typingRef}
-                    className="text-white/80 hover:scale-105 hover:text-5xl text-4xl "
+                    className="text-white/80 hover:scale-105 hover:text-5xl md:text-4xl text-xl"
                   >
                     Developer
                   </span>
@@ -200,7 +199,7 @@ const Hero = () => {
                   animationDelay: "0.2s",
                   animationName: "fadeInUp"
                 }}
-                onClick={()=>scrollToSection('#portfolio')}
+                onClick={()=>scrollToAbout()}
                 className="border relative fadeInUp inset-0 z-10 cursor-pointer border-white border-spacing-7  group interactive text-white px-8 py-6 text-lg interactive shadow-lg shadow-purple-500/25 transform transition-all duration-300 hover:bg-white/80 hover:text-black  "
               >
                 Latest Works

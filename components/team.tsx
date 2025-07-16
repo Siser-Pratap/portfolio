@@ -18,33 +18,9 @@ const Team = () => {
     },
     
   ]
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".team-card",
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
-      )
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
+  
   return (
-    <section id="socials" ref={sectionRef} className="py-24">
+    <section id="socials" ref={sectionRef} className="py-24 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="c text-2xl md:text-2xl font-bold mb-8">
@@ -58,7 +34,7 @@ const Team = () => {
           {teamMembers.map((member, index) => (
             <Card
               key={index}
-              className="team-card bg-black  border-transparent shadow-lg shadow-purple-500/25"
+              className="animate-slide-in-y bg-black  border-transparent shadow-lg shadow-purple-500/25"
             >
               <CardContent className="p-8 text-center">
                 <div className="relative mb-6 group-hover:scale-105 transition-transform duration-300">

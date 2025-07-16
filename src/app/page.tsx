@@ -1,128 +1,135 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ScrollSmoother } from "gsap/ScrollSmoother"
-import CustomCursor from "@/components/custom-cursor"
-import BubbleBackground from "@/components/bubble-background"
-import Header from "@/components/header"
-import Hero from "@/components/hero"
-import WhatIDo from "@/components/what-i-do"
-import RecentWork from "@/components/recent-work"
-import Portfolio from "@/components/portfolio"
-import Team from "@/components/team"
-import Skills from "@/components/skills"
-import Check from "@/components/check"
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
+import CustomCursor from "@/components/custom-cursor";
+import Header from "@/components/header";
+import Hero from "@/components/hero";
+import WhatIDo from "@/components/what-i-do";
+import RecentWork from "@/components/recent-work";
+import Portfolio from "@/components/portfolio";
+import Team from "@/components/team";
+import Skills from "@/components/skills";
+import Loader from "@/components/loader";
+import Contact from "@/components/contact";
+import Footer from "@/components/footer";
+import SectionIndicator from "@/components/section-indicator";
+import SectionWithStars from "@/components/sectionWrapper";
+import Experience from "@/components/experience";
 
-import Contact from "@/components/contact"
-import Footer from "@/components/footer"
-import SectionIndicator from "@/components/section-indicator"
-import SectionWithStars from "@/components/sectionWrapper"
-import Experience from "@/components/experience"
-import Exp from "@/components/experience"
-
-
-// Register GSAP plugins
+// Register GSAP plugins once in the browser
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 }
 
 export default function Home() {
-  const smoothWrapperRef = useRef<HTMLDivElement>(null)
-  const smoothContentRef = useRef<HTMLDivElement>(null)
+  const mainRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  /* -------- GSAP page‑load + global scroll effects -------- */
   useEffect(() => {
-    let smoother: any
+    if (isLoading || !mainRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Initialize ScrollSmoother
-      smoother = ScrollSmoother.create({
-        wrapper: smoothWrapperRef.current,
-        content: smoothContentRef.current,
-        smooth: 1,
-        effects: true,
-        smoothTouch: 0.1,
-      })
+      gsap.set(".page-content", { opacity: 0 });
+      gsap.to(".page-content", { opacity: 1, duration: 1, ease: "power2.out" });
 
-      // Global scroll animations
-      gsap.utils.toArray(".fade-up").forEach((element: any) => {
+      gsap.utils.toArray(".fade-up").forEach(el => {
         gsap.fromTo(
-          element,
-          {
-            opacity: 0,
-            y: 100,
-          },
+          el as Element,
+          { opacity: 0, y: 100 },
           {
             opacity: 1,
             y: 0,
             duration: 1,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: element,
+              trigger: el as Element,
               start: "top 80%",
               end: "bottom 20%",
               toggleActions: "play none none reverse",
             },
           },
-        )
-      })
+        );
+      });
 
-      gsap.utils.toArray(".fade-in").forEach((element: any) => {
+      gsap.utils.toArray(".fade-in").forEach(el => {
         gsap.fromTo(
-          element,
-          {
-            opacity: 0,
-          },
+          el as Element,
+          { opacity: 0 },
           {
             opacity: 1,
             duration: 1.5,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: element,
+              trigger: el as Element,
               start: "top 80%",
               end: "bottom 20%",
               toggleActions: "play none none reverse",
             },
           },
-        )
-      })
-    })
+        );
+      });
+    }, mainRef);
 
-    return () => {
-      ctx.revert()
-      if (smoother) smoother.kill()
-    }
-  }, [])
+    return () => ctx.revert();
+  }, [isLoading]);
 
-   useEffect(() => {
-    const items = document.querySelectorAll('.animate-slide-in-x');
-    const observer = new window.IntersectionObserver(
-      (entries, observer) => {
+  /* -------- IntersectionObserver slide‑in‑x effect -------- */
+  useEffect(() => {
+    if (isLoading) return;
+
+    const items = document.querySelectorAll(".animate-slide-in-x");
+    const observer = new IntersectionObserver(
+      entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            observer.unobserve(entry.target); // Only animate once
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target); // animate once
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
+
     items.forEach(item => observer.observe(item));
     return () => observer.disconnect();
-  }, []);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const items = document.querySelectorAll(".animate-slide-in-y");
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target); // animate once
+          }
+        });
+      },
+      { threshold: 0.5 },
+    );
+
+    items.forEach(item => observer.observe(item));
+    return () => observer.disconnect();
+  }, [isLoading]);
+
+  /* ------------------------- RENDER ----------------------- */
+  if (isLoading) {
+    return <Loader onLoadComplete={() => setIsLoading(false)} />;
+  }
 
   return (
-    <div
-      className="bg-black text-white overflow-x-hidden"
-      
-    >
-      <CustomCursor />
-      <SectionIndicator />
-      <Header />
-      <div ref={smoothWrapperRef} id="smooth-wrapper">
-      <div ref={smoothContentRef} id="smooth-content">
+    <div className="bg-black text-white overflow-x-hidden">
+      <div ref={mainRef} className="page-content overflow-x-hidden">
+        <CustomCursor />
+        <SectionIndicator />
+        <Header />
         <Hero />
         <SectionWithStars>
           <WhatIDo />
@@ -135,7 +142,6 @@ export default function Home() {
           <Footer />
         </SectionWithStars>
       </div>
-      </div>
     </div>
-  )
+  );
 }
