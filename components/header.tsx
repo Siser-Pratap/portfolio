@@ -13,6 +13,7 @@ const Header = () => {
   const backRef = useRef<HTMLDivElement>(null)
   const menuTl = useRef<gsap.core.Timeline | null>(null)
   gsap.registerPlugin(ScrollTrigger);
+  const [scroll, setScrolled] = useState(false);
   
 
   const navItems = [
@@ -49,6 +50,20 @@ const Header = () => {
       
     };
   }, []);
+
+  useEffect(() => {
+    // Handle scroll effect
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   useEffect(() => {
     if (!headerRef.current) return
@@ -142,39 +157,10 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
-useEffect(()=>{
-    const ctx = gsap.context(()=>{
-      gsap.to(".cool", {
-        padding:"0",
-        width:"100vw",
-        scrollTrigger:{
-          trigger:".cool",
-          start:"bottom 10%",
-          scrub:true,
-        },
-      });
-      gsap.to(".color", {
-        backgroundColor:"black",
-        borderRadius:0,
-        scrollTrigger:{
-          trigger:'.color',
-          start:"bottom 10%",
-          scrub:true,
-        }
-      });
-    });
-    return ()=> ctx.revert();
-  }, []);
-
-
- 
-
-
-
   return (
-    <header ref={headerRef} className="fixed cool top-0 left-0 right-0 z-40 p-6">
+    <header ref={headerRef} className={`fixed top-0 left-0 right-0 transition-all duration-300 z-40 p-6 ${scroll ? " bg-black py-2" : "bg-transparent py-4"}`}>
       <div className="max-w-7xl mx-auto ">
-        <div className=" color bg-black/60 rounded-2xl px-6 py-4 ">
+        <div className=" color  rounded-2xl px-6 py-4 ">
           <div className="flex items-center justify-between gap-[32px]">
             {/* Logo */}
             <div className="flex flex-row gap-0 hover:scale-105 name">
