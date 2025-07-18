@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { Card, CardContent } from "@/components/ui/card"
-import { Facebook, Twitter, Dribbble, Instagram, Linkedin } from "lucide-react"
+import { Facebook, Twitter, Dribbble, Instagram, Linkedin, Github } from "lucide-react"
 import Image from "next/image"
 
 const Team = () => {
@@ -13,10 +13,15 @@ const Team = () => {
     {
       name: "SISER PRATAP",
       role: "SOFTWARE DEVELOPER",
-      image: "/placeholder.svg?height=300&width=300",
-      social: [Facebook, Twitter, Dribbble, Instagram, Linkedin],
+      image: "/photo.jpg",
+      social: [
+        { icon: Twitter, link: "https://twitter.com/PratapSiser" },
+        { icon: Dribbble, link: "https://calendly.com/siserpratap" },
+        { icon: Instagram, link: "https://instagram.com/siser_ins17" },
+        { icon: Linkedin, link: "https://linkedin.com/in/siser" },
+        {icon: Github, link:"https://github.com/Siser-Pratap"},
+      ],
     },
-    
   ]
   
   return (
@@ -53,13 +58,15 @@ const Team = () => {
                 <p className="text-white/80 mb-6">{member.role}</p>
 
                 <div className="flex justify-center space-x-3">
-                  {member.social.map((Social, socialIndex) => (
+                  {member.social.map((social, socialIndex) => (
                     <a
                       key={socialIndex}
-                      href="#"
+                      href={social.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-10 h-10 bg-gray-700/50 rounded-full flex items-center justify-center hover:bg-purple-600/75 transition-colors duration-300 interactive"
                     >
-                      <Social className="w-4 h-4 text-white" />
+                      <social.icon className="w-4 h-4 text-white" />
                     </a>
                   ))}
                 </div>

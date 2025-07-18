@@ -8,54 +8,25 @@ const Skills = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   const skills = [
-    { name: "UX Design", level: 80 },
-    { name: "HTML5 + CSS3", level: 65 },
-    { name: "JQUERY + JAVASCRIPT", level: 50 },
-    { name: "BOOTSTRAP", level: 90 },
-    { name: "LARAVEL", level: 30 },
-    { name: "PHOTOSHOP", level: 60 },
-  ]
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".skill-item",
-        { opacity: 0, x: -50 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
-      )
-
-      // Animate skill bars
-      gsap.fromTo(
-        ".skill-bar",
-        { width: 0 },
-        {
-          width: (index, target) => target.getAttribute("data-width") + "%",
-          duration: 1.5,
-          delay: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        },
-      )
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
+  { name: "HTML5 + CSS3", level: 95 },
+  { name: "JQUERY + JAVASCRIPT", level: 75 },
+  { name: "BOOTSTRAP", level: 85 },
+  { name: "React.js", level: 90 },
+  { name: "Next.js", level: 88 },
+  { name: "Nest.js", level: 88 },
+  { name: "Three.js", level: 88 },
+  { name: "Springboot", level: 88 },
+  { name: "SQL", level: 88 },
+  { name: "Gen-AI", level: 88 },
+  { name: "Node.js", level: 85 },
+  { name: "Express.js", level: 80 },
+  { name: "MongoDB", level: 85 },
+  { name: "PostgreSQL", level: 80 },
+  { name: "TypeScript", level: 75 },
+  { name: "Tailwind CSS", level: 90 },
+  { name: "REST API", level: 90 },
+]
+  
 
  
 
@@ -63,7 +34,7 @@ const Skills = () => {
     <section ref={sectionRef} id="skills" className="py-24 overflow-x-hidden">
     <div className="max-w-7xl mx-auto px-6">
       <div className="text-center mb-16">
-          <h2 className="text-2xl md:text-2xl font-bold mb-8">
+          <h2 className=" animate-slide-in-y text-2xl md:text-2xl font-bold mb-8">
             <span ref={sectionRef} className="text-purple-600/75 section-title hover:text-white/80 rounded-full px-6 py-4 shadow-lg shadow-purple-500/25">
               SKILLS.
             </span>

@@ -13,7 +13,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Siser Pratap",
   description: "",
-    
+  icons: {
+    icon: [{ url: "/favicon.ico" }],
+  },
 }
 
 export default function RootLayout({
@@ -23,6 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="overflow-x-hidden">
+      <head><link rel="icon" href="/favicon.ico" /></head>
       <body className={`${inter.className} font-sans cursor-none`}><Preloader>{children}</Preloader></body>
     </html>
   )

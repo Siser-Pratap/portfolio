@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
+import { useState } from "react"
 
 interface NavigationProps {
   currentSection: number
@@ -10,6 +11,7 @@ interface NavigationProps {
 
 const Navigation = ({ currentSection, onSectionChange }: NavigationProps) => {
   const navRef = useRef<HTMLElement>(null)
+  const [scroll, setScrolled] = useState(false);
 
   const navItems = [
     { name: "Home", index: 0 },
@@ -44,8 +46,22 @@ const Navigation = ({ currentSection, onSectionChange }: NavigationProps) => {
     return () => ctx.revert()
   }, [])
 
+   useEffect(() => {
+    // Handle scroll effect
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-40 p-6">
+    <nav ref={navRef} className={`fixed top-0 left-0 right-0 transition-all duration-300  z-40 p-6 ${scroll ? "bg-dark/90 backdrop-blur-md py-2" : "bg-transparent py-4"}`}>
       <div className="max-w-7xl mx-auto">
         <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl px-6 py-4 shadow-xl">
           <div className="flex items-center justify-between">

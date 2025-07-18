@@ -40,55 +40,15 @@ const Portfolio = () => {
       liveUrl: "#",
       githubUrl: "#", },
   ]
-
- 
-
-  useEffect(() => {
-    if (!projectRef.current) return
-    if(projectRef.current){
-    const ctx = gsap.context(() => {
-
-      const tl = gsap.timeline();
-
-      tl.from('.works', {
-        opacity:0,
-        y:-500,
-        ease:"back.out(1.2)",
-        duration:0.5,
-        scrollTrigger:{
-          trigger:projectRef.current,
-          start:"top 50%",
-        }
-      })
-      
-      tl.from('.filter-button', {
-        opacity:0,
-        y:-500,
-        ease:"back.out(1.2)",
-        duration:0.5,
-        stagger:0.5,
-        scrollTrigger:{
-          trigger:projectRef.current,
-          start:"top 45%",
-        }
-      })
-      
-
-    }, projectRef)
-    
-
-    return () => ctx.revert()
-  }
-  }, [])
-
-  const filteredItems =
+  
+   const filteredItems =
     activeFilter === "All" ? portfolioItems : portfolioItems.filter((item) => item.category === activeFilter)
 
   return (
     <section id="works" ref={projectRef} className="py-24 bg-black overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="works text-3xl md:text-2xl font-bold mb-8">
+          <h2 className="animate-slide-in-y text-3xl md:text-2xl font-bold mb-8">
             <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
               WORKS
             </span>
@@ -100,7 +60,7 @@ const Portfolio = () => {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`px-6 py-2 filter-button transition-all duration-300 interactive ${
+                className={`px-6 py-2 fade-in animate-slide-in-x transition-all duration-300 interactive ${
                   activeFilter === filter
                     ? "text-purple-600/75 rounded-full p-4 shadow-lg shadow-purple-500/25"
                     : " text-white/80 bg-black"
