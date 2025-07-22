@@ -125,13 +125,13 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-black text-white overflow-x-hidden">
-      <div ref={mainRef} className="page-content overflow-x-hidden">
+    <div className="bg-black text-white overflow-hidden">
+      <div ref={mainRef} className="page-content overflow-hidden">
         <CustomCursor />
         <SectionIndicator />
         <Header />
         <Hero />
-        <SectionWithStars>
+        <SectionWithStars className="z-12 bg-black">
           <WhatIDo />
           <RecentWork />
           <Experience />

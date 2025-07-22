@@ -158,7 +158,7 @@ const Header = () => {
   }, [isMenuOpen]);
 
   return (
-    <header ref={headerRef} className={`fixed top-0 left-0 right-0 transition-all duration-300 z-40 p-6 ${scroll ? " bg-black py-2" : "bg-transparent py-4"}`}>
+    <header ref={headerRef} className={`fixed overflow-x-hidden w-auto top-0 left-0 right-0 transition-all duration-300 z-40 p-6 ${scroll ? " bg-black py-2" : "bg-transparent py-4"}`}>
       <div className="max-w-7xl mx-auto ">
         <div className=" color  rounded-2xl px-6 py-4 ">
           <div className="flex items-center justify-between gap-[32px]">

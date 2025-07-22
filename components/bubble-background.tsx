@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 
-const BubbleBackground = () => {
+interface BubbleBackgroundProps {
+  className?: string;
+}
+
+const BubbleBackground = ({ className = "z-0" }: BubbleBackgroundProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const bubblesRef = useRef<HTMLDivElement[]>([])
   const mouseRef = useRef({ x: 0, y: 0 })
@@ -98,16 +102,24 @@ const BubbleBackground = () => {
   ]
 
   return (
-    <div ref={containerRef} className=" inset-0 pointer-events-none z-0 overflow-hidden">
+    <div
+      ref={containerRef}
+      className={`fixed top-0 left-0 w-screen h-screen pointer-events-none overflow-hidden ${className}`}
+      style={{ maxWidth: '100vw', maxHeight: '100vh' }}
+    >
       {Array.from({ length: 27 }).map((_, index) => (
         <div
           key={index}
-          ref={(el) => {
-            if (el) bubblesRef.current[index] = el
+          ref={el => {
+            if (el) bubblesRef.current[index] = el;
           }}
           className={`absolute w-16 h-16 rounded-full bg-gradient-to-br ${
             bubbleColors[index % bubbleColors.length]
           } backdrop-blur-sm border border-white/10`}
+          style={{
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+          }}
         />
       ))}
     </div>

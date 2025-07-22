@@ -12,7 +12,7 @@ type SectionWithStarsProps = React.PropsWithChildren<{
 
 const SectionWithStars: React.FC<SectionWithStarsProps> = ({ children, className = "", style }) => (
   <section className={`relative ${className}`} style={style}>
-    <div className="w-full h-full absolute inset-0 z-0 pointer-events-none">
+    <div className="w-full h-full absolute inset-0 z-0 pointer-events-none overflow-hidden">
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
           <Stars />

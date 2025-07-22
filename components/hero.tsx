@@ -161,8 +161,8 @@ const Hero = () => {
 
   return (
     <>
-    <BubbleBackground />
-      <section id="home" ref={heroRef} className="min-h-screen flex items-center inset-0 z-10 relative justify-center  pt-20 overflow-x-hidden">
+    <BubbleBackground className="z-11" />
+      <section id="home" ref={heroRef} className="min-h-screen w-[100vw] flex items-center inset-0 z-10 relative justify-center  pt-20 overflow-x-hidden">
 
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
