@@ -75,7 +75,7 @@ export const experiences = [
 export  const portfolioItems = [
     { 
       category: "Frontend", 
-      image: "https://chatgpt.com/s/m_6898898f41c481919c1ea73ac93572df",
+      image: "/meetPro.jpg",
       title: "MeetPro",
       description: "Advanced video conferencing app powered by Steam with modern design",
       technologies: ["Next.js", "TypeScript", "Stream", "Tailwind CSS"],
@@ -84,12 +84,30 @@ export  const portfolioItems = [
     },
     { 
       category: "FullStack", 
-      image: "https://camo.githubusercontent.com/380e25c5c2057fec6ab3fbfa24bb98cf395845094a6b1fda20a3036f93d5cee3/68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f6469346a627364776f2f696d6167652f75706c6f61642f76313734373530383931322f53637265656e73686f745f323032352d30352d31385f3030333335335f646275396f632e706e67", 
+      image: "/intelai.jpg", 
       title: "IntelAI",
       description: "A cutting-edge conversational AI platform that combines the power of modern AI models with a beautiful, responsive user interface.",
       technologies: ["Next.js", "TypeScript", "React", "MongoDB", "NodeJS", "ExpressJS"],
       liveUrl: "https://intelai-siser-pratap.vercel.app/",
       githubUrl: "https://github.com/Siser-Pratap/intelai",
+    },
+    { 
+      category: "Backend", 
+      image: "/authence.jpg", 
+      title: "Authence",
+      description: "NPM Package for authentication and authorization in Node.js applications powered by AI.",
+      technologies: ["Next.js","Gen-AI","TypeScript", "React", "MongoDB", "NodeJS", "ExpressJS"],
+      liveUrl: "https://www.npmjs.com/package/authence",
+      githubUrl: "https://github.com/Siser-Pratap/Authence",
+    },
+    { 
+      category: "Frontend", 
+      image: "/visionweave.jpg", 
+      title: "VisionWeave",
+      description: "AI Powered Image Generation Platform with Stunning animation and UI",
+      technologies: ["Next.js","Gen-AI API","TypeScript", "React", "MongoDB", "NodeJS", "ExpressJS"],
+      liveUrl: "https://visionweave-siser-pratap.vercel.app/",
+      githubUrl: "https://github.com/Siser-Pratap/VisionWeave",
     },
     
   ]

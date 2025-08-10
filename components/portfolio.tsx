@@ -46,13 +46,13 @@ const Portfolio = () => {
               key={index}
               className=" animate-slide-in-x border border-purple-500/25 rounded-lg p-8 transition-all duration-300 group" >
 
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden ">
                     <Image
                       src={project.image || "/placeholder.svg"}
                       alt={project.category}
                       width={400}
                       height={300}
-                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                       <div className="absolute inset-0 bg-gradient-to-t from-purple-600/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                         <span className="text-white font-medium">{project.category}</span>
