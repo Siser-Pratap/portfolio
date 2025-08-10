@@ -2,14 +2,14 @@
 import React, { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
+
 
 function Globe({ onLoad }: { onLoad: () => void }) {
   const { scene } = useGLTF('./');
 
   useEffect(() => {
     if (scene) {
-      onLoad(); // ✅ Calls when model is available
+      onLoad(); 
     }
   }, [scene, onLoad]);
 

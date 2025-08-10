@@ -1,41 +1,15 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { gsap } from "gsap"
+import {useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
-import Projects from "./projects"
 import { ExternalLink, Github } from "lucide-react"
+import { portfolioItems, filters} from "@/constants/constant"
 
 const Portfolio = () => {
   const projectRef = useRef<HTMLDivElement>(null)
   const [activeFilter, setActiveFilter] = useState("All")
-
-  const filters = ["All", "Frontend", "Backend", "FullStack", "Algorithmic"]
-
-  const portfolioItems = [
-    { 
-      category: "Frontend", 
-      image: "https://chatgpt.com/s/m_6898898f41c481919c1ea73ac93572df",
-      title: "MeetPro",
-      description: "Advanced video conferencing app powered by Steam with modern design",
-      technologies: ["Next.js", "TypeScript", "Stream", "Tailwind CSS"],
-      liveUrl: "https://meetpro-siser-pratap.vercel.app/",
-      githubUrl: "https://github.com/Siser-Pratap/meetPro",
-    },
-    { 
-      category: "FullStack", 
-      image: "https://camo.githubusercontent.com/380e25c5c2057fec6ab3fbfa24bb98cf395845094a6b1fda20a3036f93d5cee3/68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f6469346a627364776f2f696d6167652f75706c6f61642f76313734373530383931322f53637265656e73686f745f323032352d30352d31385f3030333335335f646275396f632e706e67", 
-      title: "IntelAI",
-      description: "A cutting-edge conversational AI platform that combines the power of modern AI models with a beautiful, responsive user interface.",
-      technologies: ["Next.js", "TypeScript", "React", "MongoDB", "NodeJS", "ExpressJS"],
-      liveUrl: "https://intelai-siser-pratap.vercel.app/",
-      githubUrl: "https://github.com/Siser-Pratap/intelai",
-    },
-    
-  ]
-  
-   const filteredItems =
+  const filteredItems =
     activeFilter === "All" ? portfolioItems : portfolioItems.filter((item) => item.category === activeFilter)
 
   return (
@@ -48,7 +22,6 @@ const Portfolio = () => {
             </span>
           </h2>
 
-          {/* Filter Buttons */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {filters.map((filter) => (
               <button

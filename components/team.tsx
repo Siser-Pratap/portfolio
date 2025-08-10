@@ -1,33 +1,20 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
+
 import { Card, CardContent } from "@/components/ui/card"
-import { Facebook, Twitter, Dribbble, Instagram, Linkedin, Github } from "lucide-react"
+import { teamMembers } from "@/constants/constant"
+
 import Image from "next/image"
 
 const Team = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  
 
-  const teamMembers = [
-    {
-      name: "SISER PRATAP",
-      role: "SOFTWARE DEVELOPER",
-      image: "/photo.jpg",
-      social: [
-        { icon: Twitter, link: "https://twitter.com/PratapSiser" },
-        { icon: Dribbble, link: "https://calendly.com/siserpratap" },
-        { icon: Instagram, link: "https://instagram.com/siser_ins17" },
-        { icon: Linkedin, link: "https://linkedin.com/in/siser" },
-        {icon: Github, link:"https://github.com/Siser-Pratap"},
-      ],
-    },
-  ]
+  
   
   return (
-    <section id="socials" ref={sectionRef} className="py-24 overflow-x-hidden">
+    <section id="socials"  className="py-24 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-slide-in-x">
           <h2 className="c text-2xl md:text-2xl font-bold mb-8">
             <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
               SOCIALS
