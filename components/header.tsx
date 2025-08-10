@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { Menu, X } from "lucide-react"
-import { ScrollSmoother } from "gsap/ScrollSmoother"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { navItems } from "@/constants/constant"
 
 
 const Header = () => {
@@ -15,19 +15,6 @@ const Header = () => {
   gsap.registerPlugin(ScrollTrigger);
   const [scroll, setScrolled] = useState(false);
   
-
-  const navItems = [
-    { name: "Home", href: "home" },
-    { name: "About", href: "about" },
-    { name: "Services", href: "services" },
-    { name: "Experience", href: "experience" },
-    { name: "Works", href: "works" },
-    { name: "Socials", href: "socials" },
-    { name: "Skills", href: "skills" },
-    { name: "Contact", href: "contact" },
-  ]
-
-
   useEffect(() => {
     const element = document.querySelector(".name");
     if (!element) return;
@@ -117,9 +104,7 @@ const Header = () => {
  
   useEffect(() => {
     if (!backRef.current) return
-
-    // Only create the timeline once
-    if (!menuTl.current) {
+  if (!menuTl.current) {
       menuTl.current = gsap.timeline({ paused: true })
         .from(backRef.current, {
           opacity: 0,

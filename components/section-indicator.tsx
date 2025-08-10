@@ -3,21 +3,11 @@
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { sections } from "@/constants/constant"
 
 const SectionIndicator = () => {
   const indicatorRef = useRef<HTMLDivElement>(null)
   const [activeSection, setActiveSection] = useState(0)
-
-  const sections = [
-    { id: "home" },
-    { id: "about" },
-    { id: "services" },
-    { id: "experience" },
-    { id: "works" },
-    { id: "socials" },
-    { id: "skills" },
-    { id: "contact" },
-  ]
 
   useEffect(() => {
     if (!indicatorRef.current) return

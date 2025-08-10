@@ -1,80 +1,23 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
 import { Calendar, MapPin } from "lucide-react"
+import { experiences } from "@/constants/constant"
 
 const Experience = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  const experiences = [
-    {
-      title: "FreeLancer",
-      company: "Self Employed",
-      location: "New Delhi, India",
-      period: "2023 - Present",
-      description:
-        "Leading development of scalable web applications using React, Node.js, and cloud technologies. Mentoring junior developers and architecting solutions for complex business requirements.",
-      technologies: ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "Next.js", "SpringBoot"],
-    },
-    {
-      title: "Software Development Intern",
-      company: "Synapsis Medical Technologies",
-      location: "Edmonton, Canada",
-      period: "February 2025 - April 2025",
-      description:
-        "Developed responsive web applications and collaborated with design teams to create pixel-perfect user interfaces. Improved application performance by 40%.",
-      technologies: ["React", "Vue.js", "SASS", "JavaScript", "Figma"],
-    },
-    {
-      title: "Web Development Intern",
-      company: "DC Infotech",
-      location: "Mumbai, India",
-      period: "Sept 2024 - November 2024",
-      description:
-        "Built and maintained web applications, participated in code reviews, and contributed to the development of the company's main product platform.",
-      technologies: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
-    },
-  ]
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-     
-      const tl = gsap.timeline();
-
-      tl.fromTo('.works', {
-        opacity:0, 
-        y:-50
-      }, {
-        opacity:1,
-        y:0,
-        scrollTrigger:{
-          trigger:'.works', 
-          start:'top 50%',
-        }
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   
-
-
-
   return (
-    <div id="experience" ref={sectionRef} className="h-full flex items-center justify-center p-8 overflow-x-hidden">
+    <div id="experience"  className="h-full flex items-center justify-center p-8 overflow-x-hidden">
       <div className="max-w-4xl mx-auto w-full">
-        <div className="text-center mb-16">
-          <h2 className="works text-3xl md:text-2xl font-bold mb-8">
-            <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
+        <div className="text-center animate-slide-in-x mb-16">
+          <h2 className="text-3xl md:text-2xl font-bold mb-8">
+            <span className="text-purple-600/75 opacity-100 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
               Experience
             </span>
           </h2>
         </div>
 
         <div className="relative">
-          {/* Timeline Line */}
+          
           <div className="timeline-line absolute left-8 top-0 w-0.5 h-full bg-gradient-to-b from-purple-600  to-purple-500/25"></div>
 
           <div className="space-y-12">

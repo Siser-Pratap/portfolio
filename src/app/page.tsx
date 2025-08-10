@@ -4,10 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-
-import CustomCursor from "@/components/custom-cursor";
-import Header from "@/components/header";
-import Hero from "@/components/hero";
 import WhatIDo from "@/components/what-i-do";
 import RecentWork from "@/components/recent-work";
 import Portfolio from "@/components/portfolio";
@@ -16,9 +12,9 @@ import Skills from "@/components/skills";
 import Loader from "@/components/loader";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
-import SectionIndicator from "@/components/section-indicator";
 import SectionWithStars from "@/components/sectionWrapper";
 import Experience from "@/components/experience";
+import TopSection from "@/components/topSection";
 
 // Register GSAP plugins once in the browser
 if (typeof window !== "undefined") {
@@ -127,10 +123,7 @@ export default function Home() {
   return (
     <div className="bg-black text-white overflow-hidden">
       <div ref={mainRef} className="page-content overflow-hidden">
-        <CustomCursor />
-        <SectionIndicator />
-        <Header />
-        <Hero />
+        <TopSection />
         <SectionWithStars className="z-12 bg-black">
           <WhatIDo />
           <RecentWork />
