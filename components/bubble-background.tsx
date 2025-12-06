@@ -113,9 +113,7 @@ const BubbleBackground = ({ className = "z-0" }: BubbleBackgroundProps) => {
           ref={el => {
             if (el) bubblesRef.current[index] = el;
           }}
-          className={`absolute w-16 h-16 rounded-full bg-gradient-to-br ${
-            bubbleColors[index % bubbleColors.length]
-          } backdrop-blur-sm border border-white/10`}
+          className={`absolute w-16 h-16 rounded-full bg-[#4204c7]/40 backdrop-blur-sm border border-white/10`}
           style={{
             maxWidth: '100vw',
             maxHeight: '100vh',

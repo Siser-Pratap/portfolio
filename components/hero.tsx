@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
-import BubbleBackground from "./bubble-background"
+import BubbleBackground from "./bubble-background-no"
 import {ScrollSmoother} from "gsap/ScrollSmoother"
 
 const Hero = () => {

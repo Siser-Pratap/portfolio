@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
+import BubbleBackground from "./bubble-background"
 
 interface LoaderProps {
   onLoadComplete: () => void
@@ -16,12 +17,7 @@ const Loader = ({ onLoadComplete }: LoaderProps) => {
   const [loadingText, setLoadingText] = useState("Loading")
 
   const loadingSteps = [
-    "Initializing...",
-    "Loading Assets...",
-    "Preparing Components...",
-    "Setting up Animations...",
-    "Almost Ready...",
-    "Welcome!",
+    ""
   ]
 
   useEffect(() => {
@@ -156,26 +152,28 @@ const Loader = ({ onLoadComplete }: LoaderProps) => {
     "from-violet-400/60 to-purple-600/40",
   ]
 
-  return (
-    <div ref={loaderRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden">
+  return (<>
+    <BubbleBackground className="z-11 " />
+    <div ref={loaderRef} className="min-h-screen w-[100vw] flex items-center inset-0 z-10 relative justify-center  pt-20 overflow-x-hidden">
       {/* Background Bubbles */}
-      <div className="absolute inset-0">
+      {/* <div className="absolute inset-0">
         {Array.from({ length: 12 }).map((_, index) => (
           <div
             key={index}
             ref={(el) => {
               if (el) bubblesRef.current[index] = el
             }}
-            className={`loader-bubble absolute w-16 h-16 rounded-full bg-gradient-to-br ${
-              bubbleColors[index % bubbleColors.length]
-            } backdrop-blur-sm border border-white/10`}
+            className={`loader-bubble absolute w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border border-white/10`}
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
           />
         ))}
-      </div>
+      </div> */}
+
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
 
       {/* Main Loader Content */}
       <div className="relative z-10 text-center">
@@ -223,6 +221,7 @@ const Loader = ({ onLoadComplete }: LoaderProps) => {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/80 pointer-events-none" />
     </div>
+    </>
   )
 }
 
