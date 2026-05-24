@@ -8,48 +8,50 @@ const Experience = () => {
   return (
     <div id="experience"  className="h-full flex items-center justify-center p-8 overflow-x-hidden">
       <div className="max-w-4xl mx-auto w-full">
-        <div className="text-center animate-slide-in-x mb-16">
-          <h2 className="text-3xl md:text-2xl font-bold mb-8">
-            <span className="text-purple-600/75 opacity-100 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
-              Experience
-            </span>
+        <div className="text-center animate-slide-in-y mb-20">
+          <span className="text-xs md:text-sm font-light tracking-[0.3em] uppercase text-white/40 mb-3 block">
+            MY JOURNEY
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent">
+            EXPERIENCE
           </h2>
         </div>
 
         <div className="relative">
-          
-          <div className="timeline-line absolute left-8 top-0 w-0.5 h-full bg-gradient-to-b from-purple-600  to-purple-500/25"></div>
+          <div className="timeline-line absolute left-8 top-0 w-[1px] h-full bg-gradient-to-b from-white/10 via-white/5 to-transparent"></div>
 
           <div className="space-y-12">
             {experiences.map((exp, index) => (
               <div key={index} className="timeline-item animate-slide-in-x relative pl-20">
                 {/* Timeline Dot */}
-                <div className="absolute left-6 top-6 w-4 h-4 bg-black rounded-full border-2 shadow-lg shadow-purple-600/75 border-purple-600"></div>
+                <div className="absolute left-7 top-7 w-3.5 h-3.5 bg-[#121212] rounded-full border-2 border-white/20 shadow-md"></div>
 
-                <div className="backdrop-blur-sm bg-black border border-purple-500/25 shadow-sm shadow-purple-600/75 rounded-2xl p-8 hover:bg-gradient-to-t from-purple-500/25 to-transparent transition-all duration-300">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                    <h3 className="text-2xl font-bold text-white mb-2 md:mb-0">{exp.title}</h3>
-                    <div className="flex items-center text-purple-600 text-sm">
-                      <Calendar className="w-4 h-4 mr-1" />
+                <div className="glass-card border-none p-8 relative overflow-hidden transition-all duration-300">
+                  <div className="glass-card-glow" />
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 relative z-10">
+                    <h3 className="text-xl md:text-2xl font-bold text-white/90 mb-2 md:mb-0">{exp.title}</h3>
+                    <div className="flex items-center text-white/40 text-xs tracking-wider uppercase font-mono">
+                      <Calendar className="w-3.5 h-3.5 mr-1.5 opacity-60" />
                       {exp.period}
                     </div>
                   </div>
 
-                  <div className="flex items-center flex-col md:gap-1 md:flex-row  text-white/70 mb-4">
-                    <span className="text-lg font-medium mr-4">{exp.company}</span>
-                    <div className="flex items-center text-sm">
-                      <MapPin className="w-4 h-4 mr-1" />
+                  <div className="flex items-center flex-col md:gap-2 md:flex-row text-white/50 mb-4 relative z-10 text-sm">
+                    <span className="font-semibold text-white/70">{exp.company}</span>
+                    <span className="hidden md:inline text-white/20">•</span>
+                    <div className="flex items-center text-xs text-white/40">
+                      <MapPin className="w-3.5 h-3.5 mr-1 opacity-60" />
                       {exp.location}
                     </div>
                   </div>
 
-                  <p className="text-white/60 mb-6 leading-relaxed">{exp.description}</p>
+                  <p className="text-white/40 mb-6 font-light leading-relaxed relative z-10 text-sm">{exp.description}</p>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 relative z-10">
                     {exp.technologies.map((tech, techIndex) => (
                       <span
                         key={techIndex}
-                        className="px-3 py-1 bg-black border-transparent shadow-lg shadow-purple-500/25 rounded-full text-white  text-sm"
+                        className="px-3 py-1 bg-white/[0.04] border border-white/[0.06] rounded-full text-white/60 text-xs font-mono"
                       >
                         {tech}
                       </span>

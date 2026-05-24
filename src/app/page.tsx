@@ -121,10 +121,10 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-black text-white overflow-hidden">
+    <div className="bg-[#121212] text-white overflow-hidden">
       <div ref={mainRef} className="page-content overflow-hidden">
         <TopSection />
-        <SectionWithStars className="z-12 bg-black">
+        <SectionWithStars className="z-12 bg-[#121212]/40">
           <WhatIDo />
           <RecentWork />
           <Experience />

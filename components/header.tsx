@@ -56,8 +56,8 @@ const Header = () => {
     if (!headerRef.current) return
 
     const ctx = gsap.context(() => {
-      gsap.set(".nav-item", { opacity: 0, y: -20 })
-      gsap.set(".nav", {opacity:0, y:-20})
+      gsap.set(".nav-item", { opacity: 0, y: -60 })
+      gsap.set(".nav", {opacity:0, y:-60})
 
       const tl = gsap.timeline();
 
@@ -143,7 +143,7 @@ const Header = () => {
   }, [isMenuOpen]);
 
   return (
-    <header ref={headerRef} className={`fixed overflow-x-hidden w-auto top-0 left-0 right-0 transition-all duration-300 z-40 p-6 ${scroll ? " bg-black py-2" : "bg-transparent py-4"}`}>
+    <header ref={headerRef} className={`fixed overflow-x-hidden w-auto top-0 left-0 right-0 transition-all duration-300 z-40 p-6 ${scroll ? "bg-[#121212]/80 backdrop-blur-md border-b border-white/[0.06] py-2" : "bg-transparent py-4"}`}>
       <div className="max-w-7xl mx-auto ">
         <div className=" color  rounded-2xl px-6 py-4 ">
           <div className="flex items-center justify-between gap-[32px]">
@@ -176,7 +176,7 @@ const Header = () => {
           </div>
 
           { isMenuOpen && 
-          <div ref={backRef} className="back overflow-x-hidden w-full h-[80vh]  overflow-y-hidden rounded-sm relative bg-black border border-purple-500/25  mt-10 mr-10">
+          <div ref={backRef} className="back overflow-x-hidden w-full h-[80vh]  overflow-y-hidden rounded-sm relative bg-[#121212]/95 border border-white/[0.08] backdrop-blur-md mt-10 mr-10">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
             <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
             <div className='flex items-center back-nav justify-center gap-[20px]  h-full w-full flex-col'>

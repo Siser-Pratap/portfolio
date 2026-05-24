@@ -1,62 +1,84 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
 
 const CustomCursor = () => {
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const followerRef = useRef<HTMLDivElement>(null)
+  const dotRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const cursor = cursorRef.current
-    const follower = followerRef.current
+    const dot = dotRef.current
+    const ring = ringRef.current
+    if (!dot || !ring) return
 
-    if (!cursor || !follower) return
+    // Position variables
+    const mouse = { x: 0, y: 0 } // current mouse position
+    const ringPos = { x: 0, y: 0 } // lerped ring position
 
-    const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-        ease: "power2.out",
-      })
+    // Handle mouse movement
+    const onMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX
+      mouse.y = e.clientY
 
-      gsap.to(follower, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      // Move inner dot instantly
+      dot.style.transform = `translate3d(${mouse.x}px, ${mouse.y}px, 0) translate(-50%, -50%)`
     }
 
+    // Animation loop (LERP)
+    const render = () => {
+      const LERP = 0.10
+      ringPos.x += (mouse.x - ringPos.x) * LERP
+      ringPos.y += (mouse.y - ringPos.y) * LERP
+
+      // Move lagging outer ring
+      ring.style.transform = `translate3d(${ringPos.x}px, ${ringPos.y}px, 0) translate(-50%, -50%)`
+
+      requestAnimationFrame(render)
+    }
+
+    window.addEventListener("mousemove", onMouseMove)
+    const animationFrameId = requestAnimationFrame(render)
+
+    // Expand hover effects
     const handleMouseEnter = () => {
-      gsap.to([cursor, follower], {
-        scale: 1.5,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      ring.classList.add("cursor-expand")
     }
 
     const handleMouseLeave = () => {
-      gsap.to([cursor, follower], {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
+      ring.classList.remove("cursor-expand")
+    }
+
+    // Manage listeners for interactive elements
+    const attachListeners = (elements: NodeListOf<Element>) => {
+      elements.forEach(el => {
+        el.removeEventListener("mouseenter", handleMouseEnter)
+        el.removeEventListener("mouseleave", handleMouseLeave)
+        el.addEventListener("mouseenter", handleMouseEnter)
+        el.addEventListener("mouseleave", handleMouseLeave)
       })
     }
 
-    document.addEventListener("mousemove", moveCursor)
+    const updateHoverElements = () => {
+      const elements = document.querySelectorAll("a, button, .interactive, [data-cursor-hover]")
+      attachListeners(elements)
+    }
 
-    // Add hover effects to interactive elements
-    const interactiveElements = document.querySelectorAll("a, button, .interactive")
-    interactiveElements.forEach((el) => {
-      el.addEventListener("mouseenter", handleMouseEnter)
-      el.addEventListener("mouseleave", handleMouseLeave)
+    updateHoverElements()
+
+    // Observe DOM changes to dynamically attach to new elements
+    const observer = new MutationObserver(() => {
+      updateHoverElements()
     })
 
+    observer.observe(document.body, { childList: true, subtree: true })
+
     return () => {
-      document.removeEventListener("mousemove", moveCursor)
-      interactiveElements.forEach((el) => {
+      window.removeEventListener("mousemove", onMouseMove)
+      cancelAnimationFrame(animationFrameId)
+      observer.disconnect()
+
+      const elements = document.querySelectorAll("a, button, .interactive, [data-cursor-hover]")
+      elements.forEach(el => {
         el.removeEventListener("mouseenter", handleMouseEnter)
         el.removeEventListener("mouseleave", handleMouseLeave)
       })
@@ -65,16 +87,8 @@ const CustomCursor = () => {
 
   return (
     <>
-      <div
-        ref={cursorRef}
-        className="fixed top-0 left-0 w-4 h-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full pointer-events-none z-50 mix-blend-difference"
-        style={{ transform: "translate(-50%, -50%)" }}
-      />
-      <div
-        ref={followerRef}
-        className="fixed top-0 left-0 w-8 h-8 border border-purple-500/50 rounded-full pointer-events-none z-50 backdrop-blur-sm bg-gradient-to-r from-cyan-500/10 to-purple-500/10"
-        style={{ transform: "translate(-50%, -50%)" }}
-      />
+      <div ref={dotRef} className="custom-cursor-dot" />
+      <div ref={ringRef} className="custom-cursor-ring" />
     </>
   )
 }

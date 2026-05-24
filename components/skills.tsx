@@ -13,33 +13,31 @@ const Skills = () => {
  
 
   return (
-    <section  id="skills" className="py-24 overflow-x-hidden">
-    <div className="max-w-7xl mx-auto px-6">
-      <div className="text-center mb-16">
-          <h2 className=" animate-slide-in-y text-2xl md:text-2xl font-bold mb-8">
-            <span  className="text-purple-600/75 section-title hover:text-white/80 rounded-full px-6 py-4 shadow-lg shadow-purple-500/25">
-              SKILLS.
-            </span>
+    <section id="skills" className="py-32 bg-transparent overflow-x-hidden relative">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-20 animate-slide-in-y">
+          <span className="text-xs md:text-sm font-light tracking-[0.3em] uppercase text-white/40 mb-3 block">
+            KNOWLEDGE BASE
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent">
+            SKILLS
           </h2>
         </div>
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-12">
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {skills.map((skill, index) => (
-            <div key={index} className=" animate-slide-in-x px-4 hover:scale-105 shadow-2xl md:shadow-lg shadow-purple-500/25 bg-black md:hover:bg-gradient-to-t from-purple-500 to-transparent">
-             <Card >
-                 <div className="flex h-[30vh] w-[20vw] shadow-none border-transparent md:shadow-md  md:shadow-purple-500/25 md:border md:border-purple-600/75 justify-between items-center mb-3 text-center p-8 bg-black">
-                    <span className="text-lg font-medium text-white text-center">{skill.name}</span>
-                </div>
-              </Card>
-              
-            </div>
+            <Card
+              key={index}
+              className="animate-slide-in-x glass-card border-none p-6 text-center hover:scale-105 transition-all duration-300 group interactive relative overflow-hidden flex flex-col justify-center items-center h-28"
+            >
+              <div className="glass-card-glow" />
+              <span className="text-sm md:text-base font-medium text-white/80 group-hover:text-white relative z-10 font-mono tracking-wide uppercase">
+                {skill.name}
+              </span>
+            </Card>
           ))}
         </div>
       </div>
-    </div>
-     
-
-
     </section>
   )
 }
