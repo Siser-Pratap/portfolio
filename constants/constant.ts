@@ -148,3 +148,25 @@ export const teamMembers = [
   { name: "Tailwind CSS", level: 90 },
   { name: "REST API", level: 90 },
 ]
+export const testimonials = [
+  {
+    quote: "Design direction that brings clarity and depth. It's not just about visuals—it's about crafting experiences that linger long after the first impression",
+    author: "Sophiea Dee",
+    role: "Product Lead, Next-p",
+    image: "/photo.jpg",
+  },
+  {
+    quote: "Working with Siser transformed our digital presence. Highly professional, creative, and always exceeds expectations.",
+    author: "Michael Chen",
+    role: "Founder",
+    company: "StartUp Co.",
+    image: "/photo.jpg",
+  },
+  {
+    quote: "A true digital innovator. Siser's work is not just functional but also beautifully designed. Highly recommend!",
+    author: "Emma Williams",
+    role: "CEO",
+    company: "Design Studio",
+    image: "/photo.jpg",
+  },
+]
