@@ -9,6 +9,7 @@ import Services from "@/components/reconstructed/Services";
 import Experience from "@/components/reconstructed/Experience";
 import Skills from "@/components/reconstructed/Skills";
 import Projects from "@/components/reconstructed/Projects";
+import GitHubActivity from "@/components/reconstructed/GitHubActivity";
 import FeatureBanner from "@/components/reconstructed/FeatureBanner";
 import Testimonials from "@/components/reconstructed/Testimonials";
 import Blogs from "@/components/reconstructed/Blogs";
@@ -32,6 +33,7 @@ export default function Home() {
         <Experience />
         <Skills />
         <Projects />
+        <GitHubActivity />
         <FeatureBanner />
         <Testimonials />
         <Blogs />

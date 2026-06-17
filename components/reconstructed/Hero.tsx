@@ -5,22 +5,22 @@ import Image from "next/image"
 const Hero = () => {
   return (
     <section className="relative w-full h-[100vh] min-h-[800px] flex items-center justify-center bg-[#0D0505] overflow-hidden pt-20">
+
       {/* Red/Orange Circle Backdrop */}
       <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vh] h-[55vh] md:w-[65vh] md:h-[65vh] rounded-full bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] z-0 blur-[2px]"></div>
 
       {/* Portrait */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[75%] z-10 flex items-end justify-center pointer-events-none">
-        {/* Using the user's photo.jpg */}
-        <Image 
-          src="/photo.jpg" 
-          alt="Siser Pratap" 
-          width={800} 
-          height={1000} 
-          className="object-cover h-full w-auto object-bottom rounded-t-[400px]" 
+        <Image
+          src="/photo.jpg"
+          alt="Siser Pratap"
+          width={800}
+          height={1000}
+          sizes="(max-width: 768px) 100vw, 800px"
+          className="object-cover h-full w-auto object-bottom rounded-t-[400px]"
           priority
         />
-        {/* Bottom fade to blend with background if it's not a cutout */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0D0505] to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0D0505] to-transparent" />
       </div>
 
       <div className="relative z-20 w-full max-w-[1400px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center h-full pb-32">
@@ -31,9 +31,9 @@ const Hero = () => {
             CREATIVE<br />DEVELOPER
           </h1>
         </div>
-        
+
         {/* Right Info */}
-        <div className="w-full md:w-1/3 flex flex-col items-start md:items-end text-left md:text-left mt-auto md:mt-0 md:pt-40 pointer-events-auto">
+        <div className="w-full md:w-1/3 flex flex-col items-start md:items-end text-left mt-auto md:mt-0 md:pt-40 pointer-events-auto">
           <p className="text-white/90 text-[16px] leading-[1.8] mb-6 text-left max-w-[320px] font-medium drop-shadow-lg">
             Portfolio of Siser Pratap — Software innovator crafting digital experiences with bold simplicity.
           </p>

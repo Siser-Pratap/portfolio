@@ -29,6 +29,7 @@ const About = () => {
               src="/photo.jpg"
               alt="About Siser"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover z-10 mix-blend-luminosity opacity-90"
             />
           </motion.div>

@@ -8,11 +8,12 @@ const FeatureBanner = () => {
       
       {/* Portrait in background */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[80%] z-0 flex items-end justify-center mix-blend-luminosity opacity-80 pointer-events-none">
-        <Image 
-          src="/photo.jpg" 
-          alt="Designing with Purpose" 
-          width={600} 
-          height={800} 
+        <Image
+          src="/photo.jpg"
+          alt="Designing with Purpose"
+          width={600}
+          height={800}
+          sizes="(max-width: 768px) 100vw, 600px"
           className="object-cover h-full w-auto object-bottom"
         />
         {/* Dark overlay at bottom */}
@@ -28,12 +29,17 @@ const FeatureBanner = () => {
           From research to high-fidelity prototypes, I craft experiences that delight users and drive results. My work blends creativity, usability, and strategy.
         </p>
 
-        <button className="bg-white text-[#0D0505] px-6 py-3 rounded-full text-sm font-bold flex items-center gap-4 hover:scale-105 transition-transform shadow-2xl">
+        <a
+          href="https://calendly.com/siserpratap"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-white text-[#0D0505] px-6 py-3 rounded-full text-sm font-bold flex items-center gap-4 hover:scale-105 transition-transform shadow-2xl"
+        >
           Schedule a Free Call
           <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-8 h-8 rounded-full text-white flex items-center justify-center text-sm">
             ↗
           </span>
-        </button>
+        </a>
       </div>
 
     </section>

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/siserpratap/Personal/portfolio/src/app/blog/\\\\[slug\\\\])"
+    ],
+    "additionalDirectories": [
+      "/Users/siserpratap/Personal/portfolio/src/app/blog"
+    ]
+  }
+}
