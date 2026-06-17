@@ -2,7 +2,9 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
 import { SETTINGS } from "@/constants/settings"
+import { portfolioItems } from "@/constants/constant"
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -11,7 +13,47 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const, delay },
 })
 
+function timeAgo(iso: string): string {
+  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
+  if (s < 60) return "just now"
+  const m = Math.floor(s / 60)
+  if (m < 60) return `${m}m ago`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}h ago`
+  const d = Math.floor(h / 24)
+  return d === 1 ? "1d ago" : `${d}d ago`
+}
+
 const About = () => {
+  const [currentBuild, setCurrentBuild] = useState<{ name: string; time: string } | null>(null)
+
+  useEffect(() => {
+    const repos = portfolioItems.map((p) => ({
+      name: p.title,
+      slug: p.githubUrl.split("/").pop() ?? "",
+    }))
+
+    Promise.allSettled(
+      repos.map(({ slug, name }) =>
+        fetch(`/api/github-commit?repo=${encodeURIComponent(slug)}`)
+          .then((r) => r.json())
+          .then((d) => ({ name, date: d.date as string | null }))
+      )
+    ).then((results) => {
+      const valid = results
+        .filter(
+          (r): r is PromiseFulfilledResult<{ name: string; date: string }> =>
+            r.status === "fulfilled" && !!r.value.date
+        )
+        .map((r) => r.value)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+      if (valid[0]) {
+        setCurrentBuild({ name: valid[0].name, time: timeAgo(valid[0].date) })
+      }
+    })
+  }, [])
+
   return (
     <section id="about" className="w-full bg-[#F7F7F7] py-[120px]">
       <div className="max-w-[1400px] mx-auto px-10">
@@ -59,9 +101,24 @@ const About = () => {
               <span className="px-6 py-2 rounded-full bg-[#0D0505] text-white text-xs font-semibold tracking-wide">
                 Working worldwide
               </span>
-              <span className="px-6 py-2 rounded-full bg-[#0D0505] text-white text-xs font-semibold tracking-wide">
-                Available Now
-              </span>
+
+              {/* Live "currently building" — replaces static "Available Now" */}
+              {currentBuild ? (
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="px-6 py-2 rounded-full bg-[#0D0505] text-white text-xs font-semibold tracking-wide flex items-center gap-2"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
+                  {currentBuild.name} · {currentBuild.time}
+                </motion.span>
+              ) : (
+                <span className="px-6 py-2 rounded-full bg-[#0D0505] text-white text-xs font-semibold tracking-wide flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400/40 shrink-0" />
+                  Available Now
+                </span>
+              )}
             </motion.div>
 
             <motion.div {...fadeUp(0.22)} className="flex items-center gap-3 mb-16 flex-wrap">

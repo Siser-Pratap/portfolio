@@ -54,7 +54,7 @@ const GitHubActivity = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {portfolioItems.map((project, index) => (
             <motion.a
-              key={project.slug ?? index}
+              key={project.githubUrl ?? index}
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
