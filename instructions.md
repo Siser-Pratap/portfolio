@@ -84,12 +84,72 @@ The active page lives in `src/app/page.tsx` and uses the `/components/reconstruc
 ### Phase 4 — Advanced & Nice-to-Have
 *Goal: Memorable, technically impressive details.*
 
-- [ ] **Three.js accent** — Use the existing `scene.gltf` model (planet/globe) as a background element in the hero or feature banner.
-- [ ] **Blog with MDX** — Set up `next-mdx-remote` or a simple MDX page route to publish real writing.
-- [ ] **Dark/light mode toggle** — `next-themes` is installed; wire up a toggle in the header.
-- [ ] **OG image / SEO** — Add `opengraph-image.tsx` using Next.js App Router conventions. Update metadata with real description and keywords.
-- [ ] **Performance audit** — Run Lighthouse; optimize images with Next.js `<Image>` sizes prop, add `loading="lazy"` where appropriate.
-- [ ] **GitHub activity widget** — Embed a live contribution graph or latest repo cards as a social proof element.
+- [x] **Three.js accent** — Used the existing `scene.gltf` planet model in the hero. Reverted to original orange circle on request — `HeroModel.tsx` kept for future use.
+- [x] **Blog with real pages** — 3 posts in `src/data/blogPosts.ts`, static routes at `/blog/[slug]`. Blog section links to them.
+- [x] **OG image / SEO** — `src/app/opengraph-image.tsx` (edge runtime, 1200×630). Full `openGraph`, `twitter`, `keywords`, and `metadataBase` in layout.
+- [x] **Performance** — Removed `images: { unoptimized: true }`, enabled AVIF + WebP. Added `sizes` prop to all critical images.
+- [x] **GitHub activity widget** — `GitHubActivity.tsx` with live contribution graph (ghchart.rshah.org) and repo cards from portfolio data.
+- [ ] **Dark/light mode toggle** — `next-themes` is installed. Skipped — requires rethinking all hardcoded section background colors (`#F7F7F7`, `#FFFFFF`, `#0D0505`). Worth a dedicated refactor pass.
+
+---
+
+### Phase 5 — AI Assistant (Portfolio Differentiator)
+*Goal: Let visitors talk to your portfolio. Proves AI capability in the most direct way possible.*
+
+The single highest-impact addition. An embedded chat widget powered by the Anthropic Claude API that knows everything about you — built from your `constant.ts` data. A recruiter or client types "Does Siser know WebSockets?" and gets a real answer in seconds. It runs 24/7 and proves you can ship AI, not just list it.
+
+- [ ] **System prompt** — Build a rich context string from `experiences`, `skills`, `portfolioItems`, and `teamMembers` in `constant.ts`. Include availability, location, tech stack, and project outcomes.
+- [ ] **API route** — `src/app/api/chat/route.ts` using `@anthropic-ai/sdk` with streaming (`stream: true`). Edge runtime for low latency.
+- [ ] **Chat UI** — Slide-up drawer (Framer Motion) triggered by a floating button fixed to the bottom-right. Matches the portfolio's dark `#0D0505` + orange accent design. Shows streaming tokens in real time.
+- [ ] **Suggested prompts** — On open, show 4 quick-tap suggestions: "What's Siser's strongest skill?", "Tell me about IntelAI", "Is he available for freelance?", "What does he charge?"
+- [ ] **Rate limiting** — Simple in-memory or Upstash Redis rate limit on the API route (5 messages per IP per hour) to prevent abuse.
+- [ ] **Add to `ANTHROPIC_API_KEY` in `.env.local`** — Document in `instructions.md`.
+
+---
+
+### Phase 6 — Terminal Mode
+*Goal: The thing people screenshot and share. Signals developer personality and systems thinking.*
+
+Press `/` or `T` anywhere on the page to toggle a full-screen terminal overlay. Visitors type real commands to navigate your portfolio. No other portfolio in your category has this.
+
+- [ ] **Command engine** — Client-side command parser. Core commands: `help`, `about`, `projects`, `skills`, `experience`, `contact`, `hire`, `clear`, `exit`.
+- [ ] **Output rendering** — ASCII-styled output with your brand colors. `projects` lists items with index numbers. `projects 2` shows IntelAI detail. `skills frontend` filters by category.
+- [ ] **Typewriter effect** — Commands and output use a typewriter animation to feel authentic. Built with a simple character-by-character interval, not a library.
+- [ ] **Keyboard trigger** — Global `keydown` listener for `/`. ESC or `exit` command closes the overlay.
+- [ ] **Easter eggs** — `sudo hire siser` outputs `Permission granted. Redirecting to Calendly...` and opens the booking link. `npm install siser-pratap` prints a fake install log.
+- [ ] **Terminal UI** — Fixed overlay with a blinking cursor, command history (↑ to recall), and a fake prompt `siser@portfolio:~$`.
+
+---
+
+### Phase 7 — Live Project Health Indicators
+*Goal: Show that what you ship, stays alive. Passive proof of DevOps awareness.*
+
+- [ ] **Uptime dots** — Each project card in the Projects section gets a small green/amber dot. Client-side `fetch` to each live URL on mount. Green = 200, amber = slow/degraded, grey = unreachable.
+- [ ] **Last deploy badge** — Pull last deployment timestamp from Vercel API (`/v6/deployments?projectName=X`) for each project. Display "Deployed 3 days ago" below the tech stack.
+- [ ] **Last commit** — GitHub API `GET /repos/Siser-Pratap/{repo}/commits?per_page=1` for each project. Display relative time ("last commit 5 days ago").
+- [ ] **"Currently building" strip** — A single live line in the hero or footer: "Currently building: [repo name] · last commit Xh ago" pulled from GitHub activity API. Replaces the static "Available Now" badge.
+
+---
+
+### Phase 8 — Code Quality Showcase
+*Goal: Let your actual code speak. The thing that matters most to a technical hiring manager.*
+
+Most portfolios show project screenshots. None show the code. This section does both.
+
+- [ ] **"How I build" section** — 2–3 code snippets from your best work with syntax highlighting (`shiki` or `prism`). Each annotated with a one-liner explaining the *why*, not the what.
+- [ ] **Snippet selection** — Candidates: the `useCallState` hook from MeetPro, the streaming handler from IntelAI, the Nodemailer API route from this portfolio, a NestJS guard or Spring Boot controller from your backend work.
+- [ ] **Design** — Dark card (`#0D0505`) with a macOS-style window chrome (3 dots), language label, line numbers. Tab switching between 2–3 snippets.
+- [ ] **Copy button** — One-click copy with a brief "Copied!" confirmation. Small detail, high signal.
+
+---
+
+### Phase 9 — Interactive Skill Graph
+*Goal: Replace progress bars with something that demonstrates frontend depth and shows how your skills interconnect.*
+
+- [ ] **Graph data** — Define nodes (skills) and edges (relationships) in `constant.ts`. Example: React → Next.js, Node.js → Express → NestJS, TypeScript → React + Node.js, Three.js → React.
+- [ ] **Renderer** — D3.js force-directed graph or a lightweight vis.js network. Nodes sized by proficiency level. Hover shows proficiency %. Click filters to related skills.
+- [ ] **Design** — Dark section. Nodes styled as small glowing circles in the brand orange-red. Edges as thin white lines with low opacity. Smooth physics simulation.
+- [ ] **Fallback** — If JS is disabled or the graph fails to render, fall back to the existing progress bar grid.
 
 ---
 
