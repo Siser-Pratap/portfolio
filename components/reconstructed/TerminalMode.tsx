@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { experiences, skills, portfolioItems } from "@/constants/constant"
+import { SETTINGS } from "@/constants/settings"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -77,7 +78,7 @@ function runCommand(raw: string): CommandResult {
         L("SISER PRATAP", "header"),
         L("─────────────────────────────────────────────", "dim"),
         L("  Full Stack Developer", "white"),
-        L("  New Delhi, India · Available worldwide", "dim"),
+        L(`  ${SETTINGS.location} · Available worldwide`, "dim"),
         blank(),
         L("  Building scalable web apps from DB schema to deployed product.", "white"),
         L("  Strong bias toward simplicity and shipping fast.", "white"),
@@ -191,7 +192,8 @@ function runCommand(raw: string): CommandResult {
         blank(),
         L("CONTACT", "header"),
         L("─────────────────────────────────────────────", "dim"),
-        L("  Email      siserinsevoc@gmail.com", "white"),
+        L(`  Email      ${SETTINGS.email}`, "white"),
+        L(`  Phone      ${SETTINGS.phone}`, "white"),
         L("  LinkedIn   linkedin.com/in/siser", "white"),
         L("  GitHub     github.com/Siser-Pratap", "white"),
         L("  Twitter    @PratapSiser", "white"),
@@ -208,11 +210,11 @@ function runCommand(raw: string): CommandResult {
     return {
       lines: [
         blank(),
-        L("  Opening calendly.com/siserpratap…", "success"),
+        L(`  Opening ${SETTINGS.calendlyUrl}…`, "success"),
         L("  → Redirecting to booking page", "dim"),
         blank(),
       ],
-      action: () => window.open("https://calendly.com/siserpratap", "_blank"),
+      action: () => window.open(SETTINGS.calendlyUrl, "_blank"),
     }
   }
 
@@ -233,10 +235,10 @@ function runCommand(raw: string): CommandResult {
         L("  [sudo] password for visitor: ········", "dim"),
         L("  Verifying credentials…", "dim"),
         L("  Permission granted. ✓", "success"),
-        L("  Redirecting to calendly.com/siserpratap…", "success"),
+        L(`  Redirecting to ${SETTINGS.calendlyUrl}…`, "success"),
         blank(),
       ],
-      action: () => setTimeout(() => window.open("https://calendly.com/siserpratap", "_blank"), 1400),
+      action: () => setTimeout(() => window.open(SETTINGS.calendlyUrl, "_blank"), 1400),
     }
   }
 
@@ -279,10 +281,10 @@ function runCommand(raw: string): CommandResult {
     return {
       lines: [
         blank(),
-        L("  siserinsevoc@gmail.com", "white"),
+        L(`  ${SETTINGS.email}`, "white"),
         L("  linkedin.com/in/siser", "white"),
         L("  github.com/Siser-Pratap", "white"),
-        L("  calendly.com/siserpratap", "white"),
+        L(`  ${SETTINGS.calendlyUrl}`, "white"),
         blank(),
       ],
     }
@@ -327,7 +329,7 @@ const WELCOME: Line[] = [
   L("│     SISER.PORTFOLIO / TERMINAL  v1.0.0      │", "accent"),
   L("└─────────────────────────────────────────────┘", "dim"),
   blank(),
-  L("  Full Stack Developer · New Delhi, India", "white"),
+  L(`  Full Stack Developer · ${SETTINGS.location}`, "white"),
   L("  Type 'help' to see all commands.", "dim"),
   blank(),
 ]
@@ -389,8 +391,9 @@ export default function TerminalMode() {
         action?.()
         return
       }
-      setLines((prev) => [...prev, newLines[i]])
+      const line = newLines[i]
       i++
+      setLines((prev) => [...prev, line])
       setTimeout(next, 32)
     }
     next()
@@ -413,7 +416,7 @@ export default function TerminalMode() {
     setInput("")
 
     // Handle clear / exit separately
-    if (raw === "clear") { setLines([]); return }
+    if (raw === "clear") { setLines([...WELCOME]); return }
     if (raw === "exit")  { setOpen(false); return }
 
     const result = runCommand(raw)
@@ -483,7 +486,7 @@ export default function TerminalMode() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[60] bg-[#050202]/98 backdrop-blur-md flex flex-col font-mono text-sm"
+            className="fixed inset-0 z-[60] bg-[#050202] flex flex-col font-mono text-sm"
           >
             {/* Window chrome */}
             <div className="flex items-center gap-2 px-5 py-4 border-b border-white/[0.06] shrink-0">
