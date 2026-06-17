@@ -7,7 +7,7 @@ import ClientLogos from "@/components/reconstructed/ClientLogos";
 import About from "@/components/reconstructed/About";
 import Services from "@/components/reconstructed/Services";
 import Experience from "@/components/reconstructed/Experience";
-import Skills from "@/components/reconstructed/Skills";
+import SkillGraph from "@/components/reconstructed/SkillGraph";
 import Projects from "@/components/reconstructed/Projects";
 import GitHubActivity from "@/components/reconstructed/GitHubActivity";
 import FeatureBanner from "@/components/reconstructed/FeatureBanner";
@@ -36,7 +36,7 @@ export default function Home() {
         <About />
         <Services />
         <Experience />
-        <Skills />
+        <SkillGraph />
         <Projects />
         <GitHubActivity />
         <CodeShowcase />
