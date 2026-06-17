@@ -18,6 +18,7 @@ import Footer from "@/components/reconstructed/Footer";
 import Loader from "@/components/reconstructed/Loader";
 import ChatAssistant from "@/components/reconstructed/ChatAssistant";
 import TerminalMode from "@/components/reconstructed/TerminalMode";
+import CodeShowcase from "@/components/reconstructed/CodeShowcase";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +39,7 @@ export default function Home() {
         <Skills />
         <Projects />
         <GitHubActivity />
+        <CodeShowcase />
         <FeatureBanner />
         <Testimonials />
         <Blogs />
