@@ -1,27 +1,58 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Experience", href: "#experience" },
-  { label: "Works", href: "#works" },
-  { label: "Skills", href: "#skills" },
-  { label: "Blogs", href: "#blogs" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "#about", id: "about" },
+  { label: "Services", href: "#services", id: "services" },
+  { label: "Experience", href: "#experience", id: "experience" },
+  { label: "Works", href: "#works", id: "works" },
+  { label: "Skills", href: "#skills", id: "skills" },
+  { label: "Blogs", href: "#blogs", id: "blogs" },
+  { label: "Contact", href: "#contact", id: "contact" },
 ]
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState("")
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 80)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = []
+
+    navLinks.forEach(({ id }) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id) },
+        { threshold: 0.25, rootMargin: "-80px 0px -50% 0px" }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+
+    return () => observers.forEach((obs) => obs.disconnect())
+  }, [])
 
   const closeMenu = () => setMenuOpen(false)
 
   return (
     <>
-      <header className="absolute top-0 left-0 w-full z-50 py-8 px-10">
+      <header
+        className={`fixed top-0 left-0 w-full z-50 px-10 transition-all duration-500 ${
+          scrolled
+            ? "py-4 bg-[#0D0505]/85 backdrop-blur-xl border-b border-white/10"
+            : "py-8 bg-transparent"
+        }`}
+      >
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-white text-2xl font-bold italic tracking-tight">
@@ -29,10 +60,21 @@ const Header = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 text-white/80 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.slice(0, 4).map((link) => (
-              <Link key={link.href} href={link.href} className="hover:text-white transition-colors">
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`transition-colors ${
+                  activeSection === link.id
+                    ? "text-white"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
                 {link.label}
+                {activeSection === link.id && (
+                  <span className="block h-[2px] w-full bg-gradient-to-r from-[#FF4B1F] to-[#FF6A21] rounded-full mt-0.5" />
+                )}
               </Link>
             ))}
           </nav>
@@ -49,33 +91,21 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Hamburger — mobile only */}
+            {/* Hamburger */}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10"
               aria-label="Toggle menu"
             >
-              <span
-                className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${
-                  menuOpen ? "w-6 rotate-45 translate-y-[7px]" : "w-6"
-                }`}
-              />
-              <span
-                className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${
-                  menuOpen ? "opacity-0 w-4" : "w-4"
-                }`}
-              />
-              <span
-                className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${
-                  menuOpen ? "w-6 -rotate-45 -translate-y-[7px]" : "w-6"
-                }`}
-              />
+              <span className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "w-6 rotate-45 translate-y-[7px]" : "w-6"}`} />
+              <span className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 w-4" : "w-4"}`} />
+              <span className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "w-6 -rotate-45 -translate-y-[7px]" : "w-6"}`} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Overlay Menu */}
+      {/* Mobile Overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -97,7 +127,9 @@ const Header = () => {
                   <Link
                     href={link.href}
                     onClick={closeMenu}
-                    className="text-white text-[clamp(32px,8vw,56px)] font-[700] tracking-tight leading-none hover:text-[#FF4B1F] transition-colors"
+                    className={`text-[clamp(32px,8vw,56px)] font-[700] tracking-tight leading-none transition-colors ${
+                      activeSection === link.id ? "text-[#FF4B1F]" : "text-white hover:text-[#FF4B1F]"
+                    }`}
                   >
                     {link.label}
                   </Link>
@@ -117,9 +149,7 @@ const Header = () => {
                 className="flex bg-white text-black px-6 py-3 rounded-full text-sm font-semibold items-center gap-3 hover:bg-gray-100 transition-colors"
               >
                 Get in touch
-                <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-7 h-7 rounded-full text-white flex items-center justify-center text-xs">
-                  ↗
-                </span>
+                <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-7 h-7 rounded-full text-white flex items-center justify-center text-xs">↗</span>
               </Link>
             </motion.div>
           </motion.div>
