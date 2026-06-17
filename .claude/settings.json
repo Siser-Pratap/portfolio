@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir -p /Users/siserpratap/Personal/portfolio/src/app/blog/\\\\[slug\\\\])"
+      "Bash(mkdir -p /Users/siserpratap/Personal/portfolio/src/app/blog/\\\\[slug\\\\])",
+      "Bash(lsof -ti:3000)",
+      "Bash(curl -s -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"role\":\"user\",\"content\":\"What is Siser strongest skill?\"}]}' --max-time 15)"
     ],
     "additionalDirectories": [
       "/Users/siserpratap/Personal/portfolio/src/app/blog"

@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { SETTINGS } from "@/constants/settings"
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -63,20 +64,34 @@ const About = () => {
               </span>
             </motion.div>
 
-            {/* TODO: Add your resume PDF to /public/resume.pdf to activate this button */}
-            <motion.a
-              {...fadeUp(0.22)}
-              href="/resume.pdf"
-              download
-              className="flex items-center gap-3 w-fit mb-16 group"
-            >
-              <div className="bg-[#0D0505] text-white px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-3 hover:bg-[#FF4B1F] transition-colors">
-                Download Resume
-                <span className="bg-white/10 group-hover:bg-white/20 w-7 h-7 rounded-full flex items-center justify-center text-sm transition-colors">
-                  ↓
-                </span>
-              </div>
-            </motion.a>
+            <motion.div {...fadeUp(0.22)} className="flex items-center gap-3 mb-16 flex-wrap">
+              <a
+                href={SETTINGS.resumeViewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3"
+              >
+                <div className="bg-[#0D0505] text-white px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-3 hover:bg-[#FF4B1F] transition-colors">
+                  View Resume
+                  <span className="bg-white/10 group-hover:bg-white/20 w-7 h-7 rounded-full flex items-center justify-center text-sm transition-colors">
+                    ↗
+                  </span>
+                </div>
+              </a>
+              <a
+                href={SETTINGS.resumeDownloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3"
+              >
+                <div className="border border-[#0D0505] text-[#0D0505] px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-3 hover:bg-[#0D0505] hover:text-white transition-colors">
+                  Download
+                  <span className="w-7 h-7 rounded-full border border-current flex items-center justify-center text-sm transition-colors">
+                    ↓
+                  </span>
+                </div>
+              </a>
+            </motion.div>
 
             {/* Stats */}
             <motion.div

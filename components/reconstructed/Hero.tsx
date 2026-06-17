@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { SETTINGS } from "@/constants/settings"
 
 const Hero = () => {
   return (
@@ -38,7 +39,7 @@ const Hero = () => {
             Portfolio of Siser Pratap — Software innovator crafting digital experiences with bold simplicity.
           </p>
           <a
-            href="https://calendly.com/siserpratap"
+            href={SETTINGS.calendlyUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex bg-white rounded-full p-2 pl-6 items-center w-full max-w-[320px] justify-between cursor-pointer hover:scale-[1.02] transition-transform shadow-2xl"
