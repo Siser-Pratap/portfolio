@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import { useTheme } from "next-themes"
 
 const navLinks = [
   { label: "About", href: "#about", id: "about" },
@@ -18,6 +19,10 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("")
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
+
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80)
@@ -55,7 +60,12 @@ const Header = () => {
       >
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-white text-2xl font-bold italic tracking-tight">
+          <Link
+            href="/"
+            className={`text-2xl font-bold italic tracking-tight transition-colors ${
+              scrolled ? "text-white" : "text-[#0D0505] dark:text-white"
+            }`}
+          >
             Siser.
           </Link>
 
@@ -67,8 +77,8 @@ const Header = () => {
                 href={link.href}
                 className={`transition-colors ${
                   activeSection === link.id
-                    ? "text-white"
-                    : "text-white/60 hover:text-white"
+                    ? scrolled ? "text-white" : "text-[#0D0505] dark:text-white"
+                    : scrolled ? "text-white/60 hover:text-white" : "text-[#0D0505]/50 dark:text-white/60 hover:text-[#0D0505] dark:hover:text-white"
                 }`}
               >
                 {link.label}
@@ -83,7 +93,11 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <Link
               href="#contact"
-              className="hidden md:flex bg-white text-black px-6 py-2 rounded-full text-sm font-medium items-center gap-2 hover:bg-gray-100 transition-colors"
+              className={`hidden md:flex px-6 py-2 rounded-full text-sm font-medium items-center gap-2 transition-colors ${
+                scrolled
+                  ? "bg-white text-black hover:bg-gray-100"
+                  : "bg-[#0D0505] dark:bg-white text-white dark:text-black hover:opacity-80"
+              }`}
             >
               Get in touch
               <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-6 h-6 rounded-full text-white flex items-center justify-center text-xs">
@@ -91,15 +105,34 @@ const Header = () => {
               </span>
             </Link>
 
+            {/* Theme toggle */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className={`w-9 h-9 rounded-full border flex items-center justify-center transition-colors text-sm ${
+                  scrolled
+                    ? "border-white/20 text-white/70 hover:text-white hover:border-white/40"
+                    : "border-[#0D0505]/20 dark:border-white/20 text-[#0D0505]/70 dark:text-white/70 hover:text-[#0D0505] dark:hover:text-white hover:border-[#0D0505]/40 dark:hover:border-white/40"
+                }`}
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.166 17.834a.75.75 0 0 0-1.06 1.06l1.59 1.591a.75.75 0 1 0 1.061-1.06l-1.59-1.591ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.166 6.166a.75.75 0 0 0 1.06 1.06l1.59-1.59a.75.75 0 1 0-1.06-1.061L6.166 6.166Z"/></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path fillRule="evenodd" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z" clipRule="evenodd"/></svg>
+                )}
+              </button>
+            )}
+
             {/* Hamburger */}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10"
               aria-label="Toggle menu"
             >
-              <span className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "w-6 rotate-45 translate-y-[7px]" : "w-6"}`} />
-              <span className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "opacity-0 w-4" : "w-4"}`} />
-              <span className={`block h-[2px] bg-white rounded-full transition-all duration-300 ${menuOpen ? "w-6 -rotate-45 -translate-y-[7px]" : "w-6"}`} />
+              <span className={`block h-[2px] rounded-full transition-all duration-300 ${scrolled ? "bg-white" : "bg-[#0D0505] dark:bg-white"} ${menuOpen ? "w-6 rotate-45 translate-y-[7px]" : "w-6"}`} />
+              <span className={`block h-[2px] rounded-full transition-all duration-300 ${scrolled ? "bg-white" : "bg-[#0D0505] dark:bg-white"} ${menuOpen ? "opacity-0 w-4" : "w-4"}`} />
+              <span className={`block h-[2px] rounded-full transition-all duration-300 ${scrolled ? "bg-white" : "bg-[#0D0505] dark:bg-white"} ${menuOpen ? "w-6 -rotate-45 -translate-y-[7px]" : "w-6"}`} />
             </button>
           </div>
         </div>

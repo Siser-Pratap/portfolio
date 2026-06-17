@@ -76,10 +76,10 @@ function BarFallback() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.04 }}
         >
           <div className="flex justify-between items-baseline">
-            <span className="text-white text-sm font-semibold tracking-wide">{skill.name}</span>
-            <span className="text-white/30 text-xs font-medium tabular-nums">{skill.level}%</span>
+            <span className="text-[#0D0505] dark:text-white text-sm font-semibold tracking-wide">{skill.name}</span>
+            <span className="text-[#0D0505]/40 dark:text-white/30 text-xs font-medium tabular-nums">{skill.level}%</span>
           </div>
-          <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+          <div className="w-full h-[2px] bg-[#0D0505]/10 dark:bg-white/10 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-[#FF4B1F] to-[#FF6A21] rounded-full"
               initial={{ width: 0 }}
@@ -227,7 +227,7 @@ function Graph() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full rounded-[20px] overflow-hidden border border-white/[0.07]"
+      className="relative w-full rounded-[20px] overflow-hidden border border-white/[0.07] bg-[#0A0404]"
       style={{ height: SVG_H, opacity: visible ? 1 : 0, transition: "opacity 0.5s" }}
     >
       <svg
@@ -361,7 +361,7 @@ export default function SkillGraph() {
   const [view, setView] = useState<"graph" | "bars">("graph")
 
   return (
-    <section id="skills" className="w-full bg-[#0A0404] py-[120px]">
+    <section id="skills" className="w-full bg-[#F7F7F7] dark:bg-[#0A0404] py-[120px]">
       <div className="max-w-[1400px] mx-auto px-10">
 
         {/* Header */}
@@ -373,18 +373,18 @@ export default function SkillGraph() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <div>
-            <span className="text-white/30 text-sm font-medium italic mb-6 block">{"(/ Skills )"}</span>
-            <h2 className="text-[56px] font-[700] leading-[1.1] text-white tracking-tight">
+            <span className="text-[#0D0505]/40 dark:text-white/30 text-sm font-medium italic mb-6 block">{"(/ Skills )"}</span>
+            <h2 className="text-[56px] font-[700] leading-[1.1] text-[#0D0505] dark:text-white tracking-tight">
               Tech Stack
             </h2>
           </div>
 
           <div className="flex flex-col items-start lg:items-end gap-4">
-            <p className="text-white/35 text-[11px] font-mono leading-relaxed lg:text-right">
+            <p className="text-[#0D0505]/40 dark:text-white/35 text-[11px] font-mono leading-relaxed lg:text-right">
               Hover to inspect · Click to highlight connections · Drag to rearrange
             </p>
             {/* View toggle */}
-            <div className="flex items-center bg-white/5 border border-white/10 rounded-full p-1">
+            <div className="flex items-center bg-[#0D0505]/5 dark:bg-white/5 border border-[#0D0505]/10 dark:border-white/10 rounded-full p-1">
               {(["graph", "bars"] as const).map((v) => (
                 <button
                   key={v}
@@ -392,7 +392,7 @@ export default function SkillGraph() {
                   className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                     view === v
                       ? "bg-gradient-to-r from-[#FF4B1F] to-[#FF6A21] text-white shadow-md"
-                      : "text-white/40 hover:text-white/70"
+                      : "text-[#0D0505]/40 dark:text-white/40 hover:text-[#0D0505]/70 dark:hover:text-white/70"
                   }`}
                 >
                   {v === "graph" ? "Force Graph" : "Bar View"}
@@ -431,12 +431,12 @@ export default function SkillGraph() {
                       </defs>
                       <circle cx={r + 2} cy={r + 2} r={r} fill={`url(#lg-${r})`} opacity={0.72} />
                     </svg>
-                    <span className="text-white/30 text-[11px] font-mono">{label}</span>
+                    <span className="text-[#0D0505]/40 dark:text-white/30 text-[11px] font-mono">{label}</span>
                   </div>
                 ))}
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-px bg-white/35" />
-                  <span className="text-white/30 text-[11px] font-mono">Relationship</span>
+                  <div className="w-6 h-px bg-[#0D0505]/35 dark:bg-white/35" />
+                  <span className="text-[#0D0505]/40 dark:text-white/30 text-[11px] font-mono">Relationship</span>
                 </div>
               </div>
             </motion.div>

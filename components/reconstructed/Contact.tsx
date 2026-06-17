@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { SETTINGS } from "@/constants/settings"
 
 type FormState = {
   name: string
@@ -60,21 +61,20 @@ const Contact = () => {
             <div className="flex flex-col gap-8">
               <div className="border-t border-[#EAEAEA] pt-6">
                 <p className="text-[#8A8A8A] text-sm mb-2 font-medium">Phone</p>
-                {/* TODO: Replace with real phone number */}
-                <p className="text-[#0D0505] font-semibold">+91 XXXXX XXXXX</p>
+                <p className="text-[#0D0505] font-semibold">{SETTINGS.phone}</p>
               </div>
               <div className="border-t border-[#EAEAEA] pt-6">
                 <p className="text-[#8A8A8A] text-sm mb-2 font-medium">Email</p>
                 <a
-                  href="mailto:siserinsevoc@gmail.com"
+                  href={`mailto:${SETTINGS.email}`}
                   className="text-[#0D0505] font-semibold hover:text-[#FF4B1F] transition-colors"
                 >
-                  siserinsevoc@gmail.com
+                  {SETTINGS.email}
                 </a>
               </div>
-              <div className="border-t border-[#EAEAEA] pt-6 border-b pb-6">
+              <div className="border-t border-[#EAEAEA] pt-6 border-b border-b-[#EAEAEA] pb-6">
                 <p className="text-[#8A8A8A] text-sm mb-2 font-medium">Location</p>
-                <p className="text-[#0D0505] font-semibold">New Delhi, India</p>
+                <p className="text-[#0D0505] font-semibold">{SETTINGS.location}</p>
               </div>
             </div>
           </div>

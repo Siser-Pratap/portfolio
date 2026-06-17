@@ -140,7 +140,7 @@ export default function CodeShowcase() {
   }
 
   return (
-    <section className="w-full bg-[#0D0505] py-[120px]">
+    <section className="w-full bg-white dark:bg-[#0D0505] py-[120px]">
       <div className="max-w-[1400px] mx-auto px-10">
 
         {/* Section header */}
@@ -152,12 +152,12 @@ export default function CodeShowcase() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <div>
-            <span className="text-white/40 text-sm font-medium italic mb-6 block">{"(/ Code )"}</span>
-            <h2 className="text-[56px] font-[700] leading-[1.1] text-white tracking-tight">
+            <span className="text-[#0D0505]/40 dark:text-white/40 text-sm font-medium italic mb-6 block">{"(/ Code )"}</span>
+            <h2 className="text-[56px] font-[700] leading-[1.1] text-[#0D0505] dark:text-white tracking-tight">
               How I Build
             </h2>
           </div>
-          <p className="text-white/50 text-base leading-relaxed max-w-[460px] lg:text-right">
+          <p className="text-[#0D0505]/50 dark:text-white/50 text-base leading-relaxed max-w-[460px] lg:text-right">
             Real snippets from this portfolio. Each solves a specific problem —
             the annotation explains the <em>why</em>, not the what.
           </p>
@@ -178,7 +178,7 @@ export default function CodeShowcase() {
               className={`relative shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 active === i
                   ? "bg-gradient-to-r from-[#FF4B1F] to-[#FF6A21] text-white shadow-[0_4px_20px_rgba(255,75,31,0.3)]"
-                  : "text-white/50 bg-white/5 hover:text-white/80 hover:bg-white/10"
+                  : "text-[#0D0505]/50 dark:text-white/50 bg-[#0D0505]/5 dark:bg-white/5 hover:text-[#0D0505]/80 dark:hover:text-white/80 hover:bg-[#0D0505]/10 dark:hover:bg-white/10"
               }`}
             >
               {s.title}
@@ -194,7 +194,7 @@ export default function CodeShowcase() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.25 }}
-            className="text-white/40 text-sm font-mono mb-6 leading-relaxed"
+            className="text-[#0D0505]/40 dark:text-white/40 text-sm font-mono mb-6 leading-relaxed"
           >
             // {snippet.annotation}
           </motion.p>

@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { ThemeProvider } from "@/components/ThemeProvider"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -54,7 +55,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="overflow-x-hidden">
       <head><link rel="icon" href="/favicon.ico" /></head>
-      <body className={`${inter.className} font-sans cursor-none`}>{children}</body>
+      <body className={`${inter.className} font-sans cursor-none`}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   )
 }
