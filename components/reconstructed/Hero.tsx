@@ -37,12 +37,17 @@ const Hero = () => {
           <p className="text-white/90 text-[16px] leading-[1.8] mb-6 text-left max-w-[320px] font-medium drop-shadow-lg">
             Portfolio of Siser Pratap — Software innovator crafting digital experiences with bold simplicity.
           </p>
-          <div className="flex bg-white rounded-full p-2 pl-6 items-center w-full max-w-[320px] justify-between cursor-pointer hover:scale-[1.02] transition-transform shadow-2xl">
+          <a
+            href="https://calendly.com/siserpratap"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex bg-white rounded-full p-2 pl-6 items-center w-full max-w-[320px] justify-between cursor-pointer hover:scale-[1.02] transition-transform shadow-2xl"
+          >
             <span className="text-black font-semibold text-sm">Schedule a Free Call</span>
-            <button className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
+            <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
               ↗
-            </button>
-          </div>
+            </span>
+          </a>
         </div>
       </div>
 

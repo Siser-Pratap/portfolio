@@ -27,18 +27,22 @@ export const services = [
     {
       icon: backend,
       title: "Frontend",
+      description: "Responsive, accessible UIs built with React and Next.js — fast, pixel-perfect, and production-ready.",
     },
     {
       icon: creator,
       title: "Backend",
+      description: "Scalable server-side systems, REST APIs, and cloud-native architectures using Node.js, NestJS, and SpringBoot.",
     },
     {
       icon: web,
       title: "Full Stack Software",
+      description: "End-to-end product development — from database schema design to deployed, monitored production app.",
     },
     {
       icon: mobile,
       title: "UI Design and 3D",
+      description: "Pixel-perfect interfaces and immersive 3D web experiences crafted with Figma and Three.js.",
     },
   ]
 

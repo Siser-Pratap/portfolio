@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Preloader from "@/components/preloader"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,8 +10,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Siser Pratap | Creative Developer & UI/UX Engineer",
-  description: "Portfolio of Siser Pratap, a creative developer specializing in high-performance, cinematic, and premium web designs.",
+  title: "Siser Pratap | Full Stack Developer",
+  description: "Portfolio of Siser Pratap — Full Stack Developer building scalable web apps with React, Next.js, Node.js, and modern cloud technologies.",
   icons: {
     icon: [{ url: "/favicon.ico" }],
   },
@@ -26,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="overflow-x-hidden">
       <head><link rel="icon" href="/favicon.ico" /></head>
-      <body className={`${inter.className} font-sans cursor-none`}><Preloader>{children}</Preloader></body>
+      <body className={`${inter.className} font-sans cursor-none`}>{children}</body>
     </html>
   )
 }

@@ -21,8 +21,9 @@ const Footer = () => {
           <div className="md:col-span-7 grid grid-cols-3 gap-8">
             <div className="flex flex-col gap-4">
               <span className="text-[#8A8A8A] text-xs font-semibold mb-2">Contact</span>
-              <a href="#" className="text-white text-sm hover:text-[#FF4B1F] transition-colors">+39 204 12312</a>
-              <a href="#" className="text-white text-sm hover:text-[#FF4B1F] transition-colors">hello@siser.com</a>
+              {/* TODO: Replace with real phone number */}
+              <span className="text-white text-sm">+91 XXXXX XXXXX</span>
+              <a href="mailto:siserinsevoc@gmail.com" className="text-white text-sm hover:text-[#FF4B1F] transition-colors">siserinsevoc@gmail.com</a>
             </div>
             <div className="flex flex-col gap-4">
               <span className="text-[#8A8A8A] text-xs font-semibold mb-2">Menu</span>
