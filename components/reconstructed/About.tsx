@@ -31,7 +31,7 @@ const About = () => {
               Full Stack Developer with a focus on React, Next.js, Node.js, and cloud-native architectures. I work across the entire stack — from database schema to deployed product — with a strong eye for UI and a bias toward simplicity. I've shipped production apps for clients across India, Canada, and beyond.
             </p>
 
-            <div className="flex flex-wrap gap-4 mb-16">
+            <div className="flex flex-wrap gap-4 mb-10">
               <span className="px-6 py-2 rounded-full bg-gradient-to-r from-[#FF4B1F] to-[#FF6A21] text-white text-xs font-semibold tracking-wide">
                 Design → Build → Deploy
               </span>
@@ -43,8 +43,22 @@ const About = () => {
               </span>
             </div>
 
+            {/* TODO: Add your resume PDF to /public/resume.pdf then this button goes live */}
+            <a
+              href="/resume.pdf"
+              download
+              className="flex items-center gap-3 w-fit mb-16 group"
+            >
+              <div className="bg-[#0D0505] text-white px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-3 hover:bg-[#FF4B1F] transition-colors">
+                Download Resume
+                <span className="bg-white/10 group-hover:bg-white/20 w-7 h-7 rounded-full flex items-center justify-center text-sm transition-colors">
+                  ↓
+                </span>
+              </div>
+            </a>
+
             {/* Stats Row */}
-            <div className="flex items-center justify-between border-t border-[#EAEAEA] pt-12">
+            <div className="flex items-center justify-between border-t border-[#EAEAEA] pt-12 mt-0">
               <div className="flex flex-col items-start">
                 <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">75+</span>
                 <span className="text-xs text-[#8A8A8A] font-medium">Projects Shipped</span>

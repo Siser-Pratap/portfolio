@@ -6,6 +6,8 @@ import Hero from "@/components/reconstructed/Hero";
 import ClientLogos from "@/components/reconstructed/ClientLogos";
 import About from "@/components/reconstructed/About";
 import Services from "@/components/reconstructed/Services";
+import Experience from "@/components/reconstructed/Experience";
+import Skills from "@/components/reconstructed/Skills";
 import Projects from "@/components/reconstructed/Projects";
 import FeatureBanner from "@/components/reconstructed/FeatureBanner";
 import Testimonials from "@/components/reconstructed/Testimonials";
@@ -27,6 +29,8 @@ export default function Home() {
         <ClientLogos />
         <About />
         <Services />
+        <Experience />
+        <Skills />
         <Projects />
         <FeatureBanner />
         <Testimonials />
