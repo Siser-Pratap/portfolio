@@ -89,7 +89,7 @@ The active page lives in `src/app/page.tsx` and uses the `/components/reconstruc
 - [x] **OG image / SEO** — `src/app/opengraph-image.tsx` (edge runtime, 1200×630). Full `openGraph`, `twitter`, `keywords`, and `metadataBase` in layout.
 - [x] **Performance** — Removed `images: { unoptimized: true }`, enabled AVIF + WebP. Added `sizes` prop to all critical images.
 - [x] **GitHub activity widget** — `GitHubActivity.tsx` with live contribution graph (ghchart.rshah.org) and repo cards from portfolio data.
-- [ ] **Dark/light mode toggle** — `next-themes` is installed. Skipped — requires rethinking all hardcoded section background colors (`#F7F7F7`, `#FFFFFF`, `#0D0505`). Worth a dedicated refactor pass.
+- [x] **Dark/light mode toggle** — Implemented. `next-themes` with `defaultTheme="dark"`. Originally-dark sections (Hero, SkillGraph, CodeShowcase, Footer) respond to toggle; originally-light sections stay light in both modes.
 
 ---
 
@@ -98,12 +98,12 @@ The active page lives in `src/app/page.tsx` and uses the `/components/reconstruc
 
 The single highest-impact addition. An embedded chat widget powered by the Anthropic Claude API that knows everything about you — built from your `constant.ts` data. A recruiter or client types "Does Siser know WebSockets?" and gets a real answer in seconds. It runs 24/7 and proves you can ship AI, not just list it.
 
-- [ ] **System prompt** — Build a rich context string from `experiences`, `skills`, `portfolioItems`, and `teamMembers` in `constant.ts`. Include availability, location, tech stack, and project outcomes.
-- [ ] **API route** — `src/app/api/chat/route.ts` using `@anthropic-ai/sdk` with streaming (`stream: true`). Edge runtime for low latency.
-- [ ] **Chat UI** — Slide-up drawer (Framer Motion) triggered by a floating button fixed to the bottom-right. Matches the portfolio's dark `#0D0505` + orange accent design. Shows streaming tokens in real time.
-- [ ] **Suggested prompts** — On open, show 4 quick-tap suggestions: "What's Siser's strongest skill?", "Tell me about IntelAI", "Is he available for freelance?", "What does he charge?"
-- [ ] **Rate limiting** — Simple in-memory or Upstash Redis rate limit on the API route (5 messages per IP per hour) to prevent abuse.
-- [ ] **Add to `ANTHROPIC_API_KEY` in `.env.local`** — Document in `instructions.md`.
+- [x] **System prompt** — Built from `experiences`, `skills`, `portfolioItems`, `teamMembers` in `constant.ts`. Wired to GROQ API (`llama-3.3-70b-versatile`).
+- [x] **API route** — `src/app/api/chat/route.ts` with streaming. Uses `GROQ_API_KEY` from `.env.local`.
+- [x] **Chat UI** — Slide-up drawer, floating button bottom-right, streams tokens in real time.
+- [ ] **Suggested prompts** — Not yet implemented. On open, show 4 quick-tap chips: "What's Siser's strongest skill?", "Tell me about IntelAI", "Is he available for freelance?", "What does he charge?" Tapping a chip should populate the input and auto-submit.
+- [x] **Rate limiting** — In-memory rate limit in `api/chat/route.ts` (5 req/IP/hour via `rateLimitMap`).
+- [x] **GROQ_API_KEY** — Set in `.env.local`.
 
 ---
 
@@ -150,6 +150,68 @@ Most portfolios show project screenshots. None show the code. This section does 
 - [ ] **Renderer** — D3.js force-directed graph or a lightweight vis.js network. Nodes sized by proficiency level. Hover shows proficiency %. Click filters to related skills.
 - [ ] **Design** — Dark section. Nodes styled as small glowing circles in the brand orange-red. Edges as thin white lines with low opacity. Smooth physics simulation.
 - [ ] **Fallback** — If JS is disabled or the graph fails to render, fall back to the existing progress bar grid.
+
+---
+
+### Phase 10 — Static Data Cleanup & Live Integrations
+*Goal: Nothing on the page should be hardcoded if it can go stale. Every configurable string lives in one place.*
+
+#### 10-A — Content accuracy (your side)
+- [ ] **Testimonials** — All 3 use `/photo.jpg` (your own photo) with invented names. Replace with real client testimonials and real photos, or remove the section until they exist. File: `constants/constant.ts → testimonials[]`.
+- [ ] **Client logos** — `ClientLogos.tsx` has 6 placeholder text entries. Add real SVG/PNG logos to `/public/logos/` and swap the `<div>` placeholders. File: `components/reconstructed/ClientLogos.tsx`.
+- [ ] **Blog cover images** — The 3 blog posts reuse project screenshots (`/visionweave.jpg`, `/meetPro.jpg`, `/intelai.jpg`). Add dedicated cover images per post. File: `src/data/blogPosts.ts`.
+- [ ] **Skill levels** — Many skills are copy-pasted at `88`. Audit and set accurate percentages. File: `constants/constant.ts → skills[]`.
+- [ ] **Experience location** — `experiences[0].location` says `"New Delhi, India"` but `SETTINGS.location` is `"Gurugram, India"`. Align them. File: `constants/constant.ts:53`.
+- [ ] **Footer social links** — Instagram, Youtube, Dribbble, Behance all point to `href="#"`. Add real URLs or remove the ones that don't exist. File: `components/reconstructed/Footer.tsx:48–51`.
+
+#### 10-B — Centralise remaining hardcoded strings (dev side)
+- [ ] **Social URLs** — `teamMembers` in `constant.ts` has social links; Footer has separate dead `href="#"` links; `TerminalMode` has inline handles. Consolidate everything into a `SETTINGS.socials` object and reference it everywhere.
+- [ ] **GitHub username** — `"Siser-Pratap"` is hardcoded in `GitHubActivity.tsx` (ghchart URL, profile link), `api/github-commit/route.ts`, and `TerminalMode.tsx`. Move it to `SETTINGS.githubUsername` and replace all occurrences.
+- [ ] **Copyright year** — `©2025` is hardcoded in `Projects.tsx:254`. Change to `` `©${new Date().getFullYear()}` ``.
+- [ ] **TerminalMode social handles** — LinkedIn, Twitter, Instagram handles are inline strings. Reference `SETTINGS.socials` once it exists.
+
+#### 10-C — Activate dormant integrations (env vars needed — your side)
+- [ ] **Contact form SMTP** — Nodemailer is wired in `src/app/api/contact/route.ts` but needs env vars. Add to `.env.local`:
+  ```
+  SMTP_HOST=smtp.gmail.com
+  SMTP_PORT=587
+  SMTP_SECURE=false
+  SMTP_USER=your@gmail.com
+  SMTP_PASS=your-app-password
+  SMTP_FROM="Siser Portfolio <your@gmail.com>"
+  ```
+- [ ] **Vercel deploy badges** — `src/app/api/vercel-deploy/route.ts` is implemented. Add `VERCEL_TOKEN=` to `.env.local`. Get token at vercel.com → Settings → Tokens.
+- [ ] **GitHub rate limit** — `api/github-commit` supports `GITHUB_TOKEN` for 5000 req/hr vs 60 unauthenticated. Add `GITHUB_TOKEN=` to `.env.local`. Generate at github.com → Settings → Developer settings → Personal access tokens.
+
+#### 10-D — Live data that could replace static numbers (dev side)
+- [ ] **npm download count for Authence** — `https://api.npmjs.org/downloads/point/last-month/authence` returns live monthly downloads. Show a live "X downloads/mo" badge on the Authence project card hover overlay instead of nothing.
+- [ ] **GitHub star counts** — `GET /repos/Siser-Pratap/{repo}` returns `stargazers_count`. Show a ★ count on each project card overlay alongside the uptime dot.
+- [ ] **Vercel Analytics** — Add `@vercel/analytics` (already likely available if deployed on Vercel). One-line addition to `layout.tsx`. Shows visitor stats in the Vercel dashboard.
+
+---
+
+### Phase 11 — Bugs, Dead Code & Consistency
+*Goal: No broken links, no orphaned data, no silent failures. Clean TypeScript.*
+
+#### 11-A — Dead anchors & navigation (dev side)
+- [ ] **Footer `#article` anchor** — `href="#article"` in `Footer.tsx:41` points to nothing. The blogs section has `id="blogs"`. Change to `href="#blogs"`. File: `components/reconstructed/Footer.tsx`.
+- [ ] **Footer social `href="#"`** — Instagram, Youtube, Dribbble, Behance all point to `#`. Wire to real URLs once added to `SETTINGS.socials` (Phase 10-B), or remove the links until profiles exist. File: `components/reconstructed/Footer.tsx:48–51`.
+- [ ] **`navItems` and `sections` in `constant.ts` are orphaned** — The header uses its own hardcoded nav array; `navItems` and `sections` from `constant.ts` are never imported. Either delete them or make the header consume `navItems`. Files: `constants/constant.ts:1–21`, `components/reconstructed/Header.tsx`.
+- [ ] **`sections` includes `"socials"` and `"skills"` separately** — Neither exists as a page section ID. `SkillGraph` uses `id="skills"` but there is no `id="socials"` section. Remove or reconcile. File: `constants/constant.ts`.
+- [ ] **`filters` array has `"Algorithmic"`** — No portfolio item uses this category, and there is no filter UI on the Projects section. Remove the `filters` export or build filter UI to match. File: `constants/constant.ts`.
+
+#### 11-B — Data integrity (your side + dev side)
+- [ ] **`teamMembers` Dribbble link points to Calendly** — `{ icon: Dribbble, link: "https://calendly.com/siserpratap" }` in `constant.ts:128`. Replace with a real Dribbble URL or change the icon to `Calendar`. File: `constants/constant.ts:128`.
+- [ ] **Contact form sends to `SMTP_USER` not your inbox** — `to: process.env.SMTP_USER` in `api/contact/route.ts:24` sends replies to the sending account. Add `SMTP_TO=your@email.com` to `.env.local` and change `to:` to `process.env.SMTP_TO ?? process.env.SMTP_USER`. File: `src/app/api/contact/route.ts`.
+- [ ] **`experiences[0].location` says "New Delhi, India"** — Conflicts with `SETTINGS.location = "Gurugram, India"`. The Experience section and TerminalMode both show "New Delhi". Align to one value. File: `constants/constant.ts:53`.
+
+#### 11-C — TypeScript errors (dev side)
+- [ ] **`scroll-controller.tsx(136)`** — `Variable 'animationFrame' is used before being assigned`. Initialise as `let animationFrame: number | undefined` to fix.
+- [ ] **`hooks/use-toast.ts(9)`** — `Cannot find module '@/components/ui/toast'`. The shadcn toast component it depends on was never generated. Either run `npx shadcn-ui@latest add toast` or remove/replace the hook.
+- [ ] **`hooks/use-toast.ts(161)`** — `Parameter 'open' implicitly has 'any' type`. Add `: boolean` annotation. Downstream from the missing module above — resolves automatically once the toast module is added.
+
+#### 11-D — Chat assistant polish (dev side)
+- [ ] **Suggested prompts** — See Phase 5. On open, show 4 quick-tap chips below the empty message list. Tapping auto-fills the input and submits. Disappear after the first message is sent.
 
 ---
 
