@@ -16,6 +16,7 @@ type ProjectHealth = {
   lastCommit: string | null
   commitMsg: string | null
   commitSha: string | null
+  lastDeploy: string | null
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -124,15 +125,24 @@ const ProjectCard = ({ project, health, className = "" }: ProjectCardProps) => (
           ))}
         </div>
 
-        {/* Last commit line */}
-        {health?.lastCommit && (
-          <p className="text-white/40 text-[11px] font-mono mb-5">
-            ↻&nbsp;{health.commitSha}
-            &nbsp;·&nbsp;{timeAgo(health.lastCommit)}
-            {health.commitMsg && (
-              <>&nbsp;·&nbsp;{health.commitMsg.length > 50 ? health.commitMsg.slice(0, 50) + "…" : health.commitMsg}</>
+        {/* Last commit + deploy lines */}
+        {(health?.lastCommit || health?.lastDeploy) && (
+          <div className="flex flex-col gap-0.5 mb-5">
+            {health?.lastCommit && (
+              <p className="text-white/40 text-[11px] font-mono">
+                ↻&nbsp;{health.commitSha}
+                &nbsp;·&nbsp;{timeAgo(health.lastCommit)}
+                {health.commitMsg && (
+                  <>&nbsp;·&nbsp;{health.commitMsg.length > 50 ? health.commitMsg.slice(0, 50) + "…" : health.commitMsg}</>
+                )}
+              </p>
             )}
-          </p>
+            {health?.lastDeploy && (
+              <p className="text-white/40 text-[11px] font-mono">
+                ↳&nbsp;deployed&nbsp;{timeAgo(health.lastDeploy)}
+              </p>
+            )}
+          </div>
         )}
 
         {/* Action links */}
@@ -170,17 +180,19 @@ const Projects = () => {
     // Mark as checking immediately
     setHealth((prev) => ({
       ...prev,
-      [index]: { uptime: "checking", latency: 0, lastCommit: null, commitMsg: null, commitSha: null },
+      [index]: { uptime: "checking", latency: 0, lastCommit: null, commitMsg: null, commitSha: null, lastDeploy: null },
     }))
 
     const repo = repoSlug(project.githubUrl)
-    const [healthResult, commitResult] = await Promise.allSettled([
+    const [healthResult, commitResult, deployResult] = await Promise.allSettled([
       fetch(`/api/health?url=${encodeURIComponent(project.liveUrl)}`).then((r) => r.json()),
       fetch(`/api/github-commit?repo=${repo}`).then((r) => r.json()),
+      fetch(`/api/vercel-deploy?project=${encodeURIComponent(repo)}`).then((r) => r.json()),
     ])
 
     const h = healthResult.status === "fulfilled" ? healthResult.value : null
     const c = commitResult.status === "fulfilled" ? commitResult.value : null
+    const d = deployResult.status === "fulfilled" ? deployResult.value : null
 
     let uptime: UptimeStatus = "offline"
     let latency = 0
@@ -198,6 +210,7 @@ const Projects = () => {
         lastCommit: c?.date ?? null,
         commitMsg:  c?.message ?? null,
         commitSha:  c?.sha ?? null,
+        lastDeploy: d?.deployedAt ?? null,
       },
     }))
   }, [])

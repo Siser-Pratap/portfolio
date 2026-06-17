@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
+import { motion, useInView } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
 import { SETTINGS } from "@/constants/settings"
 import { portfolioItems } from "@/constants/constant"
 
@@ -12,6 +12,28 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true, margin: "-60px" },
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const, delay },
 })
+
+function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true, margin: "-60px" })
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!inView) return
+    const duration = 1400
+    const start = Date.now()
+    const tick = () => {
+      const elapsed = Date.now() - start
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(eased * target))
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [inView, target])
+
+  return <span ref={ref}>{count}{suffix}</span>
+}
 
 function timeAgo(iso: string): string {
   const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
@@ -156,17 +178,23 @@ const About = () => {
               className="flex items-center justify-between border-t border-[#EAEAEA] pt-12"
             >
               <div className="flex flex-col items-start">
-                <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">75+</span>
+                <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">
+                  <CountUp target={75} suffix="+" />
+                </span>
                 <span className="text-xs text-[#8A8A8A] font-medium">Projects Shipped</span>
               </div>
               <div className="w-[1px] h-12 bg-[#EAEAEA]" />
               <div className="flex flex-col items-center">
-                <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">3+</span>
+                <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">
+                  <CountUp target={3} suffix="+" />
+                </span>
                 <span className="text-xs text-[#8A8A8A] font-medium">Years Experience</span>
               </div>
               <div className="w-[1px] h-12 bg-[#EAEAEA]" />
               <div className="flex flex-col items-end">
-                <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">30+</span>
+                <span className="text-[48px] font-[800] text-[#0D0505] leading-none mb-2">
+                  <CountUp target={30} suffix="+" />
+                </span>
                 <span className="text-xs text-[#8A8A8A] font-medium">Global Clients</span>
               </div>
             </motion.div>
