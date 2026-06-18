@@ -16,6 +16,9 @@ const config: Config = {
         primaryColor: '#FF4B1F',
         accentOrange: '#FF6A21',
       },
+      animation: {
+        "spin-slow": "spin 12s linear infinite",
+      },
     }
   },
   plugins: [require("tailwindcss-animate")],

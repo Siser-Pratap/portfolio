@@ -19,11 +19,11 @@ const Footer = () => {
         >
           {/* Left Statement */}
           <div className="md:col-span-5 flex flex-col">
-            <span className="text-[#8A8A8A] text-xs font-semibold mb-4 tracking-wide uppercase">What's your brand waiting for?</span>
+            <span className="text-[#8A8A8A] text-xs font-semibold mb-4 tracking-wide uppercase">What's your product waiting for?</span>
             <h2 className="text-[32px] md:text-[40px] font-[500] leading-[1.2] text-[#0D0505] dark:text-white">
-              Create a Striking Visual<br />
-              Identity That Leaves a<br />
-              Lasting Impression.
+              Build scalable software solutions<br />
+              that deliver performance,<br />
+              reliability, and lasting impact.
             </h2>
           </div>
 

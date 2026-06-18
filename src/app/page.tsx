@@ -41,8 +41,8 @@ export default function Home() {
         <GitHubActivity />
         <CodeShowcase />
         <FeatureBanner />
-        <Testimonials />
-        <Blogs />
+        {/* <Testimonials /> */}
+        {/* <Blogs /> */}
         <Contact />
         <Footer />
       </div>
