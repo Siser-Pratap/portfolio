@@ -22,7 +22,7 @@ const Experience = () => {
         </motion.div>
 
         <div className="relative flex flex-col gap-0">
-          {/* Vertical line */}
+          {/* Vertical timeline line */}
           <div className="absolute left-[11px] top-3 bottom-8 w-[1px] bg-[#EAEAEA] hidden lg:block" />
 
           {experiences.map((exp, index) => (
@@ -55,11 +55,16 @@ const Experience = () => {
                 <p className="text-[#8A8A8A] text-xs mt-1">{exp.location}</p>
               </div>
 
-              {/* Right: Description + Tech */}
+              {/* Right: Bullets + Tech */}
               <div className="flex-1 bg-white rounded-[20px] p-8 border border-[#EAEAEA]">
-                <p className="text-[#0D0505]/70 text-[15px] leading-[1.85] mb-7">
-                  {exp.description}
-                </p>
+                <ul className="flex flex-col gap-3 mb-7 text-[#0D0505]/70 ">
+                  {exp.bullets.map((point, i) => (
+                    <li key={i} className="flex gap-3 text-[15px] leading-[1.85]">
+                      <span className="mt-[9px] w-[5px] h-[5px] rounded-full bg-[#FF4B1F] shrink-0" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
                 <div className="flex flex-wrap gap-2">
                   {exp.technologies.map((tech, i) => (
                     <span

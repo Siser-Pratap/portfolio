@@ -29,14 +29,14 @@ const Hero = () => {
         <div className="flex flex-col items-start w-full md:w-1/2 pointer-events-auto">
           <span className="text-[#0D0505]/70 dark:text-white text-lg font-medium mb-4">Hey! I Am</span>
           <h1 className="text-[clamp(64px,9vw,140px)] font-[800] leading-[0.85] tracking-[-0.05em] uppercase text-[#0D0505] dark:text-white m-0 p-0 drop-shadow-2xl">
-            CREATIVE<br />DEVELOPER
+            SOFTWARE<br />DEVELOPER
           </h1>
         </div>
 
         {/* Right Info */}
         <div className="w-full md:w-1/3 flex flex-col items-start md:items-end text-left mt-auto md:mt-0 md:pt-40 pointer-events-auto">
           <p className="text-[#0D0505]/70 dark:text-white/90 text-[16px] leading-[1.8] mb-6 text-left max-w-[320px] font-medium drop-shadow-lg">
-            Portfolio of Siser Pratap — Software innovator crafting digital experiences with bold simplicity.
+            Software innovator crafting digital experiences with bold simplicity.
           </p>
           <a
             href={SETTINGS.calendlyUrl}
@@ -58,8 +58,8 @@ const Hero = () => {
           <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 01</span> Frontend</div>
           <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 02</span> Backend</div>
           <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 03</span> Full Stack Software</div>
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 04</span> UI Design</div>
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 05</span> 3D Elements</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 04</span> AI Agents</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 05</span> ML Models</div>
         </div>
       </div>
     </section>

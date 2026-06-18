@@ -21,11 +21,11 @@ const Services = () => {
             <span className="text-[#8A8A8A] text-sm font-medium mb-6 italic">{"(/ Service )"}</span>
 
             <h2 className="text-[56px] font-[700] leading-[1.1] text-[#0D0505] mb-6 tracking-tight">
-              Crafting clarity from creative ideas.
+              Engineering innovation, one line at a time.
             </h2>
 
             <p className="text-[#8A8A8A] text-[16px] leading-[1.8] mb-12">
-              Helping businesses craft products, systems, and experiences that connect — simply and effectively.
+              Helping businesses craft products, systems, and experiences that connect simply and effectively.
             </p>
 
             <a
