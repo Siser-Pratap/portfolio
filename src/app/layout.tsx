@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="en" className="overflow-x-hidden" suppressHydrationWarning>
       <head><link rel="icon" href="/favicon.ico" /></head>
       <body className={`${inter.className} font-sans cursor-none`}>
         <ThemeProvider>{children}</ThemeProvider>
