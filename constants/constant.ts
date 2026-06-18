@@ -142,24 +142,40 @@ export const teamMembers = [
     },
   ]
 
-  export const skills = [
-  { name: "HTML5 + CSS3", level: 95 },
-  { name: "JQUERY + JAVASCRIPT", level: 75 },
-  { name: "BOOTSTRAP", level: 85 },
-  { name: "React.js", level: 90 },
-  { name: "Next.js", level: 88 },
-  { name: "Nest.js", level: 88 },
-  { name: "Three.js", level: 88 },
-  { name: "Springboot", level: 88 },
-  { name: "SQL", level: 88 },
-  { name: "Gen-AI", level: 88 },
-  { name: "Node.js", level: 85 },
-  { name: "Express.js", level: 80 },
-  { name: "MongoDB", level: 85 },
-  { name: "PostgreSQL", level: 80 },
-  { name: "TypeScript", level: 75 },
-  { name: "Tailwind CSS", level: 90 },
-  { name: "REST API", level: 90 },
+export const skills = [
+  // Languages
+  { name: "JavaScript",      level: 90 },
+  { name: "TypeScript",      level: 85 },
+  { name: "Python",          level: 85 },
+  { name: "Java",            level: 72 },
+  { name: "C++",             level: 68 },
+  { name: "SQL",             level: 80 },
+  { name: "HTML + CSS",      level: 90 },
+  // Frameworks & Libraries
+  { name: "React.js",        level: 92 },
+  { name: "Next.js",         level: 88 },
+  { name: "Node.js",         level: 85 },
+  { name: "Express.js",      level: 82 },
+  { name: "Nest.js",         level: 80 },
+  { name: "Three.js",        level: 78 },
+  { name: "TensorFlow",      level: 70 },
+  { name: "PyTorch",         level: 70 },
+  { name: "Scikit-learn",    level: 72 },
+  // Cloud & DevOps
+  { name: "AWS",             level: 80 },
+  { name: "Docker",          level: 75 },
+  { name: "Kubernetes",      level: 65 },
+  { name: "Git + GitHub",    level: 90 },
+  // Databases
+  { name: "MongoDB",         level: 82 },
+  { name: "MySQL",           level: 78 },
+  // Core Concepts
+  { name: "REST APIs",       level: 88 },
+  { name: "Microservices",   level: 75 },
+  { name: "Generative AI",   level: 82 },
+  { name: "Computer Vision", level: 78 },
+  { name: "NLP",             level: 75 },
+  { name: "System Design",   level: 75 },
 ]
 export const testimonials = [
   {

@@ -16,28 +16,51 @@ import { skills } from "@/constants/constant"
 // ─── Graph edges ──────────────────────────────────────────────────────────────
 
 const EDGES = [
-  { source: "HTML5 + CSS3",          target: "BOOTSTRAP" },
-  { source: "HTML5 + CSS3",          target: "Tailwind CSS" },
-  { source: "HTML5 + CSS3",          target: "React.js" },
-  { source: "JQUERY + JAVASCRIPT",   target: "TypeScript" },
-  { source: "JQUERY + JAVASCRIPT",   target: "React.js" },
-  { source: "TypeScript",            target: "React.js" },
-  { source: "TypeScript",            target: "Node.js" },
-  { source: "TypeScript",            target: "Next.js" },
-  { source: "TypeScript",            target: "Nest.js" },
-  { source: "React.js",              target: "Next.js" },
-  { source: "React.js",              target: "Three.js" },
-  { source: "Node.js",               target: "Express.js" },
-  { source: "Node.js",               target: "Nest.js" },
-  { source: "Node.js",               target: "REST API" },
-  { source: "Node.js",               target: "Gen-AI" },
-  { source: "Express.js",            target: "MongoDB" },
-  { source: "Express.js",            target: "REST API" },
-  { source: "SQL",                   target: "PostgreSQL" },
-  { source: "SQL",                   target: "Springboot" },
-  { source: "PostgreSQL",            target: "Springboot" },
-  { source: "Gen-AI",                target: "Next.js" },
-  { source: "Gen-AI",                target: "REST API" },
+  // HTML/CSS → JS ecosystem
+  { source: "HTML + CSS",       target: "JavaScript" },
+  { source: "HTML + CSS",       target: "React.js" },
+  // JS / TS core
+  { source: "JavaScript",       target: "TypeScript" },
+  { source: "JavaScript",       target: "React.js" },
+  { source: "JavaScript",       target: "Node.js" },
+  { source: "TypeScript",       target: "React.js" },
+  { source: "TypeScript",       target: "Next.js" },
+  { source: "TypeScript",       target: "Nest.js" },
+  { source: "TypeScript",       target: "Node.js" },
+  // React ecosystem
+  { source: "React.js",         target: "Next.js" },
+  { source: "React.js",         target: "Three.js" },
+  // Node ecosystem
+  { source: "Node.js",          target: "Express.js" },
+  { source: "Node.js",          target: "Nest.js" },
+  { source: "Node.js",          target: "REST APIs" },
+  { source: "Express.js",       target: "MongoDB" },
+  { source: "Express.js",       target: "REST APIs" },
+  { source: "REST APIs",        target: "Microservices" },
+  { source: "REST APIs",        target: "Next.js" },
+  // Databases
+  { source: "SQL",              target: "MySQL" },
+  // Python / ML
+  { source: "Python",           target: "TensorFlow" },
+  { source: "Python",           target: "PyTorch" },
+  { source: "Python",           target: "Scikit-learn" },
+  { source: "Python",           target: "NLP" },
+  { source: "Python",           target: "Computer Vision" },
+  { source: "TensorFlow",       target: "Computer Vision" },
+  { source: "TensorFlow",       target: "NLP" },
+  { source: "PyTorch",          target: "Computer Vision" },
+  { source: "PyTorch",          target: "NLP" },
+  { source: "Generative AI",    target: "NLP" },
+  { source: "Generative AI",    target: "Computer Vision" },
+  { source: "Generative AI",    target: "REST APIs" },
+  // Cloud & DevOps
+  { source: "AWS",              target: "Docker" },
+  { source: "Docker",           target: "Kubernetes" },
+  { source: "Docker",           target: "Microservices" },
+  { source: "Git + GitHub",     target: "AWS" },
+  // System Design
+  { source: "System Design",    target: "Microservices" },
+  { source: "System Design",    target: "REST APIs" },
 ]
 
 // ─── Types ────────────────────────────────────────────────────────────────────
