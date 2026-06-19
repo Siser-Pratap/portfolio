@@ -160,105 +160,105 @@ const Contact = () => {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="py-24 overflow-x-hidden">
+    <section id="contact" ref={sectionRef} className="py-32 bg-transparent overflow-x-hidden relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="works text-3xl md:text-2xl font-bold mb-8">
-            <span className="text-purple-600/75 rounded-full px-6 py-4 hover:text-white shadow-lg shadow-purple-500/25">
-              Get In Touch
-            </span>
+        <div className="text-center mb-20 animate-slide-in-y">
+          <span className="text-xs md:text-sm font-light tracking-[0.3em] uppercase text-white/40 mb-3 block">
+            SAY HELLO
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent">
+            CONTACT
           </h2>
         </div>
 
-        <div className="flex items-center justify-center md:flex-row flex-col md:gap-[4rem] gap-8">
-          {/* Contact Info */}
-            <div className="h-[50vh] md:w-[50vw] w-[60vw] ">
-                <Canvas camera={{ position: [0, 0, 5] }}>
-                  <ambientLight intensity={0.5} />
-                  <directionalLight position={[5, 5, 5]} intensity={1} />
-                    <MyModel />
-                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
-                </Canvas>
-              </div>
+        <div className="flex items-center justify-center lg:flex-row flex-col lg:gap-16 gap-8">
+          {/* 3D Model Display */}
+          <div className="h-[40vh] lg:w-[40vw] w-[80vw] z-10">
+            <Canvas camera={{ position: [0, 0, 5] }}>
+              <ambientLight intensity={0.5} />
+              <directionalLight position={[5, 5, 5]} intensity={1} />
+              <MyModel />
+              <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={4} />
+            </Canvas>
+          </div>
           
-              
-            
-              <div className="xl:flex-row flex-col-reverse pb-0  flex gap-10 ">
-                <div className="flex-[0.75] bg-black-100 rounded-2xl">
-                  <Card className="contact-item bg-black border-transparent">
-                    <CardContent >
-                      <form onSubmit={handleSubmit} className="space-y-8">
-                        <Input
-                          name="name"
-                          placeholder="Name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="bg-black w-[30vw] hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent"
-                          required
-                        />
-                        <Input
-                          name="email"
-                          type="email"
-                          placeholder="Email Address"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="bg-black w-full hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent  "
-                          required
-                        />
-                        <Input
-                          name="phone"
-                          placeholder="Phone Number"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          className="bg-black w-full hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent  "
-                        />
-                        <Textarea
-                          name="message"
-                          placeholder="Message"
-                          value={formData.message}
-                          onChange={handleInputChange}
-                          rows={8}
-                          className="bg-black w-full hover:shadow-lg rounded-lg hover:shadow-purple-500/25 text-white placeholder-white/50 border-transparent  py-4"
-                          required
-                        />
-                        <Button
-                          type="submit"
-                          className="w-full rounded-full border-purple-600/75 shadow-lg shadow-purple-500/25 text-white interactive "
-                        >
-                          {loading ? "Sending..." : "SEND MESSAGE"}
-                        </Button>
-                      </form>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </div>
-
-        <div className="flex items-center justify-center md:flex-row flex-col gap-8 mt-8" >
-            <Card className="contact-item bg-black border-transparent ">
-              <CardContent className="p-6 flex items-center space-x-4 shadow-lg shadow-purple-500/25">
-                <div className="w-12 h-12 bg-purple-500/25 rounded-full flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-purple-600/75" />
-                </div>
-                <div >
-                  <h3 className="text-white font-bold mb-1">MY LOCATION</h3>
-                  <p className="text-white/70">New Delhi, India</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card onClick={handleEmail} className="contact-item email bg-black border-transparent cursor-pointer ">
-              <CardContent className="p-6 flex items-center space-x-4 shadow-lg shadow-purple-500/25">
-                <div className="w-12 h-12 bg-purple-500/25 rounded-full flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-purple-600/75" />
-                </div>
-                <div>
-                  <h3 className="text-white font-bold mb-1 mail">E-MAIL</h3>
-                  <p className="text-white/70">siserinsevoc@gmail.com</p>
-                </div>
+          <div className="w-full max-w-lg z-10">
+            <Card className="contact-item glass-card border-none relative overflow-hidden p-2">
+              <div className="glass-card-glow" />
+              <CardContent className="p-6 relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <Input
+                    name="name"
+                    placeholder="Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="bg-white/[0.02] border border-white/[0.08] hover:border-white/20 focus:border-white/40 w-full hover:shadow-lg rounded-lg text-white placeholder-white/30 transition-all duration-300"
+                    required
+                  />
+                  <Input
+                    name="email"
+                    type="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="bg-white/[0.02] border border-white/[0.08] hover:border-white/20 focus:border-white/40 w-full hover:shadow-lg rounded-lg text-white placeholder-white/30 transition-all duration-300"
+                    required
+                  />
+                  <Input
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="bg-white/[0.02] border border-white/[0.08] hover:border-white/20 focus:border-white/40 w-full hover:shadow-lg rounded-lg text-white placeholder-white/30 transition-all duration-300"
+                  />
+                  <Textarea
+                    name="message"
+                    placeholder="Message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={6}
+                    className="bg-white/[0.02] border border-white/[0.08] hover:border-white/20 focus:border-white/40 w-full hover:shadow-lg rounded-lg text-white placeholder-white/30 transition-all duration-300 py-4 resize-none"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    className="w-full rounded-full border border-white/20 hover:border-white/60 bg-white/[0.04] text-white hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 interactive"
+                  >
+                    {loading ? "Sending..." : "SEND MESSAGE"}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        <div className="flex items-center justify-center md:flex-row flex-col gap-6 mt-12">
+          <Card className="contact-item glass-card border-none relative overflow-hidden min-w-[280px]">
+            <div className="glass-card-glow" />
+            <CardContent className="p-6 flex items-center space-x-4 relative z-10">
+              <div className="w-12 h-12 bg-white/[0.04] border border-white/[0.08] rounded-full flex items-center justify-center">
+                <MapPin className="w-5 h-5 text-white/85" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block">MY LOCATION</span>
+                <p className="text-white/80 font-medium">New Delhi, India</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card onClick={handleEmail} className="contact-item email glass-card border-none cursor-pointer relative overflow-hidden min-w-[280px]">
+            <div className="glass-card-glow" />
+            <CardContent className="p-6 flex items-center space-x-4 relative z-10">
+              <div className="w-12 h-12 bg-white/[0.04] border border-white/[0.08] rounded-full flex items-center justify-center">
+                <Mail className="w-5 h-5 text-white/85" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block mail">E-MAIL</span>
+                <p className="text-white/80 font-medium">siserinsevoc@gmail.com</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         </div>
         

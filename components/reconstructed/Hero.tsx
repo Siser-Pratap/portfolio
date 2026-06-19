@@ -1,0 +1,69 @@
+"use client"
+
+import Image from "next/image"
+import { SETTINGS } from "@/constants/settings"
+
+const Hero = () => {
+  return (
+    <section className="relative w-full h-[100vh] min-h-[800px] flex items-center justify-center bg-[#F7F7F7] dark:bg-[#0D0505] overflow-hidden pt-20">
+
+      {/* Red/Orange Circle Backdrop */}
+      <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vh] h-[55vh] md:w-[65vh] md:h-[65vh] rounded-full bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] z-0 blur-[2px]"></div>
+
+      {/* Portrait */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[75%] z-10 flex items-end justify-center pointer-events-none">
+        <Image
+          src="/photo.jpg"
+          alt="Siser Pratap"
+          width={800}
+          height={1000}
+          sizes="(max-width: 768px) 100vw, 800px"
+          className="object-cover h-full w-auto object-bottom rounded-t-[400px]"
+          priority
+        />
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#F7F7F7] dark:from-[#0D0505] to-transparent" />
+      </div>
+
+      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center h-full pb-32">
+        {/* Left Typography */}
+        <div className="flex flex-col items-start w-full md:w-1/2 pointer-events-auto">
+          <span className="text-[#0D0505]/70 dark:text-white text-lg font-medium mb-4">Hey! I Am</span>
+          <h1 className="text-[clamp(64px,9vw,140px)] font-[800] leading-[0.85] tracking-[-0.05em] uppercase text-[#0D0505] dark:text-white m-0 p-0 drop-shadow-2xl">
+            SOFTWARE<br />DEVELOPER
+          </h1>
+        </div>
+
+        {/* Right Info */}
+        <div className="w-full md:w-1/3 flex flex-col items-start md:items-end text-left mt-auto md:mt-0 md:pt-40 pointer-events-auto">
+          <p className="text-[#0D0505]/70 dark:text-white/90 text-[16px] leading-[1.8] mb-6 text-left max-w-[320px] font-medium drop-shadow-lg">
+            Software innovator crafting digital experiences with bold simplicity.
+          </p>
+          <a
+            href={SETTINGS.calendlyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex bg-[#0D0505] dark:bg-white rounded-full p-2 pl-6 items-center w-full max-w-[320px] justify-between cursor-pointer hover:scale-[1.02] transition-transform shadow-2xl"
+          >
+            <span className="text-white dark:text-black font-semibold text-sm">Schedule a Free Call</span>
+            <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
+              ↗
+            </span>
+          </a>
+        </div>
+      </div>
+
+      {/* Services Strip */}
+      <div className="absolute bottom-12 left-0 w-full z-20 border-t border-[#0D0505]/10 dark:border-white/10 pt-8">
+        <div className="max-w-[1400px] mx-auto px-10 flex flex-wrap justify-between items-center text-[#0D0505]/70 dark:text-white/90 text-sm font-semibold tracking-wide">
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 01</span> Frontend</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 02</span> Backend</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 03</span> Full Stack Software</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 04</span> AI Agents</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 05</span> ML Models</div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Hero

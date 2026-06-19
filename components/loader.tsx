@@ -1,227 +1,191 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { gsap } from "gsap"
-import BubbleBackground from "./bubble-background"
+import { useEffect, useState, useRef } from "react"
 
 interface LoaderProps {
   onLoadComplete: () => void
 }
 
 const Loader = ({ onLoadComplete }: LoaderProps) => {
-  const loaderRef = useRef<HTMLDivElement>(null)
-  const progressRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const bubblesRef = useRef<HTMLDivElement[]>([])
   const [progress, setProgress] = useState(0)
-  const [loadingText, setLoadingText] = useState("Loading")
-
-  const loadingSteps = [
-    ""
-  ]
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false)
 
   useEffect(() => {
-    if (!loaderRef.current) return
+    // Prevent scrolling during load
+    document.body.style.overflow = "hidden"
+    
+    // Create offscreen canvas for rendering
+    const canvas = document.createElement("canvas")
+    canvas.width = 960
+    canvas.height = 540
+    const ctx = canvas.getContext("2d")
+    if (!ctx) {
+      setProgress(100)
+      setIsLoaded(true)
+      return
+    }
 
-    const ctx = gsap.context(() => {
-      // Initial setup
-      gsap.set(".loader-bubble", {
-        scale: 0,
-        opacity: 0,
-      })
+    const totalFrames = 120
+    const frames: HTMLImageElement[] = []
 
-      // Animate bubbles in
-      gsap.to(".loader-bubble", {
-        scale: 1,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-      })
+    const drawFrame = (c: CanvasRenderingContext2D, w: number, h: number, frame: number) => {
+      c.fillStyle = "#121212"
+      c.fillRect(0, 0, w, h)
 
-      // Floating animation for bubbles
-      gsap.to(".loader-bubble", {
-        y: "random(-20, 20)",
-        x: "random(-10, 10)",
-        rotation: "random(0, 360)",
-        duration: "random(2, 4)",
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: {
-          amount: 1,
-          from: "random",
-        },
-      })
+      const centerX = w / 2
+      const centerY = h / 2
+      const scrollRatio = frame / (totalFrames - 1)
 
-      // Progress bar animation
-      gsap.set(progressRef.current, { width: "0%" })
+      // Base radius and math
+      const radius = Math.min(w, h) * 0.3
+      const angleOffset = scrollRatio * Math.PI * 4 // two full spins
 
-      // Text fade animation
-      gsap.set(textRef.current, { opacity: 0, y: 20 })
-      gsap.to(textRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        delay: 0.5,
-        ease: "power2.out",
-      })
-    }, loaderRef)
+      // Deep background glow
+      const glowGrad = c.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 1.8)
+      const h1 = (270 + scrollRatio * 60) % 360
+      const h2 = (190 + scrollRatio * 60) % 360
+      glowGrad.addColorStop(0, `hsla(${h1}, 70%, 50%, 0.18)`)
+      glowGrad.addColorStop(0.5, `hsla(${h2}, 70%, 50%, 0.05)`)
+      glowGrad.addColorStop(1, "rgba(18, 18, 18, 0)")
+      c.fillStyle = glowGrad
+      c.fillRect(0, 0, w, h)
 
-    return () => ctx.revert()
+      // Drawing a 3D-looking wireframe spherical spiral
+      c.lineWidth = 1.5
+      const rings = 12
+      const pointsPerRing = 100
+
+      for (let r = 0; r < rings; r++) {
+        const ringProgress = r / rings
+        const phi = ringProgress * Math.PI
+        
+        c.beginPath()
+        for (let p = 0; p <= pointsPerRing; p++) {
+          const thetaProgress = p / pointsPerRing
+          const theta = thetaProgress * Math.PI * 2 + angleOffset
+
+          // 3D coordinates on sphere
+          const x3d = radius * Math.sin(phi) * Math.cos(theta)
+          const y3d = radius * Math.sin(phi) * Math.sin(theta)
+          const z3d = radius * Math.cos(phi) + Math.sin(theta * 6 + scrollRatio * Math.PI * 6) * 15
+
+          // Rotate in 3D space (Y-axis and X-axis)
+          const cosY = Math.cos(scrollRatio * Math.PI * 2)
+          const sinY = Math.sin(scrollRatio * Math.PI * 2)
+          const cosX = Math.cos(0.5)
+          const sinX = Math.sin(0.5)
+
+          let x1 = x3d * cosY - z3d * sinY
+          let z1 = x3d * sinY + z3d * cosY
+
+          let y2 = y3d * cosX - z1 * sinX
+          let z2 = y3d * sinX + z1 * cosX
+
+          // Perspective projection
+          const dist = 1000
+          const scale = dist / (dist + z2)
+          const screenX = centerX + x1 * scale
+          const screenY = centerY + y2 * scale
+
+          if (p === 0) {
+            c.moveTo(screenX, screenY)
+          } else {
+            c.lineTo(screenX, screenY)
+          }
+        }
+
+        const grad = c.createLinearGradient(0, 0, w, h)
+        grad.addColorStop(0, `hsla(${h1}, 80%, 65%, ${0.1 + ringProgress * 0.4})`)
+        grad.addColorStop(1, `hsla(${h2}, 80%, 65%, ${0.1 + (1 - ringProgress) * 0.4})`)
+        c.strokeStyle = grad
+        c.stroke()
+      }
+
+      // Outer HUD ticks
+      c.fillStyle = `rgba(255, 255, 255, ${0.1 + Math.sin(scrollRatio * Math.PI) * 0.15})`
+      for (let i = 0; i < 60; i++) {
+        const angle = (i / 60) * Math.PI * 2 + angleOffset * 0.15
+        const ringRad = radius * 1.25 + Math.sin(scrollRatio * Math.PI * 4 + i) * 6
+        const x = centerX + Math.cos(angle) * ringRad
+        const y = centerY + Math.sin(angle) * ringRad
+        c.beginPath()
+        c.arc(x, y, 1.2, 0, Math.PI * 2)
+        c.fill()
+      }
+    }
+
+    let currentFrame = 0
+
+    const generateNextFrame = () => {
+      if (currentFrame < totalFrames) {
+        drawFrame(ctx, canvas.width, canvas.height, currentFrame)
+        const url = canvas.toDataURL("image/jpeg", 0.7)
+        const img = new Image()
+        img.src = url
+        frames.push(img)
+
+        currentFrame++
+        setProgress(Math.round((currentFrame / totalFrames) * 100))
+        requestAnimationFrame(generateNextFrame)
+      } else {
+        // Generation completed, store in global variable
+        ;(window as any).preloadedFrames = frames
+        setIsLoaded(true)
+        setTimeout(() => {
+          setIsAnimatingOut(true)
+        }, 300)
+      }
+    }
+
+    generateNextFrame()
+
+    return () => {
+      document.body.style.overflow = "auto"
+    }
   }, [])
 
   useEffect(() => {
-    let progressInterval: NodeJS.Timeout
-    let textInterval: NodeJS.Timeout
-
-    // Simulate loading progress
-    progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = prev + Math.random() * 15 + 5
-        return newProgress >= 100 ? 100 : newProgress
-      })
-    }, 200)
-
-    // Update loading text
-    textInterval = setInterval(() => {
-      setLoadingText((prev) => {
-        const currentIndex = loadingSteps.indexOf(prev)
-        const nextIndex = (currentIndex + 1) % loadingSteps.length
-        return loadingSteps[nextIndex]
-      })
-    }, 800)
-
-    return () => {
-      clearInterval(progressInterval)
-      clearInterval(textInterval)
+    if (isAnimatingOut) {
+      const timer = setTimeout(() => {
+        onLoadComplete()
+        document.body.style.overflow = "auto"
+      }, 1200)
+      return () => clearTimeout(timer)
     }
-  }, [loadingSteps])
+  }, [isAnimatingOut, onLoadComplete])
 
-  useEffect(() => {
-    if (progressRef.current) {
-      gsap.to(progressRef.current, {
-        width: `${progress}%`,
-        duration: 0.5,
-        ease: "power2.out",
-      })
-    }
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0a] transition-all duration-[1200ms] pointer-events-none`}
+      style={{
+        transform: isAnimatingOut ? "translateY(-100%)" : "translateY(0%)",
+        opacity: isAnimatingOut ? 0 : 1,
+        transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
+      <div className="max-w-xl w-full px-12 text-center select-none pointer-events-none">
+        <h1 className="text-xs md:text-sm font-light tracking-[0.4em] uppercase text-white/90 mb-6 animate-pulse">
+          INITIALIZING CINEMATIC CANVAS
+        </h1>
 
-    if (progress >= 100) {
-      setTimeout(() => {
-        // Exit animation
-        const ctx = gsap.context(() => {
-          const tl = gsap.timeline({
-            onComplete: onLoadComplete,
-          })
-
-          tl.to(".loader-bubble", {
-            scale: 0,
-            opacity: 0,
-            duration: 0.4,
-            stagger: 0.05,
-            ease: "back.in(1.7)",
-          })
-            .to(
-              [textRef.current, progressRef.current?.parentElement],
-              {
-                opacity: 0,
-                y: -20,
-                duration: 0.4,
-                ease: "power2.in",
-              },
-              "-=0.2",
-            )
-            .to(loaderRef.current, {
-              opacity: 0,
-              duration: 0.6,
-              ease: "power2.inOut",
-            })
-        }, loaderRef)
-
-        return () => ctx.revert()
-      }, 1000)
-    }
-  }, [progress, onLoadComplete])
-
-  const bubbleColors = [
-    "from-cyan-400/60 to-blue-500/40",
-    "from-purple-500/60 to-pink-500/40",
-    "from-emerald-400/60 to-teal-500/40",
-    "from-rose-400/60 to-orange-500/40",
-    "from-violet-400/60 to-purple-600/40",
-  ]
-
-  return (<>
-    <BubbleBackground className="z-11 " />
-    <div ref={loaderRef} className="min-h-screen w-[100vw] flex items-center inset-0 z-10 relative justify-center  pt-20 overflow-x-hidden">
-      {/* Background Bubbles */}
-      {/* <div className="absolute inset-0">
-        {Array.from({ length: 12 }).map((_, index) => (
+        <div className="w-full h-[1px] bg-white/10 relative overflow-hidden mb-4">
           <div
-            key={index}
-            ref={(el) => {
-              if (el) bubblesRef.current[index] = el
-            }}
-            className={`loader-bubble absolute w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border border-white/10`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-violet-500 via-cyan-400 to-teal-500 transition-all duration-300 origin-left"
+            style={{ width: `${progress}%` }}
           />
-        ))}
-      </div> */}
-
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[120px] opacity-20 animate-pulse"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400 rounded-full filter blur-[100px] opacity-20 animate-pulse"></div>
-
-      {/* Main Loader Content */}
-      <div className="relative z-10 text-center">
-        {/* Logo/Brand */}
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Portfolio
-          </h1>
         </div>
 
-        {/* Loading Text */}
-        <div ref={textRef} className="mb-8">
-          <p className="text-xl text-white/80 font-light">{loadingText}</p>
+        <div className="flex justify-between items-center text-white/40 font-mono text-[3.5rem] md:text-[5.5rem] font-extralight tracking-tighter tabular-nums leading-none">
+          <span>{progress.toString().padStart(3, "0")}</span>
+          <span className="text-[1.5rem] md:text-[2rem] font-light text-white/20">%</span>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-80 max-w-sm mx-auto">
-          <div className="relative h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
-            <div
-              ref={progressRef}
-              className="absolute left-0 top-0 h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-full transition-all duration-500"
-              style={{ width: "0%" }}
-            />
-          </div>
-          <div className="mt-3 text-center">
-            <span className="text-sm text-white/60">{Math.round(progress)}%</span>
-          </div>
-        </div>
-
-        {/* Loading Dots */}
-        <div className="flex justify-center space-x-2 mt-8">
-          {[0, 1, 2].map((index) => (
-            <div
-              key={index}
-              className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full animate-pulse"
-              style={{
-                animationDelay: `${index * 0.2}s`,
-                animationDuration: "1s",
-              }}
-            />
-          ))}
-        </div>
+        <p className="text-[10px] font-mono tracking-[0.2em] uppercase text-white/20 mt-4">
+          {progress < 100 ? "RENDERING GEOMETRIC FLOW FIELDS" : "CANVAS READY - DECODING SEQUENCE"}
+        </p>
       </div>
-
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/80 pointer-events-none" />
     </div>
-    </>
   )
 }
 
