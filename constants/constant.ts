@@ -27,48 +27,61 @@ export const services = [
     {
       icon: backend,
       title: "Frontend",
+      description: "Responsive, accessible UIs built with React and Next.js — fast, pixel-perfect, and production-ready.",
     },
     {
       icon: creator,
       title: "Backend",
+      description: "Scalable server-side systems, REST APIs, and cloud-native architectures using Node.js, NestJS, and SpringBoot.",
     },
     {
       icon: web,
       title: "Full Stack Software",
+      description: "End-to-end product development — from database schema design to deployed, monitored production app.",
     },
     {
       icon: mobile,
-      title: "UI Design and 3D",
+      title: "AI Agents & ML Models",
+      description: "Intelligent AI agents designed to automate workflows, enhance decision-making, and deliver human-like interactions.",
     },
   ]
 
 export const experiences = [
     {
-      title: "FreeLancer",
-      company: "Self Employed",
-      location: "New Delhi, India",
-      period: "2023 - Present",
-      description:
-        "Leading development of scalable web applications using React, Node.js, and cloud technologies. Mentoring junior developers and architecting solutions for complex business requirements.",
-      technologies: ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "Next.js", "SpringBoot"],
+      title: "Software Development Engineer",
+      company: "M37Labs",
+      location: "Gurugram, India — OnSite",
+      period: "Jan 2026 – Present",
+      bullets: [
+        "Developed scalable full-stack applications using the MERN stack, FastAPI, and Django; partnered with the largest Jewellery and Clothes retail stores to translate requirements into high-performance, user-centric solutions.",
+        "Designed enterprise-grade Generative AI SaaS platforms leveraging LLMs, Prompt Engineering, and Computer Vision for clients across Malaysia and the US, ensuring cross-functional alignment and scalable architecture.",
+        "Built production-ready AI inference pipelines with model fine-tuning, human-in-the-loop feedback, and optimised backend integrations to improve accuracy, latency, and deployment reliability.",
+      ],
+      technologies: ["MERN Stack", "FastAPI", "Django", "LLMs", "Computer Vision", "AWS", "TypeScript"],
     },
     {
-      title: "Software Development Intern",
+      title: "SDE Intern",
+      company: "M37Labs",
+      location: "Gurugram, India — OnSite",
+      period: "Sept 2025 – Dec 2025",
+      bullets: [
+        "Architected end-to-end LLM-powered and vision-based AI systems with structured prompt pipelines and evaluation frameworks for performance optimisation.",
+        "Integrated AI microservices with scalable FastAPI services for seamless deployment across cloud-native environments.",
+        "Collaborated on AWS-based deployments, CI/CD automation, and technical documentation to deliver robust, production-grade AI systems.",
+      ],
+      technologies: ["FastAPI", "LLMs", "AWS", "CI/CD", "Computer Vision", "Python"],
+    },
+    {
+      title: "SDE Intern",
       company: "Synapsis Medical Technologies",
-      location: "Edmonton, Canada",
-      period: "February 2025 - April 2025",
-      description:
-        "Developed responsive web applications and collaborated with design teams to create pixel-perfect user interfaces. Improved application performance by 40%.",
-      technologies: ["React", "Vue.js", "SASS", "JavaScript", "Figma"],
-    },
-    {
-      title: "Web Development Intern",
-      company: "DC Infotech",
-      location: "Mumbai, India",
-      period: "Sept 2024 - November 2024",
-      description:
-        "Built and maintained web applications, participated in code reviews, and contributed to the development of the company's main product platform.",
-      technologies: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+      location: "Edmonton, Canada — Remote",
+      period: "Feb 2025 – Apr 2025",
+      bullets: [
+        "Built 5+ backend APIs in Nest.js supporting authentication, appointment tracking, and core application modules.",
+        "Developed an end-to-end testing framework using React.js, improving bug detection speed and reducing integration defects by 65%.",
+        "Integrated 3D medical simulation visuals using Three.js, React Three Fiber (R3F), and GSAP, enhancing high-fidelity user interaction.",
+      ],
+      technologies: ["Nest.js", "React.js", "Three.js", "React Three Fiber", "GSAP", "TypeScript"],
     },
   ]
 
@@ -129,24 +142,40 @@ export const teamMembers = [
     },
   ]
 
-  export const skills = [
-  { name: "HTML5 + CSS3", level: 95 },
-  { name: "JQUERY + JAVASCRIPT", level: 75 },
-  { name: "BOOTSTRAP", level: 85 },
-  { name: "React.js", level: 90 },
-  { name: "Next.js", level: 88 },
-  { name: "Nest.js", level: 88 },
-  { name: "Three.js", level: 88 },
-  { name: "Springboot", level: 88 },
-  { name: "SQL", level: 88 },
-  { name: "Gen-AI", level: 88 },
-  { name: "Node.js", level: 85 },
-  { name: "Express.js", level: 80 },
-  { name: "MongoDB", level: 85 },
-  { name: "PostgreSQL", level: 80 },
-  { name: "TypeScript", level: 75 },
-  { name: "Tailwind CSS", level: 90 },
-  { name: "REST API", level: 90 },
+export const skills = [
+  // Languages
+  { name: "JavaScript",      level: 90 },
+  { name: "TypeScript",      level: 85 },
+  { name: "Python",          level: 85 },
+  { name: "Java",            level: 72 },
+  { name: "C++",             level: 68 },
+  { name: "SQL",             level: 80 },
+  { name: "HTML + CSS",      level: 90 },
+  // Frameworks & Libraries
+  { name: "React.js",        level: 92 },
+  { name: "Next.js",         level: 88 },
+  { name: "Node.js",         level: 85 },
+  { name: "Express.js",      level: 82 },
+  { name: "Nest.js",         level: 80 },
+  { name: "Three.js",        level: 78 },
+  { name: "TensorFlow",      level: 70 },
+  { name: "PyTorch",         level: 70 },
+  { name: "Scikit-learn",    level: 72 },
+  // Cloud & DevOps
+  { name: "AWS",             level: 80 },
+  { name: "Docker",          level: 75 },
+  { name: "Kubernetes",      level: 65 },
+  { name: "Git + GitHub",    level: 90 },
+  // Databases
+  { name: "MongoDB",         level: 82 },
+  { name: "MySQL",           level: 78 },
+  // Core Concepts
+  { name: "REST APIs",       level: 88 },
+  { name: "Microservices",   level: 75 },
+  { name: "Generative AI",   level: 82 },
+  { name: "Computer Vision", level: 78 },
+  { name: "NLP",             level: 75 },
+  { name: "System Design",   level: 75 },
 ]
 export const testimonials = [
   {
