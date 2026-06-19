@@ -45,10 +45,10 @@ const Footer = () => {
             </div>
             <div className="flex flex-col gap-4">
               <span className="text-[#8A8A8A] text-xs font-semibold mb-2">Follow</span>
-              <a href="#" className={linkClass}>Instagram</a>
-              <a href="#" className={linkClass}>Youtube</a>
-              <a href="#" className={linkClass}>Dribbble</a>
-              <a href="#" className={linkClass}>Behance</a>
+              <a href="https://www.linkedin.com/in/siser" className={linkClass}>Linkedin</a>
+              <a href="https://www.x.com/PratapSiser" className={linkClass}>Twitter</a>
+              {/* <a href="#" className={linkClass}>Dribbble</a>
+              <a href="#" className={linkClass}>Behance</a> */}
             </div>
           </div>
         </motion.div>
