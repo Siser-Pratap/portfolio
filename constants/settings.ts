@@ -5,9 +5,12 @@
 export const SETTINGS = {
   // Resume — paste the Google Drive share link here
   resumeViewUrl:
-    "https://drive.google.com/file/d/1A2vvv0LIWB6POdUT_-I8Xd1rAa0clC45/view",
+    "https://drive.google.com/file/d/1BaLEqSKQdJxYWMMQYy3_d3TF2p7CxuP5/view",
   resumeDownloadUrl:
-    "https://drive.google.com/uc?export=download&id=1A2vvv0LIWB6POdUT_-I8Xd1rAa0clC45",
+    "https://drive.google.com/uc?export=download&id=1BaLEqSKQdJxYWMMQYy3_d3TF2p7CxuP5",
+
+
+    
 
   // Booking / CTA
   calendlyUrl: "https://calendly.com/siserpratap",
