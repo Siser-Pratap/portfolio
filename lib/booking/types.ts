@@ -1,4 +1,4 @@
- import { z } from "zod"
+import { z } from "zod"
 import { SETTINGS } from "@/constants/settings"
 
 const { booking } = SETTINGS
@@ -36,12 +36,27 @@ export const bookingRequestSchema = z.object({
   startsAt: z.string().datetime(),
   /** Visitor's IANA timezone, used only for display in emails. */
   timezone: z.string().min(1),
-  /** Anti-spam: real users never fill this. */
-  honeypot: z.string().max(0).optional(),
+  /**
+   * Anti-spam: real users never fill this. Deliberately permissive — the
+   * create route inspects it and fakes success, so a bot cannot tell a
+   * rejection from a booking. Validating it here would leak that signal
+   * as a 400.
+   */
+  honeypot: z.string().optional(),
 })
 
 export type BookingRequest = z.infer<typeof bookingRequestSchema>
 export type AvailabilityQuery = z.infer<typeof availabilityQuerySchema>
+
+/**
+ * A validated booking on its way to a provider and the mailer: the wire's
+ * ISO `startsAt` string is replaced by a real Date, and the anti-spam field
+ * is dropped since nothing downstream should see it.
+ */
+export type ConfirmedBooking = Omit<BookingRequest, "startsAt" | "honeypot"> & {
+  bookingId: string
+  startsAt: Date
+}
 
 /** A generated slot. `start` is an ISO 8601 UTC instant. */
 export type Slot = {

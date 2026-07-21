@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
-import nodemailer from "nodemailer"
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === "true",
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-})
+import { escapeHtml, getTransporter } from "@/lib/mailer"
 
 export async function POST(req: NextRequest) {
+  const transporter = getTransporter()
   try {
     const { name, email, phone, company, message } = await req.json()
 
@@ -28,13 +19,13 @@ export async function POST(req: NextRequest) {
       html: `
         <h2>New contact from your portfolio</h2>
         <table>
-          <tr><td><strong>Name</strong></td><td>${name}</td></tr>
-          <tr><td><strong>Email</strong></td><td>${email}</td></tr>
-          <tr><td><strong>Phone</strong></td><td>${phone || "—"}</td></tr>
-          <tr><td><strong>Company</strong></td><td>${company || "—"}</td></tr>
+          <tr><td><strong>Name</strong></td><td>${escapeHtml(name)}</td></tr>
+          <tr><td><strong>Email</strong></td><td>${escapeHtml(email)}</td></tr>
+          <tr><td><strong>Phone</strong></td><td>${escapeHtml(phone || "—")}</td></tr>
+          <tr><td><strong>Company</strong></td><td>${escapeHtml(company || "—")}</td></tr>
         </table>
         <h3>Message</h3>
-        <p>${message.replace(/\n/g, "<br/>")}</p>
+        <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
       `,
     })
 
