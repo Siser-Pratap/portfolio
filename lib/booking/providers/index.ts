@@ -25,9 +25,15 @@ export interface MeetingProvider {
 }
 
 import { manualProvider } from "./manual"
+import { googleProvider } from "./google"
 
+/**
+ * Presence of a refresh token is the switch: with Google credentials the real
+ * Calendar provider handles links + freebusy; without them everything falls
+ * back to the static Meet room and working-hours availability. No route knows
+ * which one it got.
+ */
 export function getProvider(): MeetingProvider {
-  // Phase 2 lands here:
-  //   if (process.env.GOOGLE_REFRESH_TOKEN) return googleProvider
+  if (process.env.GOOGLE_REFRESH_TOKEN) return googleProvider
   return manualProvider
 }
