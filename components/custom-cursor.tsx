@@ -15,10 +15,19 @@ const CustomCursor = () => {
     const mouse = { x: 0, y: 0 } // current mouse position
     const ringPos = { x: 0, y: 0 } // lerped ring position
 
-    // Handle mouse movement
+    // Reveal only once we know where the pointer is, so it never flashes at the
+    // top-left corner on load.
+    let ready = false
     const onMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX
       mouse.y = e.clientY
+
+      if (!ready) {
+        ready = true
+        ringPos.x = mouse.x
+        ringPos.y = mouse.y
+        document.documentElement.classList.add("custom-cursor-ready")
+      }
 
       // Move inner dot instantly
       dot.style.transform = `translate3d(${mouse.x}px, ${mouse.y}px, 0) translate(-50%, -50%)`
@@ -76,6 +85,7 @@ const CustomCursor = () => {
       window.removeEventListener("mousemove", onMouseMove)
       cancelAnimationFrame(animationFrameId)
       observer.disconnect()
+      document.documentElement.classList.remove("custom-cursor-ready")
 
       const elements = document.querySelectorAll("a, button, .interactive, [data-cursor-hover]")
       elements.forEach(el => {

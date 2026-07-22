@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/ThemeProvider"
+import CustomCursor from "@/components/custom-cursor"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({
     <html lang="en" className="overflow-x-hidden" suppressHydrationWarning>
       <head><link rel="icon" href="/favicon.ico" /></head>
       <body className={`${inter.className} font-sans cursor-none`}>
+        <CustomCursor />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

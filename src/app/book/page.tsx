@@ -14,9 +14,7 @@ export const metadata: Metadata = {
 
 export default function BookPage() {
   return (
-    // `cursor-auto` overrides the global `cursor-none` on <body> — a form is
-    // unusable without a pointer.
-    <main className="bg-[#F7F7F7] min-h-screen cursor-auto">
+    <main className="bg-[#F7F7F7] min-h-screen">
       <header className="w-full bg-[#0D0505] py-6 px-6 sm:px-10">
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           <Link href="/" className="text-white text-xl font-bold italic tracking-tight">

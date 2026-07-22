@@ -90,7 +90,11 @@ const GitHubActivity = () => {
 
     fetch(`/api/github-repos?repos=${slugs}`)
       .then((r) => r.json())
-      .then((d) => setData(d as GitHubData))
+      .then((d) => {
+        // The API returns { error } on failure (e.g. GitHub rate-limiting).
+        // Only accept a well-formed payload so the render can trust its shape.
+        if (d && Array.isArray(d.repos) && d.profile) setData(d as GitHubData)
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
@@ -98,7 +102,7 @@ const GitHubActivity = () => {
   // Merge live data back onto portfolioItems (preserves order + hardcoded fields)
   const enriched = portfolioItems.map((item) => {
     const slug = item.githubUrl.split("/").pop()
-    const live = data?.repos.find((r) => r.name === slug)
+    const live = data?.repos?.find((r) => r.name === slug)
     return { ...item, live }
   })
 
@@ -146,17 +150,17 @@ const GitHubActivity = () => {
           ) : (
             <>
               <span className="text-sm font-semibold text-[#0D0505] dark:text-white">
-                <span className="text-[#FF4B1F]">{data?.profile.public_repos ?? "—"}</span>
+                <span className="text-[#FF4B1F]">{data?.profile?.public_repos ?? "—"}</span>
                 <span className="text-[#8A8A8A] font-medium ml-1.5">Public Repos</span>
               </span>
               <span className="w-px h-4 bg-[#EAEAEA] dark:bg-white/10 self-center" />
               <span className="text-sm font-semibold text-[#0D0505] dark:text-white">
-                <span className="text-[#FF4B1F]">{data?.profile.followers ?? "—"}</span>
+                <span className="text-[#FF4B1F]">{data?.profile?.followers ?? "—"}</span>
                 <span className="text-[#8A8A8A] font-medium ml-1.5">Followers</span>
               </span>
               <span className="w-px h-4 bg-[#EAEAEA] dark:bg-white/10 self-center" />
               <span className="text-sm font-semibold text-[#0D0505] dark:text-white">
-                <span className="text-[#FF4B1F]">{data?.profile.following ?? "—"}</span>
+                <span className="text-[#FF4B1F]">{data?.profile?.following ?? "—"}</span>
                 <span className="text-[#8A8A8A] font-medium ml-1.5">Following</span>
               </span>
             </>
