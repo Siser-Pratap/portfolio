@@ -2,6 +2,7 @@
 
 import { services } from "@/constants/constant"
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 
 const Services = () => {
@@ -28,15 +29,13 @@ const Services = () => {
               Helping businesses craft products, systems, and experiences that connect simply and effectively.
             </p>
 
-            <a
-              href="https://calendly.com/siserpratap"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/book"
               className="bg-[#0D0505] text-white px-6 py-3 rounded-full text-sm font-medium flex items-center justify-between w-[220px] hover:bg-[#FF4B1F] transition-colors"
             >
               Schedule a Free Call
               <span className="bg-white text-black w-6 h-6 rounded-full flex items-center justify-center text-xs">↗</span>
-            </a>
+            </Link>
           </motion.div>
 
           {/* Right Cards Grid */}

@@ -1,5 +1,5 @@
 import { backend, creator, web, mobile } from "@/public"
-import {  Twitter, Dribbble, Instagram, Linkedin, Github } from "lucide-react"
+import {  Twitter, CalendarClock, Instagram, Linkedin, Github } from "lucide-react"
 
 export const sections = [
     { id: "home" },
@@ -134,7 +134,7 @@ export const teamMembers = [
       image: "/photo.jpg",
       social: [
         { icon: Twitter, link: "https://twitter.com/PratapSiser" },
-        { icon: Dribbble, link: "https://calendly.com/siserpratap" },
+        { icon: CalendarClock, link: "/book" },
         { icon: Instagram, link: "https://instagram.com/siser_ins17" },
         { icon: Linkedin, link: "https://linkedin.com/in/siser" },
         {icon: Github, link:"https://github.com/Siser-Pratap"},

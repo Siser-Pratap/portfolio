@@ -87,6 +87,16 @@ const Header = () => {
                 )}
               </Link>
             ))}
+            <Link
+              href="/book"
+              className={`transition-colors ${
+                scrolled
+                  ? "text-white/60 hover:text-white"
+                  : "text-[#0D0505]/50 dark:text-white/60 hover:text-[#0D0505] dark:hover:text-white"
+              }`}
+            >
+              Book a Call
+            </Link>
           </nav>
 
           {/* Desktop CTA + Mobile Hamburger */}

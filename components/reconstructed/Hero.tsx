@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { SETTINGS } from "@/constants/settings"
+import Link from "next/link"
 
 const Hero = () => {
   return (
@@ -38,17 +38,15 @@ const Hero = () => {
           <p className="text-[#0D0505]/70 dark:text-white/90 text-[16px] leading-[1.8] mb-6 text-left max-w-[320px] font-medium drop-shadow-lg">
             Software innovator crafting digital experiences with bold simplicity.
           </p>
-          <a
-            href={SETTINGS.calendlyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/book"
             className="flex bg-[#0D0505] dark:bg-white rounded-full p-2 pl-6 items-center w-full max-w-[320px] justify-between cursor-pointer hover:scale-[1.02] transition-transform shadow-2xl"
           >
             <span className="text-white dark:text-black font-semibold text-sm">Schedule a Free Call</span>
             <span className="bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
               ↗
             </span>
-          </a>
+          </Link>
         </div>
       </div>
 

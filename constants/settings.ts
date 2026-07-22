@@ -12,10 +12,6 @@ export const SETTINGS = {
 
     
 
-  // Booking / CTA
-  // NOTE: calendlyUrl is deprecated — removed once every CTA points at /book.
-  calendlyUrl: "https://calendly.com/siserpratap",
-
   // ─── In-house meeting scheduler (/book) ───────────────────────────────────
   booking: {
     // Your timezone. Working hours below are interpreted in it.
