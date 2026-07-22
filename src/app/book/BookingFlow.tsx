@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { AnimatePresence, motion, MotionConfig, useReducedMotion } from "framer-motion"
 import { SETTINGS } from "@/constants/settings"
 import BookingSummary from "@/components/booking/BookingSummary"
 import DatePicker from "@/components/booking/DatePicker"
@@ -10,6 +11,7 @@ import SlotGrid from "@/components/booking/SlotGrid"
 import StepIndicator, { STEP_ORDER, type StepId } from "@/components/booking/StepIndicator"
 import SuccessCard from "@/components/booking/SuccessCard"
 import { visitorTimezone } from "@/lib/booking/format"
+import { container, EASE, riseIn, stepSlide } from "@/lib/booking/motion"
 import type { BookingResult } from "@/lib/booking/types"
 
 const BookingFlow = () => {
@@ -34,7 +36,22 @@ const BookingFlow = () => {
     ...(slotIso ? (["time"] as StepId[]) : []),
   ]
 
+  // Which way the panels should travel: +1 forward, -1 back.
+  const direction = useRef(1)
+
+  // Zeroes the travel distance so reduced motion is a fade, not a jump.
+  // Gated behind `mounted` because useReducedMotion is null during SSR — reading
+  // it in the SSR'd `initial` would desync hydration. Exits are all post-mount.
+  const reducedPref = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const reduced = mounted && reducedPref
+
+  const slideVariants = stepSlide(reduced ? 0 : 40)
+  const riseVariants = riseIn(reduced ? 0 : 24)
+
   const goTo = (next: StepId) => {
+    direction.current = STEP_ORDER.indexOf(next) >= STEP_ORDER.indexOf(step) ? 1 : -1
     setError(null)
     setStep(next)
   }
@@ -120,84 +137,116 @@ const BookingFlow = () => {
   const stepIndex = STEP_ORDER.indexOf(step)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] items-start">
-      {/* Left: editorial column + live recap */}
-      <div className="flex flex-col pt-4">
-        <span className="text-[#8A8A8A] text-sm font-medium mb-6 italic">{"(/ Book a Call )"}</span>
-        <h1 className="text-[clamp(34px,5vw,56px)] font-[700] leading-[1.1] text-[#0D0505] tracking-tight mb-8 max-w-[420px]">
-          {result ? "That's in the diary." : "Let's find a time that works."}
-        </h1>
-        <p className="text-[#8A8A8A] text-[15px] leading-[1.8] mb-12 max-w-[380px]">
-          {result
-            ? "Everything you need is in your inbox — including the calendar invite. See you then."
-            : "Pick a slot and I'll send a Google Meet invite straight to your inbox. No account, no back-and-forth."}
-        </p>
+    // reducedMotion="user" makes every transform/layout animation below
+    // collapse to a plain opacity change when the OS asks for less motion.
+    <MotionConfig reducedMotion="user">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] items-start">
+        {/* Left: editorial column + live recap */}
+        <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col pt-4">
+          <motion.span variants={riseVariants} className="text-[#8A8A8A] text-sm font-medium mb-6 italic">
+            {"(/ Book a Call )"}
+          </motion.span>
+          <motion.h1
+            variants={riseVariants}
+            className="text-[clamp(34px,5vw,56px)] font-[700] leading-[1.1] text-[#0D0505] tracking-tight mb-8 max-w-[420px]"
+          >
+            {result ? "That's in the diary." : "Let's find a time that works."}
+          </motion.h1>
+          <motion.p variants={riseVariants} className="text-[#8A8A8A] text-[15px] leading-[1.8] mb-12 max-w-[380px]">
+            {result
+              ? "Everything you need is in your inbox — including the calendar invite. See you then."
+              : "Pick a slot and I'll send a Google Meet invite straight to your inbox. No account, no back-and-forth."}
+          </motion.p>
 
-        {!result && (
-          <div className="lg:sticky lg:top-10">
-            <BookingSummary
-              duration={duration}
-              dateKey={dateKey}
-              slotIso={slotIso}
-              timezone={timezone}
-              guests={details.guests}
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Right: the active step */}
-      <div className="bg-white rounded-[24px] p-8 sm:p-10 shadow-[0_10px_50px_-15px_rgba(0,0,0,0.05)] border border-[#EAEAEA]">
-        {result ? (
-          <SuccessCard
-            result={result}
-            duration={duration}
-            timezone={timezone}
-            email={details.email}
-            guests={details.guests}
-            onBookAnother={reset}
-          />
-        ) : (
-          <>
-            <StepIndicator current={step} completed={completed} onJump={goTo} />
-
-            {step === "duration" && <DurationPicker value={duration} onChange={handleDuration} />}
-
-            {step === "date" && <DatePicker value={dateKey} duration={duration} onChange={handleDate} />}
-
-            {step === "time" && dateKey && (
-              <SlotGrid
-                dateKey={dateKey}
+          {!result && (
+            <motion.div variants={riseVariants} className="lg:sticky lg:top-10">
+              <BookingSummary
                 duration={duration}
+                dateKey={dateKey}
+                slotIso={slotIso}
                 timezone={timezone}
-                value={slotIso}
-                onChange={handleSlot}
+                guests={details.guests}
               />
-            )}
+            </motion.div>
+          )}
+        </motion.div>
 
-            {step === "details" && (
-              <DetailsForm
-                value={details}
-                onChange={setDetails}
-                onSubmit={submit}
-                submitting={submitting}
-                error={error}
-              />
-            )}
+        {/* Right: the active step */}
+        <motion.div
+          layout
+          initial={{ opacity: 0, y: reduced ? 0 : 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12, ease: EASE }}
+          className="bg-white rounded-[24px] p-8 sm:p-10 shadow-[0_10px_50px_-15px_rgba(0,0,0,0.05)] border border-[#EAEAEA] overflow-hidden"
+        >
+          {result ? (
+            <SuccessCard
+              result={result}
+              duration={duration}
+              timezone={timezone}
+              email={details.email}
+              guests={details.guests}
+              onBookAnother={reset}
+            />
+          ) : (
+            <>
+              <StepIndicator current={step} completed={completed} onJump={goTo} />
 
-            {stepIndex > 0 && (
-              <button
-                type="button"
-                onClick={() => goTo(STEP_ORDER[stepIndex - 1])}
-                className="text-[#8A8A8A] text-xs mt-8 hover:text-[#FF4B1F] transition-colors"
-              >
-                ← Back
-              </button>
-            )}
-          </>
-        )}
+              {/* One panel at a time, sliding the way the visitor is going. */}
+              <AnimatePresence mode="wait" custom={direction.current} initial={false}>
+                <motion.div
+                  key={step}
+                  custom={direction.current}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                >
+                  {step === "duration" && <DurationPicker value={duration} onChange={handleDuration} />}
+
+                  {step === "date" && (
+                    <DatePicker value={dateKey} duration={duration} onChange={handleDate} />
+                  )}
+
+                  {step === "time" && dateKey && (
+                    <SlotGrid
+                      dateKey={dateKey}
+                      duration={duration}
+                      timezone={timezone}
+                      value={slotIso}
+                      onChange={handleSlot}
+                    />
+                  )}
+
+                  {step === "details" && (
+                    <DetailsForm
+                      value={details}
+                      onChange={setDetails}
+                      onSubmit={submit}
+                      submitting={submitting}
+                      error={error}
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {stepIndex > 0 && (
+                <motion.button
+                  layout
+                  type="button"
+                  onClick={() => goTo(STEP_ORDER[stepIndex - 1])}
+                  whileHover={{ x: -3 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                  className="text-[#8A8A8A] text-xs mt-8 hover:text-[#FF4B1F] transition-colors"
+                >
+                  ← Back
+                </motion.button>
+              )}
+            </>
+          )}
+        </motion.div>
       </div>
-    </div>
+    </MotionConfig>
   )
 }
 

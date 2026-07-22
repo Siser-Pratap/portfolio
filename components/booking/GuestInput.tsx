@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { SETTINGS } from "@/constants/settings"
 import { isValidEmail } from "@/lib/booking/format"
 
@@ -54,22 +55,30 @@ const GuestInput = ({ value, onChange }: Props) => {
 
       {value.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-1">
-          {value.map((email) => (
-            <span
-              key={email}
-              className="inline-flex items-center gap-2 bg-[#0D0505] text-white text-xs font-medium pl-3 pr-2 py-1.5 rounded-full"
-            >
-              {email}
-              <button
-                type="button"
-                onClick={() => onChange(value.filter((g) => g !== email))}
-                aria-label={`Remove ${email}`}
-                className="w-4 h-4 rounded-full bg-white/20 hover:bg-[#FF4B1F] transition-colors flex items-center justify-center text-[10px] leading-none"
+          {/* popLayout so the remaining chips slide up as one is removed. */}
+          <AnimatePresence mode="popLayout" initial={false}>
+            {value.map((email) => (
+              <motion.span
+                key={email}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ type: "spring", stiffness: 500, damping: 32 }}
+                className="inline-flex items-center gap-2 bg-[#0D0505] text-white text-xs font-medium pl-3 pr-2 py-1.5 rounded-full"
               >
-                ×
-              </button>
-            </span>
-          ))}
+                {email}
+                <button
+                  type="button"
+                  onClick={() => onChange(value.filter((g) => g !== email))}
+                  aria-label={`Remove ${email}`}
+                  className="w-4 h-4 rounded-full bg-white/20 hover:bg-[#FF4B1F] transition-colors flex items-center justify-center text-[10px] leading-none"
+                >
+                  ×
+                </button>
+              </motion.span>
+            ))}
+          </AnimatePresence>
         </div>
       )}
 

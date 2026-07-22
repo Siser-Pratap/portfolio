@@ -1,5 +1,7 @@
 "use client"
 
+import { AnimatePresence, motion } from "framer-motion"
+import { EASE } from "@/lib/booking/motion"
 import GuestInput from "./GuestInput"
 
 export type Details = {
@@ -130,19 +132,55 @@ const DetailsForm = ({ value, onChange, onSubmit, submitting, error }: Props) =>
         />
       </div>
 
-      {error && (
-        <p role="alert" className="text-sm text-red-500 font-medium mt-6">
-          {error}
-        </p>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            role="alert"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            className="text-sm text-red-500 font-medium mt-6"
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
 
-      <button
+      <motion.button
         type="submit"
         disabled={submitting}
-        className="w-full bg-[#0D0505] text-white font-bold py-4 rounded-full mt-8 hover:bg-[#FF4B1F] transition-colors text-sm tracking-wide disabled:opacity-60 disabled:cursor-not-allowed"
+        whileHover={submitting ? undefined : { scale: 1.01 }}
+        whileTap={submitting ? undefined : { scale: 0.985 }}
+        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+        className="w-full bg-[#0D0505] text-white font-bold py-4 rounded-full mt-8 hover:bg-[#FF4B1F] transition-colors text-sm tracking-wide disabled:cursor-not-allowed flex items-center justify-center gap-3"
       >
-        {submitting ? "CONFIRMING…" : "CONFIRM BOOKING"}
-      </button>
+        <AnimatePresence mode="wait" initial={false}>
+          {submitting ? (
+            <motion.span
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center gap-3"
+            >
+              <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+              CONFIRMING…
+            </motion.span>
+          ) : (
+            <motion.span
+              key="idle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              CONFIRM BOOKING
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.button>
     </form>
   )
 }

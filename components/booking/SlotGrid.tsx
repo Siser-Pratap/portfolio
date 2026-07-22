@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { cell, grid, LAYOUT } from "@/lib/booking/motion"
 import { formatDateKeyLong, formatTime, formatZoneAbbrev } from "@/lib/booking/format"
 import { formatDateKey } from "@/lib/booking/slots"
 import type { AvailabilityResponse, Slot } from "@/lib/booking/types"
@@ -69,13 +71,26 @@ const SlotGrid = ({ dateKey, duration, timezone, value, onChange }: Props) => {
       )}
       {!shiftsLocalDate && <div className="mb-6" />}
 
-      {slots === null && !error && (
-        <div className="grid grid-cols-3 gap-2" aria-busy="true" aria-label="Loading available times">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="h-11 rounded-xl bg-[#F0F0F0] animate-pulse" />
-          ))}
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {slots === null && !error && (
+          <motion.div
+            key="skeleton"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="grid grid-cols-3 gap-2"
+            aria-busy="true"
+            aria-label="Loading available times"
+          >
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-11 rounded-xl slot-shimmer animate-slot-shimmer"
+                style={{ animationDelay: `${i * 0.06}s` }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {error && (
         <div className="border border-[#EAEAEA] rounded-2xl p-6 text-center">
@@ -92,31 +107,49 @@ const SlotGrid = ({ dateKey, duration, timezone, value, onChange }: Props) => {
       )}
 
       {slots && slots.length > 0 && (
-        <div className="grid grid-cols-3 gap-2 max-h-[340px] overflow-y-auto pr-1">
+        <motion.div
+          // Re-keyed per day+length so a new grid replays rather than morphs.
+          key={`${dateKey}-${duration}`}
+          variants={grid(0.02)}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-3 gap-2 max-h-[340px] overflow-y-auto pr-1"
+        >
           {slots.map((slot) => {
             const selected = slot.start === value
             return (
-              <button
+              <motion.button
                 key={slot.start}
+                variants={cell}
                 type="button"
                 disabled={!slot.available}
                 onClick={() => onChange(slot.start)}
                 aria-pressed={selected}
                 title={slot.available ? undefined : "Already booked"}
+                whileHover={slot.available ? { y: -2 } : undefined}
+                whileTap={slot.available ? { scale: 0.96 } : undefined}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 className={[
-                  "h-11 rounded-xl border text-sm font-semibold transition-colors",
+                  "relative h-11 rounded-xl border text-sm font-semibold transition-colors",
                   selected
-                    ? "border-[#FF4B1F] bg-[#FF4B1F] text-white"
+                    ? "border-[#FF4B1F] text-white"
                     : slot.available
                       ? "border-[#EAEAEA] text-[#0D0505] hover:border-[#FF4B1F] hover:text-[#FF4B1F]"
                       : "border-[#F0F0F0] text-[#D5D5D5] line-through cursor-not-allowed",
                 ].join(" ")}
               >
-                {formatTime(slot.start, timezone)}
-              </button>
+                {selected && (
+                  <motion.span
+                    layoutId={LAYOUT.slotSelect}
+                    className="absolute inset-0 rounded-xl bg-[#FF4B1F]"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative">{formatTime(slot.start, timezone)}</span>
+              </motion.button>
             )
           })}
-        </div>
+        </motion.div>
       )}
     </div>
   )

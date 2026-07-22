@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { motion } from "framer-motion"
 import { SETTINGS } from "@/constants/settings"
+import { cell, container, EASE } from "@/lib/booking/motion"
 import { formatDateKeyLong, formatTime, formatZoneAbbrev } from "@/lib/booking/format"
 import { formatDateKey } from "@/lib/booking/slots"
 import type { BookingResult } from "@/lib/booking/types"
@@ -19,28 +21,56 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
   const dateKey = formatDateKey(new Date(result.startsAt), timezone)
 
   return (
-    <div className="text-center py-4">
-      <div className="w-16 h-16 rounded-full bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] mx-auto flex items-center justify-center mb-6">
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="relative text-center py-4"
+    >
+      {/* Slow orange bloom behind the confirmation. */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: [0, 0.5, 0.28], scale: 1 }}
+        transition={{ duration: 1.6, ease: EASE, times: [0, 0.5, 1] }}
+        className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-0 w-56 h-56 rounded-full bg-[#FF4B1F]/30 blur-[70px]"
+      />
+
+      <motion.div
+        initial={{ scale: 0.94, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 18 }}
+        className="relative w-16 h-16 rounded-full bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] mx-auto flex items-center justify-center mb-6"
+      >
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
+          <motion.path
             d="M4 12.5l5.5 5.5L20 7"
             stroke="white"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.6, ease: EASE, delay: 0.25 }}
           />
         </svg>
-      </div>
+      </motion.div>
 
-      <h3 className="text-[#0D0505] text-[28px] font-[800] tracking-tight leading-tight mb-3">
+      <motion.h3
+        variants={cell}
+        className="relative text-[#0D0505] text-[28px] font-[800] tracking-tight leading-tight mb-3"
+      >
         You&apos;re booked in.
-      </h3>
-      <p className="text-[#8A8A8A] text-sm leading-relaxed mb-8 max-w-[380px] mx-auto">
+      </motion.h3>
+      <motion.p
+        variants={cell}
+        className="relative text-[#8A8A8A] text-sm leading-relaxed mb-8 max-w-[380px] mx-auto"
+      >
         {formatDateKeyLong(dateKey)} at {formatTime(result.startsAt, timezone)}{" "}
         {formatZoneAbbrev(result.startsAt, timezone)} — {duration} minutes on Google Meet.
-      </p>
+      </motion.p>
 
-      <div className="border-t border-b border-[#EAEAEA] py-5 mb-8 text-left">
+      <motion.div variants={cell} className="relative border-t border-b border-[#EAEAEA] py-5 mb-8 text-left">
         <p className="text-[#8A8A8A] text-xs mb-1 font-medium">Confirmation sent to</p>
         <p className="text-[#0D0505] font-semibold text-sm break-words">{email}</p>
         {guests.length > 0 && (
@@ -53,9 +83,9 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
           </a>
           .
         </p>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+      <motion.div variants={cell} className="relative flex flex-col sm:flex-row gap-3 justify-center">
         <a
           href={result.joinUrl}
           target="_blank"
@@ -70,18 +100,21 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
         >
           Back to portfolio
         </Link>
-      </div>
+      </motion.div>
 
-      <button
+      <motion.button
+        variants={cell}
         type="button"
         onClick={onBookAnother}
-        className="text-[#8A8A8A] text-xs mt-6 hover:text-[#FF4B1F] transition-colors underline underline-offset-4"
+        className="relative block mx-auto text-[#8A8A8A] text-xs mt-6 hover:text-[#FF4B1F] transition-colors underline underline-offset-4"
       >
         Book another call
-      </button>
+      </motion.button>
 
-      <p className="text-[#C9C9C9] text-[11px] mt-6">Ref {result.bookingId}</p>
-    </div>
+      <motion.p variants={cell} className="relative text-[#C9C9C9] text-[11px] mt-6">
+        Ref {result.bookingId}
+      </motion.p>
+    </motion.div>
   )
 }
 

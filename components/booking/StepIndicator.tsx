@@ -1,5 +1,8 @@
 "use client"
 
+import { motion } from "framer-motion"
+import { EASE, LAYOUT } from "@/lib/booking/motion"
+
 export type StepId = "duration" | "date" | "time" | "details"
 
 /**
@@ -48,24 +51,34 @@ const StepIndicator = ({ current, completed, onJump }: Props) => {
             >
               <span
                 className={[
-                  "w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold border transition-colors",
+                  "relative w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold border transition-colors",
                   isCurrent
-                    ? "bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] text-white border-transparent"
+                    ? "text-white border-transparent"
                     : isDone
                       ? "bg-[#0D0505] text-white border-transparent"
                       : "bg-transparent text-[#C9C9C9] border-[#EAEAEA]",
                 ].join(" ")}
               >
-                {isDone ? "✓" : index + 1}
+                {/* The orange disc is one element that flies between steps. */}
+                {isCurrent && (
+                  <motion.span
+                    layoutId={LAYOUT.stepPill}
+                    className="absolute inset-0 rounded-full bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21]"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <span className="relative">{isDone ? "✓" : index + 1}</span>
               </span>
               <span className="hidden sm:inline">{LABELS[step]}</span>
             </button>
 
             {index < STEP_ORDER.length - 1 && (
               <span className="flex-1 h-px bg-[#EAEAEA] relative overflow-hidden">
-                <span
-                  className="absolute inset-0 bg-[#FF4B1F] origin-left transition-transform duration-500"
-                  style={{ transform: `scaleX(${index < currentIndex ? 1 : 0})` }}
+                <motion.span
+                  className="absolute inset-0 bg-[#FF4B1F] origin-left"
+                  initial={false}
+                  animate={{ scaleX: index < currentIndex ? 1 : 0 }}
+                  transition={{ duration: 0.45, ease: EASE }}
                 />
               </span>
             )}

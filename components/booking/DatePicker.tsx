@@ -1,8 +1,10 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { motion } from "framer-motion"
 import { SETTINGS } from "@/constants/settings"
 import { formatMonthLabel } from "@/lib/booking/format"
+import { cell, grid, LAYOUT } from "@/lib/booking/motion"
 import { addDaysToKey, daysBetweenKeys, dateKeyWeekday, formatDateKey, generateSlots } from "@/lib/booking/slots"
 
 const WEEKDAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"]
@@ -114,7 +116,14 @@ const DatePicker = ({ value, duration, onChange }: Props) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
+      <motion.div
+        // Re-keyed per month so changing month replays the reveal.
+        key={`${cursor.year}-${cursor.month}`}
+        variants={grid(0.015)}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-7 gap-1"
+      >
         {cells.map((dateKey, index) => {
           if (!dateKey) return <div key={`pad-${index}`} />
 
@@ -124,27 +133,39 @@ const DatePicker = ({ value, duration, onChange }: Props) => {
           const dayNumber = Number(dateKey.split("-")[2])
 
           return (
-            <button
+            <motion.button
               key={dateKey}
+              variants={cell}
               type="button"
               disabled={!open}
               onClick={() => onChange(dateKey)}
               aria-pressed={selected}
+              whileHover={open ? { scale: 1.08 } : undefined}
+              whileTap={open ? { scale: 0.94 } : undefined}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className={[
-                "aspect-square rounded-full text-sm font-semibold flex items-center justify-center transition-colors",
+                "relative aspect-square rounded-full text-sm font-semibold flex items-center justify-center transition-colors",
                 selected
-                  ? "bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21] text-white"
+                  ? "text-white"
                   : open
                     ? "text-[#0D0505] hover:bg-[#0D0505] hover:text-white"
                     : "text-[#D5D5D5] cursor-not-allowed",
                 isToday && !selected ? "ring-1 ring-inset ring-[#EAEAEA]" : "",
               ].join(" ")}
             >
-              {dayNumber}
-            </button>
+              {/* A single disc that flies from the old date to the new one. */}
+              {selected && (
+                <motion.span
+                  layoutId={LAYOUT.daySelect}
+                  className="absolute inset-0 rounded-full bg-gradient-to-b from-[#FF4B1F] to-[#FF6A21]"
+                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                />
+              )}
+              <span className="relative">{dayNumber}</span>
+            </motion.button>
           )
         })}
-      </div>
+      </motion.div>
 
       <p className="text-[#8A8A8A] text-xs mt-6 leading-relaxed">
         Greyed-out days are weekends or already full for a {duration}-minute call. Times on the next step are

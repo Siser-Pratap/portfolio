@@ -52,3 +52,46 @@ body {
 .cursor-blink {
   animation: cursor-blink 1s step-end infinite;
 }
+
+/* ─── Booking flow (/book) ────────────────────────────────────────────────── */
+
+/* Skeleton sweep while availability loads. */
+.slot-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    #F0F0F0 20%,
+    #FBE9E3 40%,
+    #F0F0F0 60%
+  );
+  background-size: 200% 100%;
+}
+
+/* Soft orange bloom behind the card — echoes the Hero background. */
+.booking-blob {
+  filter: blur(90px);
+  will-change: transform;
+}
+
+/*
+ * Motion is decoration here, never information: framer-motion handles its own
+ * animations via <MotionConfig reducedMotion="user">, so this only has to
+ * silence the CSS-driven ones.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-blob-drift,
+  .animate-slot-shimmer,
+  .animate-spin-slow,
+  .cursor-blink {
+    animation: none !important;
+  }
+
+  .slot-shimmer {
+    background-image: none;
+    background-color: #F0F0F0;
+  }
+}
