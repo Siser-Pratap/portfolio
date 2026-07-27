@@ -111,8 +111,10 @@ function runCommand(raw: string): CommandResult {
 
   if (cmd === "hire") {
     return {
-      lines: [L("  Opening calendly.com/siserpratap…", "success")],
-      action: () => window.open("https://calendly.com/siserpratap", "_blank"),
+      lines: [L("  Opening the booking page…", "success")],
+      action: () => {
+        window.location.href = "/book"
+      },
     }
   }
 

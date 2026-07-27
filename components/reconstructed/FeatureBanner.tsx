@@ -1,7 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { SETTINGS } from "@/constants/settings"
+import Link from "next/link"
+
+// Lets the CTA keep its entrance animation while routing client-side to /book.
+const MotionLink = motion.create(Link)
 
 const TICKER_ITEMS = [
   "Full Stack", "React", "Next.js", "FastAPI", "TypeScript",
@@ -75,14 +78,12 @@ const FeatureBanner = () => {
               </textPath>
             </text>
           </svg>
-          <a
-            href={SETTINGS.calendlyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/book"
             className="w-11 h-11 rounded-full bg-[#FF4B1F] flex items-center justify-center text-white text-lg hover:scale-110 transition-transform"
           >
             ↗
-          </a>
+          </Link>
         </motion.div>
 
         {/* Headline — alternating fill / stroke */}
@@ -135,10 +136,8 @@ const FeatureBanner = () => {
         </motion.div>
 
         {/* CTA */}
-        <motion.a
-          href={SETTINGS.calendlyUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <MotionLink
+          href="/book"
           className="bg-white text-[#0D0505] px-7 py-3.5 rounded-full text-sm font-bold flex items-center gap-4 hover:bg-[#FF4B1F] hover:text-white transition-colors shadow-2xl"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -149,7 +148,7 @@ const FeatureBanner = () => {
           <span className="bg-[#FF4B1F] group-hover:bg-white w-7 h-7 rounded-full text-white flex items-center justify-center text-sm">
             ↗
           </span>
-        </motion.a>
+        </MotionLink>
 
       </div>
     </section>

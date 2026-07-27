@@ -210,11 +210,13 @@ function runCommand(raw: string): CommandResult {
     return {
       lines: [
         blank(),
-        L(`  Opening ${SETTINGS.calendlyUrl}…`, "success"),
-        L("  → Redirecting to booking page", "dim"),
+        L("  Opening the booking page…", "success"),
+        L("  → Redirecting to /book", "dim"),
         blank(),
       ],
-      action: () => window.open(SETTINGS.calendlyUrl, "_blank"),
+      action: () => {
+        window.location.href = "/book"
+      },
     }
   }
 
@@ -235,10 +237,13 @@ function runCommand(raw: string): CommandResult {
         L("  [sudo] password for visitor: ········", "dim"),
         L("  Verifying credentials…", "dim"),
         L("  Permission granted. ✓", "success"),
-        L(`  Redirecting to ${SETTINGS.calendlyUrl}…`, "success"),
+        L("  Redirecting to the booking page…", "success"),
         blank(),
       ],
-      action: () => setTimeout(() => window.open(SETTINGS.calendlyUrl, "_blank"), 1400),
+      action: () =>
+        setTimeout(() => {
+          window.location.href = "/book"
+        }, 1400),
     }
   }
 
@@ -284,7 +289,7 @@ function runCommand(raw: string): CommandResult {
         L(`  ${SETTINGS.email}`, "white"),
         L("  linkedin.com/in/siser", "white"),
         L("  github.com/Siser-Pratap", "white"),
-        L(`  ${SETTINGS.calendlyUrl}`, "white"),
+        L("  siserpratap.vercel.app/book", "white"),
         blank(),
       ],
     }

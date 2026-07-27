@@ -52,3 +52,108 @@ body {
 .cursor-blink {
   animation: cursor-blink 1s step-end infinite;
 }
+
+/* ─── Custom cursor ───────────────────────────────────────────────────────────
+   Paired with `cursor-none` on <body>: the OS pointer is hidden and these two
+   elements (rendered once in the root layout) stand in for it. */
+.custom-cursor-dot,
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;      /* never intercept clicks or text selection */
+  z-index: 9999;
+  border-radius: 9999px;
+  opacity: 0;                /* hidden until the first mousemove positions them */
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+
+.custom-cursor-ready .custom-cursor-dot,
+.custom-cursor-ready .custom-cursor-ring {
+  opacity: 1;
+}
+
+.custom-cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: #FF4B1F;
+}
+
+.custom-cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgba(255, 75, 31, 0.6);
+  /* opacity is handled above; keep size/colour eased for the hover expand */
+  transition: width 0.25s ease, height 0.25s ease, background-color 0.25s ease,
+    border-color 0.25s ease, opacity 0.3s ease;
+}
+
+/* Grows over links, buttons, and anything tagged interactive. */
+.custom-cursor-ring.cursor-expand {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 75, 31, 0.08);
+  border-color: rgba(255, 75, 31, 0.9);
+}
+
+/* No real pointer on touch devices — don't draw a fake one, and let the OS
+   cursor return in case any control still expects it. */
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor-ring {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* ─── Booking flow (/book) ────────────────────────────────────────────────── */
+
+/* Skeleton sweep while availability loads. */
+.slot-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    #F0F0F0 20%,
+    #FBE9E3 40%,
+    #F0F0F0 60%
+  );
+  background-size: 200% 100%;
+}
+
+/* Soft orange bloom behind the card — echoes the Hero background. */
+.booking-blob {
+  filter: blur(90px);
+  will-change: transform;
+}
+
+/*
+ * Motion is decoration here, never information: framer-motion handles its own
+ * animations via <MotionConfig reducedMotion="user">, so this only has to
+ * silence the CSS-driven ones.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-blob-drift,
+  .animate-slot-shimmer,
+  .animate-spin-slow,
+  .cursor-blink {
+    animation: none !important;
+  }
+
+  .slot-shimmer {
+    background-image: none;
+    background-color: #F0F0F0;
+  }
+}
