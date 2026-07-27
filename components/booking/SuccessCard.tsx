@@ -4,7 +4,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { SETTINGS } from "@/constants/settings"
 import { cell, container, EASE } from "@/lib/booking/motion"
-import { formatDateKeyLong, formatTime, formatZoneAbbrev } from "@/lib/booking/format"
+import { formatDateKeyLong, formatTime, formatZoneAbbrev, googleCalendarUrl } from "@/lib/booking/format"
 import { formatDateKey } from "@/lib/booking/slots"
 import type { BookingResult } from "@/lib/booking/types"
 
@@ -19,6 +19,14 @@ type Props = {
 
 const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother }: Props) => {
   const dateKey = formatDateKey(new Date(result.startsAt), timezone)
+  const addToCalendar = googleCalendarUrl({
+    subject: "Call with Siser Pratap",
+    startIso: result.startsAt,
+    durationMinutes: duration,
+    details: `Google Meet: ${result.joinUrl}`,
+    location: result.joinUrl,
+    timeZone: timezone,
+  })
 
   return (
     <motion.div
@@ -85,7 +93,7 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
         </p>
       </motion.div>
 
-      <motion.div variants={cell} className="relative flex flex-col sm:flex-row gap-3 justify-center">
+      <motion.div variants={cell} className="relative flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
         <a
           href={result.joinUrl}
           target="_blank"
@@ -94,13 +102,22 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
         >
           Open the Meet link
         </a>
-        <Link
-          href="/"
+        <a
+          href={addToCalendar}
+          target="_blank"
+          rel="noopener noreferrer"
           className="border border-[#EAEAEA] text-[#0D0505] font-bold px-7 py-3.5 rounded-full text-sm hover:border-[#0D0505] transition-colors"
         >
-          Back to portfolio
-        </Link>
+          Add to Google Calendar
+        </a>
       </motion.div>
+
+      <Link
+        href="/"
+        className="relative inline-block text-[#8A8A8A] text-xs mt-6 hover:text-[#FF4B1F] transition-colors underline underline-offset-4"
+      >
+        Back to portfolio
+      </Link>
 
       <motion.button
         variants={cell}

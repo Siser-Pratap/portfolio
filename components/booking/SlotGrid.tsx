@@ -1,10 +1,9 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { cell, grid, LAYOUT } from "@/lib/booking/motion"
 import { formatDateKeyLong, formatTime, formatZoneAbbrev } from "@/lib/booking/format"
-import { formatDateKey } from "@/lib/booking/slots"
 import type { AvailabilityResponse, Slot } from "@/lib/booking/types"
 
 type Props = {
@@ -42,34 +41,14 @@ const SlotGrid = ({ dateKey, duration, timezone, value, onChange }: Props) => {
     }
   }, [dateKey, duration])
 
-  const zone = slots?.length ? formatZoneAbbrev(slots[0].start, timezone) : timezone
-
-  /**
-   * The heading is the host's calendar date, but times render in the visitor's
-   * zone — and far enough west those are a different local day. Saying so
-   * beats a heading that contradicts every time under it.
-   */
-  const localDates = useMemo(() => {
-    if (!slots?.length) return []
-    const seen = new Set(slots.map((slot) => formatDateKey(new Date(slot.start), timezone)))
-    return Array.from(seen).sort()
-  }, [slots, timezone])
-
-  const shiftsLocalDate = localDates.length > 0 && !(localDates.length === 1 && localDates[0] === dateKey)
+  const zone = slots?.length ? formatZoneAbbrev(slots[0].start, timezone) : "IST"
 
   return (
     <div>
       <h3 className="text-[#0D0505] text-lg font-bold tracking-tight mb-1">{formatDateKeyLong(dateKey)}</h3>
-      <p className="text-[#8A8A8A] text-sm mb-2">
-        {duration}-minute slots, shown in your time ({zone}).
+      <p className="text-[#8A8A8A] text-sm mb-6">
+        {duration}-minute slots, all times in {zone}.
       </p>
-      {shiftsLocalDate && (
-        <p className="text-[#0D0505] text-xs mb-6 bg-[#FF4B1F]/[0.06] border border-[#FF4B1F]/20 rounded-xl px-3 py-2">
-          Heads up — that&apos;s my date. Where you are, these land on{" "}
-          <strong className="font-semibold">{localDates.map(formatDateKeyLong).join(" and ")}</strong>.
-        </p>
-      )}
-      {!shiftsLocalDate && <div className="mb-6" />}
 
       <AnimatePresence mode="wait">
         {slots === null && !error && (

@@ -10,7 +10,6 @@ import DurationPicker from "@/components/booking/DurationPicker"
 import SlotGrid from "@/components/booking/SlotGrid"
 import StepIndicator, { STEP_ORDER, type StepId } from "@/components/booking/StepIndicator"
 import SuccessCard from "@/components/booking/SuccessCard"
-import { visitorTimezone } from "@/lib/booking/format"
 import { container, EASE, riseIn, stepSlide } from "@/lib/booking/motion"
 import type { BookingResult } from "@/lib/booking/types"
 
@@ -25,10 +24,9 @@ const BookingFlow = () => {
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<BookingResult | null>(null)
 
-  // Resolved on the client only — the server has no idea where the visitor is,
-  // and reading it during render would desync hydration.
-  const [timezone, setTimezone] = useState(SETTINGS.booking.hostTimezone)
-  useEffect(() => setTimezone(visitorTimezone()), [])
+  // The scheduler is single-timezone: everything is shown and booked in IST
+  // (the host timezone), so there is no visitor-timezone resolution to do.
+  const timezone = SETTINGS.booking.hostTimezone
 
   const completed: StepId[] = [
     "duration",

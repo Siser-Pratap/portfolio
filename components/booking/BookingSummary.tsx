@@ -1,7 +1,6 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { SETTINGS } from "@/constants/settings"
 import { formatDateKeyLong, formatTime, formatZoneAbbrev } from "@/lib/booking/format"
 import { EASE } from "@/lib/booking/motion"
 
@@ -48,10 +47,6 @@ const BookingSummary = ({ duration, dateKey, slotIso, timezone, guests }: Props)
       {slotIso ? (
         <Filled key={slotIso}>
           {formatTime(slotIso, timezone)} {formatZoneAbbrev(slotIso, timezone)}
-          <span className="block text-[#8A8A8A] font-normal text-xs mt-1">
-            {formatTime(slotIso, SETTINGS.booking.hostTimezone)}{" "}
-            {formatZoneAbbrev(slotIso, SETTINGS.booking.hostTimezone)} my time
-          </span>
         </Filled>
       ) : (
         <Pending />

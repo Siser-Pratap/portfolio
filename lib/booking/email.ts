@@ -1,7 +1,10 @@
 import { SETTINGS } from "@/constants/settings"
 import { escapeHtml, getTransporter } from "@/lib/mailer"
+import { googleCalendarUrl } from "./format"
 import { buildIcs, buildUid } from "./ics"
 import type { ConfirmedBooking } from "./types"
+
+const TZ = SETTINGS.booking.hostTimezone
 
 const BRAND = {
   ink: "#0D0505",
@@ -41,9 +44,19 @@ function row(label: string, value: string): string {
     </tr>`
 }
 
+function calendarLink(input: BookingEmailInput): string {
+  return googleCalendarUrl({
+    subject: input.subject,
+    startIso: input.startsAt.toISOString(),
+    durationMinutes: input.duration,
+    details: `Google Meet: ${input.joinUrl}${input.notes ? `\n\n${input.notes}` : ""}`,
+    location: input.joinUrl,
+    timeZone: TZ,
+  })
+}
+
 function guestConfirmationHtml(input: BookingEmailInput): string {
-  const theirTime = formatWhen(input.startsAt, input.timezone)
-  const myTime = formatWhen(input.startsAt, SETTINGS.booking.hostTimezone)
+  const when = formatWhen(input.startsAt, TZ)
   const guestList = input.guests.length ? input.guests.map(escapeHtml).join(", ") : "—"
 
   return `
@@ -56,25 +69,30 @@ function guestConfirmationHtml(input: BookingEmailInput): string {
       <div style="padding:32px;">
         <p style="margin:0 0 8px;color:${BRAND.muted};font-size:13px;font-style:italic;">(/ Booking confirmed )</p>
         <h1 style="margin:0 0 24px;color:${BRAND.ink};font-size:26px;line-height:1.25;font-weight:800;letter-spacing:-0.03em;">
-          We're on for ${escapeHtml(theirTime)}
+          We're on for ${escapeHtml(when)}
         </h1>
 
         <table style="width:100%;border-collapse:collapse;border-top:1px solid ${BRAND.line};">
           ${row("Subject", escapeHtml(input.subject))}
+          ${row("When", escapeHtml(when))}
           ${row("Duration", `${input.duration} minutes`)}
-          ${row("Your time", escapeHtml(theirTime))}
-          ${row("My time", escapeHtml(myTime))}
           ${row("Guests", guestList)}
           ${row("Where", "Google Meet")}
         </table>
 
-        <a href="${encodeURI(input.joinUrl)}"
-           style="display:inline-block;margin-top:28px;background:${BRAND.orange};color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:999px;font-size:14px;font-weight:700;">
-          Join the Meet →
-        </a>
+        <div style="margin-top:28px;">
+          <a href="${encodeURI(input.joinUrl)}"
+             style="display:inline-block;background:${BRAND.orange};color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:999px;font-size:14px;font-weight:700;margin:0 8px 8px 0;">
+            Join the Meet →
+          </a>
+          <a href="${escapeHtml(calendarLink(input))}"
+             style="display:inline-block;background:#ffffff;color:${BRAND.ink};text-decoration:none;padding:13px 26px;border-radius:999px;font-size:14px;font-weight:700;border:1px solid ${BRAND.line};margin:0 0 8px 0;">
+            Add to Google Calendar
+          </a>
+        </div>
 
         <p style="margin:24px 0 0;color:${BRAND.muted};font-size:13px;line-height:1.7;">
-          The calendar invite is attached — open it to add this to your calendar.
+          All times are IST. The calendar invite is also attached — open it to add this to any calendar.
           Need to move it? Just reply to this email.
         </p>
       </div>
@@ -89,15 +107,18 @@ function guestConfirmationHtml(input: BookingEmailInput): string {
 /** Plain-text fallback for the attendee. Must never leak the host digest. */
 function guestConfirmationText(input: BookingEmailInput): string {
   return [
-    `Booking confirmed — ${formatWhen(input.startsAt, input.timezone)}`,
+    `Booking confirmed — ${formatWhen(input.startsAt, TZ)}`,
     ``,
     `Subject:  ${input.subject}`,
+    `When:     ${formatWhen(input.startsAt, TZ)}`,
     `Duration: ${input.duration} minutes`,
     `Where:    Google Meet — ${input.joinUrl}`,
     input.guests.length ? `Guests:   ${input.guests.join(", ")}` : null,
     ``,
-    `The calendar invite is attached.`,
-    `Need to move it? Just reply to this email.`,
+    `Add to Google Calendar: ${calendarLink(input)}`,
+    `(A calendar invite is also attached.)`,
+    ``,
+    `All times are IST. Need to move it? Just reply to this email.`,
     ``,
     `Booking ref ${input.bookingId}`,
   ]
@@ -107,14 +128,14 @@ function guestConfirmationText(input: BookingEmailInput): string {
 
 function hostNotificationText(input: BookingEmailInput): string {
   return [
-    `New booking — ${formatWhen(input.startsAt, SETTINGS.booking.hostTimezone)}`,
+    `New booking — ${formatWhen(input.startsAt, TZ)}`,
     ``,
     `Name:     ${input.name}`,
     `Email:    ${input.email}`,
     `Subject:  ${input.subject}`,
+    `When:     ${formatWhen(input.startsAt, TZ)} (IST)`,
     `Duration: ${input.duration} min`,
     `Guests:   ${input.guests.length ? input.guests.join(", ") : "—"}`,
-    `Their tz: ${input.timezone} (${formatWhen(input.startsAt, input.timezone)})`,
     `Join:     ${input.joinUrl}`,
     ``,
     `Notes:`,
@@ -163,7 +184,7 @@ export async function sendBookingEmails(input: BookingEmailInput): Promise<void>
       from: process.env.SMTP_FROM,
       to: SETTINGS.email,
       replyTo: input.email,
-      subject: `New booking — ${input.name}, ${formatWhen(input.startsAt, SETTINGS.booking.hostTimezone)}`,
+      subject: `New booking — ${input.name}, ${formatWhen(input.startsAt, TZ)}`,
       text: hostNotificationText(input),
       icalEvent: { method: "REQUEST", filename: "meeting.ics", content: ics },
     }),
