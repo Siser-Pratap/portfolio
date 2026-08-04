@@ -2,11 +2,11 @@ import { ImageResponse } from "next/og"
 import { SITE } from "@/constants/site"
 
 export const runtime = "edge"
-export const alt = "Siser Pratap — Full Stack Developer"
+export const alt = "Book a call with Siser Pratap"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default function OGImage() {
+export default function BookOGImage() {
   return new ImageResponse(
     (
       <div
@@ -31,7 +31,7 @@ export default function OGImage() {
         {/* Middle: Headline */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <span style={{ color: "#FF4B1F", fontSize: 20, fontWeight: 600, letterSpacing: "4px", textTransform: "uppercase" }}>
-            Full Stack Developer
+            Free Discovery Call
           </span>
           <h1
             style={{
@@ -44,11 +44,11 @@ export default function OGImage() {
               textTransform: "uppercase",
             }}
           >
-            CREATIVE<br />DEVELOPER
+            BOOK A<br />CALL
           </h1>
         </div>
 
-        {/* Bottom: Tags + accent bar */}
+        {/* Bottom: What they get + accent bar */}
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div
             style={{
@@ -59,7 +59,7 @@ export default function OGImage() {
             }}
           />
           <div style={{ display: "flex", gap: 12 }}>
-            {["React", "Next.js", "Node.js", "TypeScript", "Three.js"].map((tag) => (
+            {["Google Meet", "Your timezone", "15–60 min", "Instant invite"].map((tag) => (
               <span
                 key={tag}
                 style={{
@@ -78,7 +78,7 @@ export default function OGImage() {
             ))}
           </div>
           <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 16 }}>
-            {SITE.url.replace(/^https?:\/\//, "")} · {SITE.email}
+            {SITE.url.replace(/^https?:\/\//, "")}/book · {SITE.email}
           </span>
         </div>
       </div>

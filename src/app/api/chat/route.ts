@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import Groq from "groq-sdk"
+import { SITE } from "@/constants/site"
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
@@ -23,7 +24,7 @@ function isRateLimited(ip: string): boolean {
 
 // ─── System prompt built from real portfolio data ─────────────────────────────
 const SYSTEM_PROMPT = `
-You are the portfolio assistant for Siser Pratap, a Full Stack Developer based in New Delhi, India.
+You are the portfolio assistant for Siser Pratap, a Full Stack Developer based in ${SITE.location.display}.
 Your job is to answer visitors' questions about Siser — his skills, projects, experience, and availability.
 Be friendly, direct, and concise. Keep answers under 120 words unless the question genuinely needs more detail.
 Never invent information. If you don't know something, say so and suggest the visitor reach out directly.
@@ -33,9 +34,9 @@ Always speak about Siser in the third person.
 Full Stack Developer specialising in React, Next.js, Node.js, TypeScript, and cloud-native architectures.
 Works across the entire stack — from database schema to deployed production app.
 Available for freelance engagements worldwide.
-Location: New Delhi, India.
-Email: siserinsevoc@gmail.com
-Book a call: https://siserpratap.vercel.app/book
+Location: ${SITE.location.display}.
+Email: ${SITE.email}
+Book a call: ${SITE.url}/book
 GitHub: https://github.com/Siser-Pratap
 LinkedIn: https://linkedin.com/in/siser
 Twitter: https://twitter.com/PratapSiser

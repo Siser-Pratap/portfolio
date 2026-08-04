@@ -1,4 +1,5 @@
 import { SETTINGS } from "@/constants/settings"
+import { SITE } from "@/constants/site"
 import type { BusyWindow, ConfirmedBooking } from "../types"
 import type { MeetingProvider } from "./index"
 
@@ -119,7 +120,7 @@ export const googleProvider: MeetingProvider = {
     const end = new Date(booking.startsAt.getTime() + booking.duration * 60_000)
     const tz = SETTINGS.booking.hostTimezone
 
-    const description = [booking.notes?.trim(), `Booked via siserpratap.vercel.app/book`]
+    const description = [booking.notes?.trim(), `Booked via ${SITE.url}/book`]
       .filter(Boolean)
       .join("\n\n")
 

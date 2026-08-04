@@ -3,6 +3,9 @@ import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
+import JsonLd from "@/components/seo/JsonLd"
+import { SITE, absoluteUrl } from "@/constants/site"
+import { graph, blogPostingSchema, breadcrumbSchema } from "@/lib/seo/schema"
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }))
@@ -11,9 +14,33 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getPostBySlug(params.slug)
   if (!post) return {}
+
+  const url = absoluteUrl(`/blog/${post.slug}`)
+  const published = new Date(post.date)
+
   return {
-    title: `${post.title} — Siser Pratap`,
+    // The root layout's title template appends "— Siser Pratap".
+    title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${post.slug}` },
+    authors: [{ name: SITE.name, url: SITE.url }],
+    openGraph: {
+      type: "article",
+      url,
+      title: post.title,
+      description: post.excerpt,
+      siteName: SITE.name,
+      // No `images` here on purpose — setting it would override the generated
+      // card in opengraph-image.tsx, which renders the headline and reads far
+      // better in a share preview than a raw project screenshot.
+      authors: [SITE.name],
+      publishedTime: Number.isNaN(published.getTime()) ? undefined : published.toISOString(),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+    },
   }
 }
 
@@ -23,6 +50,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <main className="bg-[#FFFFFF] min-h-screen">
+      <JsonLd
+        data={graph(
+          blogPostingSchema(post),
+          breadcrumbSchema([
+            { name: SITE.name, path: "/" },
+            { name: "Blog", path: "/#blogs" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ])
+        )}
+      />
+
       {/* Header */}
       <header className="w-full bg-[#0D0505] py-6 px-10">
         <div className="max-w-[800px] mx-auto flex items-center justify-between">
