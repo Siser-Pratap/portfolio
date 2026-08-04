@@ -61,9 +61,14 @@ const Footer = () => {
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         >
-          <h1 className="text-[clamp(80px,18vw,300px)] font-[800] italic tracking-[-0.05em] text-[#0D0505] dark:text-white leading-none m-0 p-0 text-center">
+          {/* Decorative wordmark, not a heading — the page's only H1 is the
+              hero. Kept as a div so the heading outline stays clean. */}
+          <div
+            aria-hidden="true"
+            className="text-[clamp(80px,18vw,300px)] font-[800] italic tracking-[-0.05em] text-[#0D0505] dark:text-white leading-none m-0 p-0 text-center"
+          >
             Siser.
-          </h1>
+          </div>
         </motion.div>
 
       </div>

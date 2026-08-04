@@ -1,4 +1,5 @@
 import { SETTINGS } from "@/constants/settings"
+import { SITE } from "@/constants/site"
 
 /**
  * Minimal RFC 5545 writer — hand-rolled to avoid a dependency for what is
@@ -98,6 +99,6 @@ export function buildIcs(event: IcsEvent): string {
 
 /** Stable, collision-free UID for a booking. */
 export function buildUid(bookingId: string): string {
-  const domain = SETTINGS.email.split("@")[1] ?? "siserpratap.vercel.app"
+  const domain = SETTINGS.email.split("@")[1] ?? SITE.url.replace(/^https?:\/\//, "")
   return `${bookingId}@${domain}`
 }

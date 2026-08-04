@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { experiences, skills, portfolioItems } from "@/constants/constant"
 import { SETTINGS } from "@/constants/settings"
+import { SITE } from "@/constants/site"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -289,7 +290,7 @@ function runCommand(raw: string): CommandResult {
         L(`  ${SETTINGS.email}`, "white"),
         L("  linkedin.com/in/siser", "white"),
         L("  github.com/Siser-Pratap", "white"),
-        L("  siserpratap.vercel.app/book", "white"),
+        L(`  ${SITE.url.replace(/^https?:\/\//, "")}/book`, "white"),
         blank(),
       ],
     }

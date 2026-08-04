@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 
 interface LoaderProps {
-  onLoadComplete: () => void
+  /** Optional — the loader is a self-contained overlay and needs no coordination. */
+  onLoadComplete?: () => void
 }
 
 const CHARS = ["S", "i", "s", "e", "r", "."]
@@ -86,7 +87,7 @@ const Loader = ({ onLoadComplete }: LoaderProps) => {
       .call(() => {
         setIsComplete(true)
         document.body.style.overflow = "auto"
-        onLoadComplete()
+        onLoadComplete?.()
       })
 
     return () => { tl.kill() }

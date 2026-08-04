@@ -1,13 +1,28 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import BookingFlow from "./BookingFlow"
+import JsonLd from "@/components/seo/JsonLd"
+import { SITE, absoluteUrl } from "@/constants/site"
+import { graph, breadcrumbSchema } from "@/lib/seo/schema"
 
 export const metadata: Metadata = {
-  title: "Book a Call — Siser Pratap",
+  // The root layout's title template appends "— Siser Pratap".
+  title: "Book a Call",
   description:
     "Schedule a Google Meet with Siser Pratap. Pick a length, choose a time in your own timezone, and get the invite by email.",
+  alternates: {
+    canonical: "/book",
+  },
   openGraph: {
-    title: "Book a Call — Siser Pratap",
+    type: "website",
+    url: absoluteUrl("/book"),
+    title: `Book a Call — ${SITE.name}`,
+    description: "Pick a time that works for you. Google Meet invite lands in your inbox.",
+    siteName: SITE.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Book a Call — ${SITE.name}`,
     description: "Pick a time that works for you. Google Meet invite lands in your inbox.",
   },
 }
@@ -15,6 +30,14 @@ export const metadata: Metadata = {
 export default function BookPage() {
   return (
     <main className="bg-[#F7F7F7] min-h-screen">
+      <JsonLd
+        data={graph(
+          breadcrumbSchema([
+            { name: SITE.name, path: "/" },
+            { name: "Book a Call", path: "/book" },
+          ])
+        )}
+      />
       <header className="w-full bg-[#0D0505] py-6 px-6 sm:px-10">
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           <Link href="/" className="text-white text-xl font-bold italic tracking-tight">

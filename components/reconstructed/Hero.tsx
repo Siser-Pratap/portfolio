@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[75%] z-10 flex items-end justify-center pointer-events-none">
         <Image
           src="/photo.jpg"
-          alt="Siser Pratap"
+          alt="Siser Pratap, full stack developer based in Gurugram, India"
           width={800}
           height={1000}
           sizes="(max-width: 768px) 100vw, 800px"
@@ -26,10 +26,18 @@ const Hero = () => {
 
       <div className="relative z-20 w-full max-w-[1400px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center h-full pb-32">
         {/* Left Typography */}
+        {/* The name lives inside the H1 as visible text. The page's strongest
+            heading has to state the entity — an sr-only span would do it too,
+            but hidden text that differs from the visible heading is both a spam
+            signal and worse for screen readers. */}
         <div className="flex flex-col items-start w-full md:w-1/2 pointer-events-auto">
-          <span className="text-[#0D0505]/70 dark:text-white text-lg font-medium mb-4">Hey! I Am</span>
-          <h1 className="text-[clamp(64px,9vw,140px)] font-[800] leading-[0.85] tracking-[-0.05em] uppercase text-[#0D0505] dark:text-white m-0 p-0 drop-shadow-2xl">
-            SOFTWARE<br />DEVELOPER
+          <h1 className="flex flex-col items-start m-0 p-0">
+            <span className="block text-[#0D0505]/70 dark:text-white text-lg font-medium mb-4">
+              Hey! I am Siser Pratap
+            </span>
+            <span className="block text-[clamp(64px,9vw,140px)] font-[800] leading-[0.85] tracking-[-0.05em] uppercase text-[#0D0505] dark:text-white drop-shadow-2xl">
+              SOFTWARE<br />DEVELOPER
+            </span>
           </h1>
         </div>
 
