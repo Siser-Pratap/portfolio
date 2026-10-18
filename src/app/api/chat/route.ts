@@ -128,14 +128,20 @@ export async function POST(req: NextRequest) {
 
     const readable = new ReadableStream({
       async start(controller) {
-        const encoder = new TextEncoder()
+        const encoder = new TextEncoder();
+
         for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content ?? ""
-          if (text) controller.enqueue(encoder.encode(text))
+          let text = chunk.choices[0]?.delta?.content ?? "";
+
+          if (text) {
+            text = text.replace(/\*\*/g, "");
+            controller.enqueue(encoder.encode(text));
+          }
         }
-        controller.close()
+
+        controller.close();
       },
-    })
+    });
 
     return new Response(readable, {
       headers: {
