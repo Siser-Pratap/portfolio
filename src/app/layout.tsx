@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 import "./globals.css"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import CustomCursor from "@/components/custom-cursor"
@@ -11,9 +11,9 @@ import { graph, personSchema, websiteSchema } from "@/lib/seo/schema"
 // Only the weights the live components actually use. 100/200/300 appear solely
 // in the unused legacy components under /components (not /components/reconstructed),
 // so shipping them cost three font files per page load for nothing.
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+const inter = localFont({
+  src: "./fonts/inter-latin.woff2",
+  weight: "400 900",
   display: "swap",
 })
 
