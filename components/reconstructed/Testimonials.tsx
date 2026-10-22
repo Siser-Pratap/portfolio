@@ -58,7 +58,7 @@ const Testimonials = () => {
                     <div className="flex gap-1 text-[#FF4B1F]">★★★★★</div>
                   </div>
                 </div>
-                <div className="text-[#EAEAEA] text-[100px] leading-none font-serif mt-[-20px]">"</div>
+                <div className="text-[#EAEAEA] text-[100px] leading-none font-serif mt-[-20px]">&quot;</div>
               </div>
 
               {/* Quote */}
