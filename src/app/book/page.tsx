@@ -16,13 +16,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: absoluteUrl("/book"),
-    title: `Book a Call — ${SITE.name}`,
+    title: `Book a Call - ${SITE.name}`,
     description: "Pick a time that works for you. Google Meet invite lands in your inbox.",
     siteName: SITE.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Book a Call — ${SITE.name}`,
+    title: `Book a Call - ${SITE.name}`,
     description: "Pick a time that works for you. Google Meet invite lands in your inbox.",
   },
 }

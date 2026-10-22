@@ -9,21 +9,26 @@ const booking = {
 }
 const joinUrl = "https://meet.google.com/abc-defg-hij"
 const { escapeHtml } = await route("lib/mailer.ts")
+const { isSlotBookable } = await route("lib/booking/slots.ts")
 
-async function setup({ url = joinUrl, rejected = [], mailError = false } = {}) {
+async function setup({ url = joinUrl, rejected = [], mailError = false, mailGate, mailConfigured = true, validateSchedule = false } = {}) {
   const created = [], messages = []
   const handlers = await route("src/app/api/booking/create/route.ts", {
     "@/lib/booking/providers": { getProvider: () => ({ name: "test", create: async (input) => {
       created.push(input)
       return { joinUrl: url }
     } }) },
-    "@/lib/booking/slots": { isSlotBookable: () => true, formatDateKey: () => "2026-11-02" },
+    "@/lib/booking/slots": {
+      isSlotBookable: (params) => !validateSchedule || isSlotBookable({ ...params, now: new Date("2026-11-01T00:00:00Z") }),
+      formatDateKey: () => "2026-11-02",
+    },
     "@/lib/booking/rate-limit": { checkRateLimit: () => ({ allowed: true }), clientKey: () => "test" },
     "@/lib/mailer": {
-      escapeHtml, isMailConfigured: () => true,
+      escapeHtml, isMailConfigured: () => mailConfigured,
       getTransporter: () => ({ sendMail: async (message) => {
         messages.push(message)
         if (mailError) throw Error("SMTP unavailable")
+        if (mailGate) await mailGate
         return { rejected, accepted: [message.to, ...(message.cc ?? [])] }
       } }),
     },
@@ -63,6 +68,43 @@ test("booking creates a meeting and emails the invitee, CC, and host before conf
   assert.ok(ics.includes("mailto:visitor@example.com"))
   assert.ok(ics.includes("mailto:guest@example.com"))
 })
+
+test("booking response waits for SMTP instead of queuing a background job", async () => {
+  let releaseMail
+  const mailGate = new Promise(resolve => { releaseMail = resolve })
+  const flow = await setup({ mailGate })
+  let settled = false
+  const pending = flow.submit().then(response => { settled = true; return response })
+  await new Promise(setImmediate)
+  assert.equal(flow.created.length, 1)
+  assert.equal(flow.messages.length, 2)
+  assert.equal(settled, false)
+  releaseMail()
+  const response = await pending
+  assert.equal(response.status, 200)
+  assert.equal((await response.json()).emailStatus, undefined)
+})
+
+test("missing SMTP configuration blocks creation before a meeting is inserted", async () => {
+  const flow = await setup({ mailConfigured: false })
+  assert.equal((await flow.submit()).status, 503)
+  assert.equal(flow.created.length + flow.messages.length, 0)
+})
+
+for (const startsAt of [
+  "2026-11-07T09:00:00+05:30", // Saturday
+  "2026-11-02T08:45:00+05:30", // before opening
+  "2026-11-02T12:45:00+05:30", // overlaps lunch
+  "2026-11-02T13:00:00+05:30", // during lunch
+  "2026-11-02T17:45:00+05:30", // finishes after closing
+]) {
+  test(`create endpoint rejects an out-of-schedule meeting at ${startsAt}`, async () => {
+    const flow = await setup({ validateSchedule: true })
+    const response = await flow.submit({ ...booking, startsAt: new Date(startsAt).toISOString() })
+    assert.equal(response.status, 409)
+    assert.equal(flow.created.length + flow.messages.length, 0)
+  })
+}
 
 for (const url of ["", "/book", "https://meet.google.com/xxx-xxxx-xxx"]) {
   test(`provider link ${JSON.stringify(url)} cannot be emailed or displayed as success`, async () => {
