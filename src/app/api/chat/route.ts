@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import Groq from "groq-sdk"
 import { SITE } from "@/constants/site"
+import { createBoldMarkerFilter } from "@/lib/chat/plain-text"
 import { chatSchema } from "@/lib/server/chat"
 import { readJson, RequestError } from "@/lib/server/request"
 import { rateLimit } from "@/lib/server/rate-limit"
@@ -107,16 +108,14 @@ export async function POST(req: NextRequest) {
 
     const readable = new ReadableStream({
       async start(controller) {
-        const encoder = new TextEncoder();
-
+        const encoder = new TextEncoder()
+        const filter = createBoldMarkerFilter()
         for await (const chunk of stream) {
-          let text = chunk.choices[0]?.delta?.content ?? "";
-
-          if (text) {
-            text = text.replace(/\*\*/g, "");
-            controller.enqueue(encoder.encode(text));
-          }
+          const text = filter.push(chunk.choices[0]?.delta?.content ?? "")
+          if (text) controller.enqueue(encoder.encode(text))
         }
+        const tail = filter.finish()
+        if (tail) controller.enqueue(encoder.encode(tail))
 
         controller.close();
       },
@@ -134,4 +133,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to reach the model. Please try again." }, { status: 500 })
   }
 }
+
 
