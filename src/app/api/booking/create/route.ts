@@ -57,6 +57,10 @@ export async function POST(req: NextRequest) {
       busy = await provider.busy(from, to)
     } catch (err) {
       console.error("Freebusy lookup failed during create:", err)
+      return NextResponse.json(
+        { error: "Calendar availability is temporarily unavailable. Please try again later." },
+        { status: 503, headers: { "Retry-After": "60", "Cache-Control": "no-store" } },
+      )
     }
   }
 

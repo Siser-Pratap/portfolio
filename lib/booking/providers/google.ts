@@ -110,7 +110,9 @@ export const googleProvider: MeetingProvider = {
       throw new Error(`freeBusy returned calendar errors: ${JSON.stringify(calendar.errors)}`)
     }
 
-    return (calendar?.busy ?? []).map((window) => ({
+    if (!calendar || !Array.isArray(calendar.busy)) throw new Error("Incomplete freeBusy response")
+
+    return calendar.busy.map((window) => ({
       start: new Date(window.start),
       end: new Date(window.end),
     }))
