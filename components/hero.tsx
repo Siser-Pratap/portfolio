@@ -152,7 +152,7 @@ const Hero = () => {
     }
 
     startTypingCycle()
-  }, [currentWordIndex, words])
+  }, [currentWordIndex])
 
   const scrollToAbout = ()=> {
   document.getElementById("works")?.scrollIntoView({

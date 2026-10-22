@@ -85,6 +85,7 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5",
     "eslint": "8.57.1",
-    "eslint-config-next": "14.2.16"
+    "eslint-config-next": "14.2.16",
+    "@types/three": "0.177.0"
   }
 }
