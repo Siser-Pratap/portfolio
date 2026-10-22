@@ -84,6 +84,32 @@ portfolio/
 
 ## 🚀 Deployment
 
+### Booking calendar connection
+
+The `/book` scheduler uses `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
+`GOOGLE_REFRESH_TOKEN` for Google Calendar, plus the `SMTP_*` settings for
+confirmation emails. Keep credentials in gitignored environment files.
+
+If availability returns `503` and Google token refresh reports `invalid_grant`,
+reconnect the calendar:
+
+1. In the Google Cloud OAuth client, allow `http://localhost:4571/callback` as a redirect URI.
+2. Run `npm run booking:authorize` and open the printed URL in your browser.
+3. Sign in as the calendar owner and complete consent. The helper loads your
+   Next.js environment files and saves the replacement token to `.env.local`
+   without printing it or changing other settings.
+4. Restart the dev server and retry `/book`.
+5. For production, update `GOOGLE_REFRESH_TOKEN` in your hosting environment
+   with the new local value, then redeploy.
+
+Google OAuth apps with an external audience in **Testing** issue calendar refresh
+tokens that expire after seven days. Check the app's publishing status before
+reconnecting for production. See [Google's token expiration documentation](https://developers.google.com/identity/protocols/oauth2#expiration).
+
+Calendar lookup failures deliberately stop bookings so occupied slots cannot be
+offered. Removing the refresh token switches to the manual provider; its static
+Meet URL and working-hours grid do not provide calendar conflict detection.
+
 ### Deploy to Vercel (Recommended)
 
 1. Push your code to GitHub
@@ -93,9 +119,12 @@ portfolio/
 
 ### Deploy to Netlify
 
-1. Build the project: `npm run build`
-2. Upload the `out` folder to Netlify
-3. Configure environment variables in Netlify dashboard
+1. In Netlify, choose **Add new site → Import an existing project** and connect this GitHub repository.
+2. Select the production branch and let Netlify detect the **Next.js** framework. Use `npm run build` as the build command and accept the framework integration's `.next` output settings.
+3. Configure the server-side environment variables required by the enabled API routes (booking/calendar, SMTP and chat) in Netlify before deploying. Keep secrets out of `NEXT_PUBLIC_*` variables.
+4. Deploy using Netlify's Next.js framework integration, which provisions the server runtime for route handlers. Verify the contact, booking and chat endpoints after deployment.
+
+`npm run build` runs `next build` and produces `.next`, not an `out` directory. This application includes API routes and requires a server runtime; dragging a static folder into Netlify does not deploy those routes. Do not enable `output: 'export'` for this application.
 
 
 ## 🤝 Contributing

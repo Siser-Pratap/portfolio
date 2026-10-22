@@ -10,7 +10,7 @@ export type Details = {
   subject: string
   notes: string
   guests: string[]
-  /** Anti-spam. Hidden from humans; bots fill it and get a fake success. */
+  /** Anti-spam field, excluded from visible inputs and browser autofill. */
   honeypot: string
 }
 
@@ -119,18 +119,14 @@ const DetailsForm = ({ value, onChange, onSubmit, submitting, error }: Props) =>
         />
       </div>
 
-      {/* Off-screen rather than display:none — some bots skip hidden fields. */}
-      <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
-        <label htmlFor="booking-company-url">Company URL</label>
-        <input
-          id="booking-company-url"
-          name="honeypot"
-          tabIndex={-1}
-          autoComplete="off"
-          value={value.honeypot}
-          onChange={(e) => set("honeypot", e.target.value)}
-        />
-      </div>
+      {/* A real hidden input cannot be focused or filled by normal autofill. */}
+      <input
+        type="hidden"
+        name="booking_website_check"
+        autoComplete="off"
+        value={value.honeypot}
+        onChange={(e) => set("honeypot", e.target.value)}
+      />
 
       <AnimatePresence>
         {error && (

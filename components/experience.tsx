@@ -45,7 +45,7 @@ const Experience = () => {
                     </div>
                   </div>
 
-                  <p className="text-white/40 mb-6 font-light leading-relaxed relative z-10 text-sm">{exp.description}</p>
+                  <p className="text-white/40 mb-6 font-light leading-relaxed relative z-10 text-sm">{exp.bullets.join(" ")}</p>
 
                   <div className="flex flex-wrap gap-2 relative z-10">
                     {exp.technologies.map((tech, techIndex) => (

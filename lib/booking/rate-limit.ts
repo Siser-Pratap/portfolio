@@ -4,7 +4,8 @@
  * State lives per serverless instance, so it resets on cold start and is not
  * shared across regions. That is deliberate: at this traffic level it costs
  * nothing and still stops the obvious scripted-flood case. Anything stronger
- * would mean adding Redis, which the whole design avoids.
+ * would require sharing these counters; Redis currently stores slot reservations
+ * only, not rate-limit state.
  */
 const hits = new Map<string, number[]>()
 
