@@ -200,6 +200,10 @@ export function generateSlots({
   const { year, month, day } = parseDateKey(dateKey)
   const openMinute = parseClock(config.workingHours.start)
   const closeMinute = parseClock(config.workingHours.end)
+  const breaks = config.breaks.map(({ start, end }) => ({
+    start: parseClock(start),
+    end: parseClock(end),
+  }))
   const earliestStart = now.getTime() + config.minNoticeHours * 60 * MINUTE_MS
 
   const slots: Slot[] = []
@@ -209,6 +213,9 @@ export function generateSlots({
     minute + durationMinutes <= closeMinute;
     minute += config.slotIntervalMinutes
   ) {
+    // Ending at the break's start or starting at its end is allowed.
+    if (breaks.some((pause) => minute < pause.end && minute + durationMinutes > pause.start)) continue
+
     const wall: WallTime = {
       year,
       month,
