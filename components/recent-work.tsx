@@ -53,7 +53,7 @@ const scrollToAbout = (href:string)=> {
               WANT TO CONNECT?
             </h3>
             <p className="text-white/50 mb-8 animate-slide-in-x font-light relative z-10">
-              'Cause connection builds the future.
+              &apos;Cause connection builds the future.
             </p>
             <button
               onClick={() => {
@@ -61,7 +61,7 @@ const scrollToAbout = (href:string)=> {
               }}
               className="border border-white/20 hover:border-white/60 rounded-full bg-white/[0.04] text-white px-8 py-3 font-medium interactive shadow-lg shadow-purple-500/10 transform transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 relative z-10"
             >
-              LET'S WORK TOGETHER!
+              LET&apos;S WORK TOGETHER!
             </button>
           </div>
         </div>

@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import BubbleBackground from "./bubble-background-no"
 import {ScrollSmoother} from "gsap/ScrollSmoother"
 
+const words = ["Developer", "Designer", "Freelancer", "Entrepreneur"]
+
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null)
   const typingRef = useRef<HTMLSpanElement>(null)
@@ -14,7 +16,6 @@ const Hero = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   
 
-  const words = ["Developer", "Designer", "Freelancer", "Entrepreneur"]
 
   useEffect(() => {
     
@@ -173,7 +174,7 @@ const Hero = () => {
 
             <div className="hero-subtitle mb-8 bg-inherit ">
               <h2 className="text-2xl md:text-4xl border relative border-transparent font-bold text-[#4204c7]  bg-transparent">
-                I'm <span className="text-white/80">a</span>{" "}
+                I&apos;m <span className="text-white/80">a</span>{" "}
                 <span className=" inline-block">
                   <span
                     ref={typingRef}

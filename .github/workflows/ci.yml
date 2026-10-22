@@ -14,15 +14,10 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - run: npm install
-      - uses: actions/upload-artifact@v4
-        with:
-          name: resolved-lockfile
-          path: package-lock.json
+      - run: npm ci
       - name: Type check
         run: npm run typecheck
       - name: Verify type errors fail the checker
-        if: always()
         run: |
           printf 'const mustBeANumber: number = "invalid";\nexport {};\n' > ci-type-error.ts
           if npm run typecheck; then

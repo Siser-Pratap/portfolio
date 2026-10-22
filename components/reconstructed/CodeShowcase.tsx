@@ -198,7 +198,7 @@ export default function CodeShowcase() {
             transition={{ duration: 0.25 }}
             className="text-[#0D0505]/40 dark:text-white/40 text-sm font-mono mb-6 leading-relaxed"
           >
-            // {snippet.annotation}
+            {"// "}{snippet.annotation}
           </motion.p>
         </AnimatePresence>
 
