@@ -1,0 +1,38 @@
+name: Quality checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resolved-lockfile
+          path: package-lock.json
+      - name: Type check
+        run: npm run typecheck
+      - name: Verify type errors fail the checker
+        if: always()
+        run: |
+          printf 'const mustBeANumber: number = "invalid";\nexport {};\n' > ci-type-error.ts
+          if npm run typecheck; then
+            rm ci-type-error.ts
+            exit 1
+          fi
+          rm ci-type-error.ts
+      - name: Lint
+        if: always()
+        run: npm run lint
+      - name: Build
+        if: always()
+        run: npm run build
