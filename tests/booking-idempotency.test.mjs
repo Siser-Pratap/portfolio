@@ -70,3 +70,16 @@ test("calendar outages fail closed before event creation", async () => {
   await assert.rejects(createBooking(request, "stable-key"), (error) => error.status === 503)
   assert.equal(inserted, 0)
 })
+
+test("manual recovery never confirms an uncommitted or rejected intent", async () => {
+  let created = 0
+  const { recoverBooking } = await route("lib/booking/service.ts", {
+    "./providers": { getProvider: () => ({ name: "manual", create: async () => { created++; return { joinUrl: "static" } } }) },
+    "./slots": { isSlotBookable: () => false },
+    "./store": { claimBooking: async () => "claimed", completeBooking: async () => {}, releaseBooking: async () => {} },
+    "./reservations": { reserveSlot: async () => true, releaseSlot: async () => {} },
+    "@/constants/settings": { SETTINGS: { booking: { bufferMinutes: 10 } } },
+  })
+  assert.equal(await recoverBooking({ ...request, startsAt: new Date(request.startsAt), bookingId: "id" }), null)
+  assert.equal(created, 0)
+})
