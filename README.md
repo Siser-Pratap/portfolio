@@ -93,9 +93,12 @@ portfolio/
 
 ### Deploy to Netlify
 
-1. Build the project: `npm run build`
-2. Upload the `out` folder to Netlify
-3. Configure environment variables in Netlify dashboard
+1. In Netlify, choose **Add new site → Import an existing project** and connect this GitHub repository.
+2. Select the production branch and let Netlify detect the **Next.js** framework. Use `npm run build` as the build command and accept the framework integration's `.next` output settings.
+3. Configure the server-side environment variables required by the enabled API routes (booking/calendar, SMTP and chat) in Netlify before deploying. Keep secrets out of `NEXT_PUBLIC_*` variables.
+4. Deploy using Netlify's Next.js framework integration, which provisions the server runtime for route handlers. Verify the contact, booking and chat endpoints after deployment.
+
+`npm run build` runs `next build` and produces `.next`, not an `out` directory. This application includes API routes and requires a server runtime; dragging a static folder into Netlify does not deploy those routes. Do not enable `output: 'export'` for this application.
 
 
 ## 🤝 Contributing
