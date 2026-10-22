@@ -14,12 +14,14 @@ for (const endpoint of ["availability", "create"]) {
       "@/lib/booking/email": { sendBookingEmails: async () => { mailed++ } },
       "@/lib/booking/rate-limit": { checkRateLimit: () => ({ allowed: true }), clientKey: () => "test" },
       "@/lib/mailer": { isMailConfigured: () => true },
+      "@/lib/booking/reservations": { reserveSlot: async () => true, releaseSlot: async () => {} },
     })
     const req = { nextUrl: new URL("https://test/api?date=2026-11-02"), headers: new Headers(), json: async () => booking }
     const res = await handlers[endpoint === "availability" ? "GET" : "POST"](req)
     assert.equal(res.status, 503)
     assert.equal(res.headers.get("cache-control"), "no-store")
-    assert.equal(created + mailed + generated, 0)
+    assert.equal(created + mailed, 0)
+    assert.equal(generated, endpoint === "create" ? 1 : 0)
   })
 }
 test("manual provider explicitly uses the working-hours grid", async () => {

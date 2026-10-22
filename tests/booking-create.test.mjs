@@ -11,13 +11,25 @@ const joinUrl = "https://meet.google.com/abc-defg-hij"
 const { escapeHtml } = await route("lib/mailer.ts")
 const { isSlotBookable } = await route("lib/booking/slots.ts")
 
-async function setup({ url = joinUrl, rejected = [], mailError = false, mailGate, mailConfigured = true, validateSchedule = false } = {}) {
-  const created = [], messages = []
+async function setup({ url = joinUrl, rejected = [], mailError = false, mailGate, mailConfigured = true, validateSchedule = false, reservation = true, calendarBusy = [], calendarError = false, insertError = false } = {}) {
+  const created = [], messages = [], released = [], reserved = []
   const handlers = await route("src/app/api/booking/create/route.ts", {
-    "@/lib/booking/providers": { getProvider: () => ({ name: "test", create: async (input) => {
+    "@/lib/booking/providers": { getProvider: () => ({ name: "test", busy: async () => {
+      if (calendarError) throw Error("Calendar unavailable")
+      return calendarBusy
+    }, create: async (input) => {
       created.push(input)
+      if (insertError) throw Error("Insert outcome unknown")
       return { joinUrl: url }
     } }) },
+    "@/lib/booking/reservations": {
+      reserveSlot: async (...args) => {
+        reserved.push(args)
+        if (reservation instanceof Error) throw reservation
+        return reservation
+      },
+      releaseSlot: async (...args) => { released.push(args) },
+    },
     "@/lib/booking/slots": {
       isSlotBookable: (params) => !validateSchedule || isSlotBookable({ ...params, now: new Date("2026-11-01T00:00:00Z") }),
       formatDateKey: () => "2026-11-02",
@@ -33,7 +45,7 @@ async function setup({ url = joinUrl, rejected = [], mailError = false, mailGate
       } }),
     },
   })
-  return { created, messages, submit: (payload = booking) => handlers.POST({ json: async () => payload, headers: new Headers() }) }
+  return { created, messages, released, reserved, submit: (payload = booking) => handlers.POST({ json: async () => payload, headers: new Headers() }) }
 }
 
 test("filled anti-spam field cannot masquerade as a booking or send emails", async () => {
@@ -89,7 +101,44 @@ test("missing SMTP configuration blocks creation before a meeting is inserted", 
   const flow = await setup({ mailConfigured: false })
   assert.equal((await flow.submit()).status, 503)
   assert.equal(flow.created.length + flow.messages.length, 0)
+  assert.equal(flow.reserved.length, 0)
 })
+
+test("an overlapping reservation blocks event creation and email", async () => {
+  const flow = await setup({ reservation: false })
+  assert.equal((await flow.submit()).status, 409)
+  assert.equal(flow.created.length + flow.messages.length, 0)
+})
+
+test("Redis outage fails closed before calendar insertion", async () => {
+  const flow = await setup({ reservation: Error("Redis down") })
+  assert.equal((await flow.submit()).status, 503)
+  assert.equal(flow.created.length + flow.messages.length, 0)
+})
+
+test("failed availability lookup releases its uncommitted reservation", async () => {
+  const flow = await setup({ calendarError: true })
+  assert.equal((await flow.submit()).status, 503)
+  assert.equal(flow.released.length, 1)
+  assert.equal(flow.created.length + flow.messages.length, 0)
+})
+
+test("a definitive calendar conflict releases its reservation", async () => {
+  const start = new Date(booking.startsAt)
+  const flow = await setup({ validateSchedule: true, calendarBusy: [{ start, end: new Date(start.getTime() + 30 * 60000) }] })
+  assert.equal((await flow.submit()).status, 409)
+  assert.equal(flow.released.length, 1)
+  assert.equal(flow.created.length + flow.messages.length, 0)
+})
+
+for (const options of [{ insertError: true }, { mailError: true }, {}]) {
+  test(`reservation is retained after ${options.insertError ? "uncertain insertion" : options.mailError ? "SMTP failure" : "successful booking"}`, async () => {
+    const flow = await setup(options)
+    assert.equal((await flow.submit()).status, options.insertError || options.mailError ? 500 : 200)
+    assert.equal(flow.released.length, 0)
+    assert.equal(flow.reserved.length, 1)
+  })
+}
 
 for (const startsAt of [
   "2026-11-07T09:00:00+05:30", // Saturday

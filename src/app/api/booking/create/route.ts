@@ -7,6 +7,7 @@ import { checkRateLimit, clientKey } from "@/lib/booking/rate-limit"
 import { formatDateKey, isSlotBookable } from "@/lib/booking/slots"
 import { bookingRequestSchema, bookingResultSchema, type ConfirmedBooking } from "@/lib/booking/types"
 import { isMailConfigured } from "@/lib/mailer"
+import { reserveSlot, releaseSlot } from "@/lib/booking/reservations"
 
 export const runtime = "nodejs"
 
@@ -49,6 +50,37 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid start time." }, { status: 400 })
   }
 
+  if (!isSlotBookable({ startsAt, durationMinutes: booking.duration })) {
+    return NextResponse.json({ error: "That slot is no longer available. Pick another time." }, { status: 409 })
+  }
+
+  if (!isMailConfigured()) {
+    return NextResponse.json(
+      { error: "Booking is temporarily unavailable. Please email me directly." },
+      { status: 503 },
+    )
+  }
+
+  const bookingId = `bk_${randomUUID().replace(/-/g, "").slice(0, 12)}`
+  const start = startsAt.getTime()
+  const end = start + booking.duration * 60_000
+  try {
+    const reserved = await reserveSlot(bookingId, start, end, SETTINGS.booking.bufferMinutes * 60_000)
+    if (!reserved) {
+      return NextResponse.json({ error: "That slot is already reserved. Pick another time." }, { status: 409 })
+    }
+  } catch (err) {
+    console.error("Slot reservation failed:", err)
+    return NextResponse.json(
+      { error: "Booking is temporarily unavailable. Please try again later." },
+      { status: 503, headers: { "Retry-After": "60", "Cache-Control": "no-store" } },
+    )
+  }
+
+  const releaseReservation = async () => {
+    await releaseSlot(bookingId, start, end).catch((err) => console.error("Slot reservation release failed:", err))
+  }
+
   const provider = getProvider()
 
   // The client's slot is a claim, not a fact — re-derive the grid server-side.
@@ -60,6 +92,7 @@ export async function POST(req: NextRequest) {
       busy = await provider.busy(from, to)
     } catch (err) {
       console.error("Freebusy lookup failed during create:", err)
+      await releaseReservation()
       return NextResponse.json(
         { error: "Calendar availability is temporarily unavailable. Please try again later." },
         { status: 503, headers: { "Retry-After": "60", "Cache-Control": "no-store" } },
@@ -68,21 +101,12 @@ export async function POST(req: NextRequest) {
   }
 
   if (!isSlotBookable({ startsAt, durationMinutes: booking.duration, busy })) {
+    await releaseReservation()
     return NextResponse.json(
       { error: "That slot is no longer available. Pick another time." },
       { status: 409 },
     )
   }
-
-  if (!isMailConfigured()) {
-    console.error("SMTP is not configured — refusing to accept a booking that cannot be confirmed.")
-    return NextResponse.json(
-      { error: "Booking is temporarily unavailable. Please email me directly." },
-      { status: 503 },
-    )
-  }
-
-  const bookingId = `bk_${randomUUID().replace(/-/g, "").slice(0, 12)}`
 
   const confirmed: ConfirmedBooking = {
     bookingId,
@@ -97,6 +121,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // Keep the reservation through the end of the meeting, even if an insert
+    // times out or SMTP fails: the calendar event may already exist.
     const { joinUrl } = await provider.create(confirmed)
 
     const result = bookingResultSchema.parse({
