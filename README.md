@@ -84,6 +84,32 @@ portfolio/
 
 ## 🚀 Deployment
 
+### Booking calendar connection
+
+The `/book` scheduler uses `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
+`GOOGLE_REFRESH_TOKEN` for Google Calendar, plus the `SMTP_*` settings for
+confirmation emails. Keep credentials in gitignored environment files.
+
+If availability returns `503` and Google token refresh reports `invalid_grant`,
+reconnect the calendar:
+
+1. In the Google Cloud OAuth client, allow `http://localhost:4571/callback` as a redirect URI.
+2. Run `npm run booking:authorize` and open the printed URL in your browser.
+3. Sign in as the calendar owner and complete consent. The helper loads your
+   Next.js environment files and saves the replacement token to `.env.local`
+   without printing it or changing other settings.
+4. Restart the dev server and retry `/book`.
+5. For production, update `GOOGLE_REFRESH_TOKEN` in your hosting environment
+   with the new local value, then redeploy.
+
+Google OAuth apps with an external audience in **Testing** issue calendar refresh
+tokens that expire after seven days. Check the app's publishing status before
+reconnecting for production. See [Google's token expiration documentation](https://developers.google.com/identity/protocols/oauth2#expiration).
+
+Calendar lookup failures deliberately stop bookings so occupied slots cannot be
+offered. Removing the refresh token switches to the manual provider; its static
+Meet URL and working-hours grid do not provide calendar conflict detection.
+
 ### Deploy to Vercel (Recommended)
 
 1. Push your code to GitHub
