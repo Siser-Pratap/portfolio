@@ -52,7 +52,7 @@ export default function ChatAssistant() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextMessages }),
+        body: JSON.stringify({ messages: nextMessages.slice(-10) }),
       })
 
       if (!res.ok) {
@@ -239,3 +239,4 @@ export default function ChatAssistant() {
     </>
   )
 }
+

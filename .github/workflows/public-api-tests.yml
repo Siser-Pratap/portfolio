@@ -6,6 +6,10 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: [6379:6379]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -13,8 +17,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: node --experimental-vm-modules --test tests/contact.test.mjs
-      - uses: actions/upload-artifact@v4
-        with:
-          name: validation-dependency
-          path: node_modules/zod
+      - run: command -v redis-cli || (sudo apt-get update && sudo apt-get install -y redis-tools)
+      - run: node --experimental-vm-modules --test tests/contact.test.mjs tests/chat-validation.test.mjs tests/shared-rate-limit.test.mjs
+        env:
+          TEST_REDIS: 1
