@@ -19,7 +19,8 @@ export const SETTINGS = {
 
     // 0 = Sunday … 6 = Saturday
     workingDays: [1, 2, 3, 4, 5],
-    workingHours: { start: "10:00", end: "19:00" },
+    workingHours: { start: "09:00", end: "18:00" },
+    breaks: [{ start: "13:00", end: "14:00" }],
 
     // Slot grid granularity, and the gap kept clear around every meeting.
     slotIntervalMinutes: 15,

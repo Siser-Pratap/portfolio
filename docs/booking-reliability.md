@@ -1,12 +1,38 @@
-# Booking persistence and email delivery
+# Booking and confirmation emails
 
-Configure a shared, persistent Upstash-compatible Redis database with `UPSTASH_REDIS_REST_URL` (HTTPS) and `UPSTASH_REDIS_REST_TOKEN` on every server instance. Missing or unavailable storage fails booking requests with 503 before event creation. Enable persistence/backups and use the same database across all regions.
+The booking flow runs entirely inside `POST /api/booking/create`. It does not use
+cron jobs, a background worker, or Redis, and does not require a paid cron plan.
 
-The browser retains an Idempotency-Key UUID across retries of unchanged details. API clients must also retain their key, including after network errors and 503s. A different payload with an existing key returns 409. Records retain personal booking details for seven days; restrict database access accordingly. Google events use a deterministic ID, so retrying an uncertain insert retrieves the existing event before checking freeBusy.
+1. Choose a duration, date, and available time, then enter the invitee and guests.
+2. The server checks working hours and Google Calendar conflicts again.
+3. Google creates the calendar event and a real Meet link. Conference creation is
+   briefly polled when Google reports it as pending; placeholder links are rejected.
+4. SMTP sends the invitee confirmation, CCs the guests, and notifies the host.
+   The attendee email includes the Meet link and an `.ics` calendar invitation.
+5. The page shows confirmation only after the email sends complete successfully.
 
-An intent and email retry job are stored before inserting an event. Creation returns 201 with `emailStatus: pending` when the event exists. SMTP runs independently and cannot turn an existing booking into an HTTP 500.
+Availability is Monday–Friday, 9 AM–6 PM in `Asia/Kolkata`, excluding 1–2 PM.
+Meetings cannot overlap the lunch break or finish after 6 PM. Meeting lengths are
+15, 30, 45, and 60 minutes. Existing calendar events and the configured meeting
+buffer, minimum notice, and booking horizon are also respected.
 
-Set a strong `BOOKING_WORKER_SECRET`. Schedule an authenticated GET to `/api/booking/email-retry` every minute with `Authorization: Bearer <BOOKING_WORKER_SECRET>` using your hosting scheduler. The worker processes at most 20 ready jobs per run and retries failures after two minutes. It recovers uncertain inserts by Google event ID and never inserts events. Monitor its failed count and queue depth; jobs expire with their seven-day booking record. Delivery is at least once: a crash after SMTP succeeds but before acknowledgement may resend mail, but cannot duplicate the calendar event.
+## Environment
 
-Manual mode uses the configured static meeting URL and the same durable request and email records.
+- Google Calendar: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`.
+- Optional: `GOOGLE_CALENDAR_ID` defaults to `primary`.
+- Email: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`.
+
+Keep these values in `.env.local` for development and in the corresponding Vercel
+environment for deployments. Redeploy after changing hosted values. No worker,
+cron, or Redis environment variables are used by this flow.
+
+If Google availability cannot be checked, the request returns 503 without creating
+a meeting. Missing SMTP configuration also blocks creation. SMTP failures or
+recipient rejections produce an error instead of a false confirmation. Because
+the event is created before SMTP runs, a mail failure can leave an event on the
+host calendar; check it before submitting another booking. No automatic email
+retry is scheduled.
+
+Without Google credentials the manual provider uses `staticMeetUrl` in settings.
+Configure a real Meet room before using that mode; the placeholder is rejected.
 

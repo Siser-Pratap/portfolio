@@ -1,5 +1,7 @@
 import { SETTINGS } from "@/constants/settings"
 import { SITE } from "@/constants/site"
+import { setTimeout as delay } from "node:timers/promises"
+import { isMeetUrl } from "../format"
 import type { BusyWindow, ConfirmedBooking } from "../types"
 import type { MeetingProvider } from "./index"
 
@@ -83,17 +85,24 @@ async function authedFetch(url: string, init: RequestInit): Promise<Response> {
   })
 }
 
+type CalendarEvent = {
+  id?: string
+  hangoutLink?: string
+  conferenceData?: {
+    entryPoints?: Array<{ entryPointType?: string; uri?: string }>
+    createRequest?: { status?: { statusCode?: string } }
+  }
+}
+
+function eventMeetUrl(event: CalendarEvent): string | undefined {
+  const candidates = [event.hangoutLink, ...(
+    event.conferenceData?.entryPoints?.filter(entry => entry.entryPointType === "video").map(entry => entry.uri) ?? []
+  )]
+  return candidates.find((url): url is string => typeof url === "string" && isMeetUrl(url))
+}
+
 export const googleProvider: MeetingProvider = {
   name: "google",
-
-  async find(bookingId: string) {
-    const res = await authedFetch(`${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId())}/events/${bookingId}`, { method: "GET", cache: "no-store" })
-    if (res.status === 404) return null
-    if (!res.ok) throw new Error(`Calendar event lookup failed (${res.status})`)
-    const event = await res.json() as { id: string; hangoutLink?: string; conferenceData?: { entryPoints?: Array<{ entryPointType?: string; uri?: string }> } }
-    const video = event.conferenceData?.entryPoints?.find((entry) => entry.entryPointType === "video")
-    return { externalId: event.id, joinUrl: event.hangoutLink || video?.uri || SETTINGS.booking.staticMeetUrl }
-  },
 
   async busy(from: Date, to: Date): Promise<BusyWindow[]> {
     const res = await authedFetch(`${CALENDAR_BASE}/freeBusy`, {
@@ -142,7 +151,6 @@ export const googleProvider: MeetingProvider = {
       {
         method: "POST",
         body: JSON.stringify({
-          id: booking.bookingId,
           summary: booking.subject,
           description,
           start: { dateTime: booking.startsAt.toISOString(), timeZone: tz },
@@ -163,28 +171,28 @@ export const googleProvider: MeetingProvider = {
       },
     )
 
-    if (res.status === 409) {
-      const existing = await googleProvider.find?.(booking.bookingId)
-      if (existing) return existing
-    }
     if (!res.ok) {
       const detail = await res.text().catch(() => "")
       throw new Error(`Calendar event insert failed (${res.status}): ${detail}`)
     }
 
-    const event = (await res.json()) as {
-      id?: string
-      hangoutLink?: string
-      conferenceData?: { entryPoints?: Array<{ entryPointType?: string; uri?: string }> }
+    let event = (await res.json()) as CalendarEvent
+    let joinUrl = eventMeetUrl(event)
+    // Conference creation is asynchronous. Re-read the event rather than
+    // emailing the placeholder room while Google is still creating the Meet.
+    for (let attempt = 0; !joinUrl && event.id && attempt < 5; attempt++) {
+      if (event.conferenceData?.createRequest?.status?.statusCode === "failure") break
+      await delay(500)
+      const updated = await authedFetch(
+        `${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId())}/events/${encodeURIComponent(event.id)}`,
+        { method: "GET" },
+      )
+      if (!updated.ok) throw new Error(`Could not load meeting conference (${updated.status})`)
+      event = (await updated.json()) as CalendarEvent
+      joinUrl = eventMeetUrl(event)
     }
-
-    const videoEntry = event.conferenceData?.entryPoints?.find((e) => e.entryPointType === "video")
-    // hangoutLink is the canonical field; the entryPoint is a fallback for the
-    // brief window before Google backfills it. staticMeetUrl is the last resort
-    // so a booking never lands without *some* link.
-    const joinUrl = event.hangoutLink || videoEntry?.uri || SETTINGS.booking.staticMeetUrl
+    if (!joinUrl) throw new Error("Google did not return a usable Meet link")
 
     return { joinUrl, externalId: event.id }
   },
 }
-

@@ -11,7 +11,7 @@ import SlotGrid from "@/components/booking/SlotGrid"
 import StepIndicator, { STEP_ORDER, type StepId } from "@/components/booking/StepIndicator"
 import SuccessCard from "@/components/booking/SuccessCard"
 import { container, EASE, riseIn, stepSlide } from "@/lib/booking/motion"
-import type { BookingResult } from "@/lib/booking/types"
+import { bookingResultSchema, type BookingResult } from "@/lib/booking/types"
 
 const BookingFlow = () => {
   const [step, setStep] = useState<StepId>("duration")
@@ -19,8 +19,6 @@ const BookingFlow = () => {
   const [dateKey, setDateKey] = useState<string | null>(null)
   const [slotIso, setSlotIso] = useState<string | null>(null)
   const [details, setDetails] = useState<Details>(emptyDetails)
-
-  const requestIdentity = useRef<{ payload: string; key: string } | null>(null)
 
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -88,14 +86,21 @@ const BookingFlow = () => {
     setSubmitting(true)
     setError(null)
 
-    const payload = JSON.stringify({ name: details.name, email: details.email, subject: details.subject, notes: details.notes || undefined, guests: details.guests, duration, startsAt: slotIso, timezone, honeypot: details.honeypot })
-    if (requestIdentity.current?.payload !== payload) requestIdentity.current = { payload, key: crypto.randomUUID() }
-
     try {
       const res = await fetch("/api/booking/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Idempotency-Key": requestIdentity.current.key },
-        body: payload,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: details.name,
+          email: details.email,
+          subject: details.subject,
+          notes: details.notes || undefined,
+          guests: details.guests,
+          duration,
+          startsAt: slotIso,
+          timezone,
+          honeypot: details.honeypot,
+        }),
       })
 
       const body = await res.json().catch(() => ({}))
@@ -111,7 +116,13 @@ const BookingFlow = () => {
         return
       }
 
-      setResult(body as BookingResult)
+      const confirmed = bookingResultSchema.safeParse(body)
+      if (!confirmed.success) {
+        setError("Your booking wasn't confirmed. Please try again or email me directly.")
+        return
+      }
+
+      setResult(confirmed.data)
     } catch {
       setError("Couldn't reach the server. Check your connection and try again.")
     } finally {
@@ -120,7 +131,6 @@ const BookingFlow = () => {
   }
 
   const reset = () => {
-    requestIdentity.current = null
     setResult(null)
     setDetails(emptyDetails)
     setSlotIso(null)
@@ -148,7 +158,7 @@ const BookingFlow = () => {
           </motion.h1>
           <motion.p variants={riseVariants} className="text-[#8A8A8A] text-[15px] leading-[1.8] mb-12 max-w-[380px]">
             {result
-              ? "Your time is reserved. The confirmation email is queued; you can also save the calendar invite below."
+              ? "Everything you need is in your inbox — including the calendar invite. See you then."
               : "Pick a slot and I'll send a Google Meet invite straight to your inbox. No account, no back-and-forth."}
           </motion.p>
 
@@ -245,4 +255,3 @@ const BookingFlow = () => {
 }
 
 export default BookingFlow
-

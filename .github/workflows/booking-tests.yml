@@ -11,4 +11,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - run: npm install --ignore-scripts --no-package-lock --no-audit --no-fund
       - run: node --experimental-vm-modules --test tests/booking-*.test.mjs
