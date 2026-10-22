@@ -94,3 +94,16 @@ export function formatMonthLabel(year: number, month: number): string {
 export function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
+
+/** Only actual Meet room URLs may appear in confirmations and emails. */
+export function isMeetUrl(value: string): boolean {
+  try {
+    const url = new URL(value)
+    return url.protocol === "https:" && url.hostname === "meet.google.com" &&
+      !url.username && !url.password && !url.port &&
+      /^\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/.test(url.pathname) &&
+      url.pathname !== "/xxx-xxxx-xxx"
+  } catch {
+    return false
+  }
+}

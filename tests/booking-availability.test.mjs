@@ -10,7 +10,7 @@ for (const endpoint of ["availability", "create"]) {
       "@/constants/settings": { SETTINGS: { booking: { defaultDuration: 30, hostTimezone: "Asia/Kolkata" } } },
       "@/lib/booking/providers": { getProvider: () => ({ name: "google", busy: async () => { throw Error("OAuth expired") }, create: async () => { created++ } }) },
       "@/lib/booking/slots": { generateSlots: () => { generated++; return [] }, isSlotBookable: () => { generated++; return true }, formatDateKey: () => "" },
-      "@/lib/booking/types": { availabilityQuerySchema: { safeParse: () => ({ success: true, data: { date: "2026-11-02", duration: 30 } }) }, bookingRequestSchema: { safeParse: () => ({ success: true, data: booking }) } },
+      "@/lib/booking/types": { availabilityQuerySchema: { safeParse: () => ({ success: true, data: { date: "2026-11-02", duration: 30 } }) }, bookingRequestSchema: { safeParse: () => ({ success: true, data: booking }) }, bookingResultSchema: { parse: (value) => value } },
       "@/lib/booking/email": { sendBookingEmails: async () => { mailed++ } },
       "@/lib/booking/rate-limit": { checkRateLimit: () => ({ allowed: true }), clientKey: () => "test" },
       "@/lib/mailer": { isMailConfigured: () => true },
