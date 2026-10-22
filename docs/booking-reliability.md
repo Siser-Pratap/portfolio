@@ -10,3 +10,7 @@ Set a strong `BOOKING_WORKER_SECRET`. Schedule an authenticated GET to `/api/boo
 
 Manual mode uses the configured static meeting URL and the same durable request and email records.
 
+Slot protection uses an atomic Redis Lua operation over actual time ranges, including the configured meeting buffer. Reserve before reading freeBusy and keep that reservation through event creation and until the meeting ends. Different durations or grid start times cannot bypass an overlapping reservation. Definitively unavailable slots release their reservation. Calendar/storage timeouts retain it conservatively because an insertion may have succeeded; retry the same key to recover, or inspect the calendar before an operator removes a reservation. There is no expiring slot lock that can reopen a slot while a slow event insertion is still running.
+
+Use a dedicated disposable Redis database for integration tests: `TEST_REDIS=1 node --experimental-vm-modules tests/booking-concurrency.test.mjs`. These tests call FLUSHDB. CI provisions an isolated Redis service for them.
+

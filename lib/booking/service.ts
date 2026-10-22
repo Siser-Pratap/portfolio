@@ -1,7 +1,9 @@
 import { createHash, randomUUID } from "crypto"
+import { SETTINGS } from "@/constants/settings"
 import { getProvider } from "./providers"
 import { isSlotBookable } from "./slots"
 import { claimBooking, completeBooking, releaseBooking } from "./store"
+import { reserveSlot, releaseSlot } from "./reservations"
 import type { BookingRequest, BookingResult, ConfirmedBooking } from "./types"
 
 export class BookingError extends Error {
@@ -20,6 +22,11 @@ export async function createBooking(request: BookingRequest, key: string): Promi
   if (state !== "claimed") return JSON.parse(state) as BookingResult
 
   try {
+    const start = booking.startsAt.getTime()
+    const end = start + booking.duration * 60_000
+    if (!await reserveSlot(id, start, end, SETTINGS.booking.bufferMinutes * 60_000)) {
+      throw new BookingError(409, "That slot is already reserved. Pick another time.")
+    }
     const provider = getProvider()
     // Recover uncertain insert outcomes before freeBusy sees our own event.
     let meeting = await provider.find?.(id)
@@ -33,6 +40,7 @@ export async function createBooking(request: BookingRequest, key: string): Promi
         }
       }
       if (!isSlotBookable({ startsAt: booking.startsAt, durationMinutes: booking.duration, busy })) {
+        await releaseSlot(id, start, end)
         throw new BookingError(409, "That slot is no longer available. Pick another time.")
       }
       meeting = await provider.create(booking)

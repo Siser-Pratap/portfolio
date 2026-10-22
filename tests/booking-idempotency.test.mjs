@@ -3,6 +3,7 @@ import assert from "node:assert/strict"
 import { route } from "./helpers/load-module.mjs"
 
 const request = { name: "Visitor", email: "visitor@example.com", subject: "A call", guests: [], startsAt: "2026-11-02T05:00:00.000Z", duration: 30, timezone: "Asia/Kolkata" }
+const reservationMocks = { "./reservations": { reserveSlot: async () => true, releaseSlot: async () => {} }, "@/constants/settings": { SETTINGS: { booking: { bufferMinutes: 10 } } } }
 
 test("persisted retries return the same event; key reuse with different details is rejected", async () => {
   const records = new Map()
@@ -19,6 +20,7 @@ test("persisted retries return the same event; key reuse with different details 
     releaseBooking: async () => {},
   }
   const { createBooking } = await route("lib/booking/service.ts", {
+    ...reservationMocks,
     "./providers": { getProvider: () => ({ name: "google", find: async () => null, busy: async () => [], create: async () => { inserts++; return { joinUrl: "https://meet.google.com/test" } } }) },
     "./slots": { isSlotBookable: () => true },
     "./store": store,
@@ -33,6 +35,7 @@ test("persisted retries return the same event; key reuse with different details 
 test("uncertain inserts recover by ID without another insert or a freeBusy check", async () => {
   let inserted = 0, busy = 0
   const { createBooking } = await route("lib/booking/service.ts", {
+    ...reservationMocks,
     "./providers": { getProvider: () => ({ find: async () => ({ joinUrl: "https://meet.google.com/existing" }), busy: async () => { busy++; return [] }, create: async () => { inserted++ } }) },
     "./slots": { isSlotBookable: () => true },
     "./store": { claimBooking: async () => "claimed", completeBooking: async () => {}, releaseBooking: async () => {} },
@@ -63,6 +66,7 @@ test("SMTP failure leaves an independently retryable email job", async () => {
 test("calendar outages fail closed before event creation", async () => {
   let inserted = 0
   const { createBooking } = await route("lib/booking/service.ts", {
+    ...reservationMocks,
     "./providers": { getProvider: () => ({ busy: async () => { throw Error("Calendar down") }, create: async () => { inserted++ } }) },
     "./slots": { isSlotBookable: () => true },
     "./store": { claimBooking: async () => "claimed", completeBooking: async () => {}, releaseBooking: async () => {} },
