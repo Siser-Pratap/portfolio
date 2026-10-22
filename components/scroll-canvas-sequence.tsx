@@ -145,7 +145,7 @@ const ScrollCanvasSequence = () => {
                 CREATIVE DEVELOPER
               </h1>
               <div className="text-xl md:text-3xl font-light text-white/80 mb-10">
-                I'm a{" "}
+                I&apos;m a{" "}
                 <TypingAnimation
                   words={["Developer", "Designer", "Freelancer", "Entrepreneur"]}
                   className="font-normal text-white"
@@ -172,7 +172,7 @@ const ScrollCanvasSequence = () => {
               </h2>
               <p className="max-w-2xl text-white/50 text-base md:text-lg font-light leading-relaxed">
                 Locking performance using hardware-accelerated canvas sequences and direct DOM manipulation.
-                Every scroll, hover, and coordinate shift feels organic, fluid, and locked to the monitor's refresh rate.
+                Every scroll, hover, and coordinate shift feels organic, fluid, and locked to the monitor&apos;s refresh rate.
               </p>
             </motion.div>
 

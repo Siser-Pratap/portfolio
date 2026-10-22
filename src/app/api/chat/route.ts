@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import Groq from "groq-sdk"
 import { SITE } from "@/constants/site"
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
-
 // ─── Rate limiting (in-memory, resets per server instance) ───────────────────
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
 const RATE_LIMIT = 15
@@ -118,6 +116,7 @@ export async function POST(req: NextRequest) {
   const trimmed = messages.slice(-10)
 
   try {
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
     const stream = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...trimmed],

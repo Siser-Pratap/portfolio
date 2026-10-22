@@ -19,7 +19,6 @@ const ScrollController = ({
   const lastScrollTime = useRef(0)
 
   useEffect(() => {
-    let animationFrame: number
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault()
@@ -133,9 +132,6 @@ const ScrollController = ({
       window.removeEventListener("touchstart", handleTouchStart)
       window.removeEventListener("touchmove", handleTouchMove)
       window.removeEventListener("touchend", handleTouchEnd)
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame)
-      }
     }
   }, [currentSection, totalSections, onSectionChange, isTransitioning])
 
