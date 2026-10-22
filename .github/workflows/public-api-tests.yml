@@ -1,0 +1,20 @@
+name: Public API regression tests
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-vm-modules --test tests/contact.test.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: validation-dependency
+          path: node_modules/zod
