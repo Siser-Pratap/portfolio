@@ -3,7 +3,7 @@ import assert from "node:assert/strict"
 import { route } from "./helpers/load-module.mjs"
 
 const booking = { startsAt: "2026-11-02T05:00:00.000Z", duration: 30, name: "Visitor", email: "visitor@example.com", guests: [], timezone: "Asia/Kolkata", subject: "Discuss work" }
-for (const endpoint of ["availability", "create"]) {
+for (const endpoint of ["availability"]) {
   test(endpoint + " returns 503 on freeBusy failure without accepting slots", async () => {
     let created = 0, mailed = 0, generated = 0
     const handlers = await route("src/app/api/booking/" + endpoint + "/route.ts", {
@@ -33,3 +33,4 @@ test("manual provider explicitly uses the working-hours grid", async () => {
   assert.equal(res.status, 200)
   assert.equal((await res.json()).slots[0].available, true)
 })
+

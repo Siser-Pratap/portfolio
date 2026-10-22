@@ -83,4 +83,6 @@ export type BookingResult = {
   bookingId: string
   joinUrl: string
   startsAt: string
+  emailStatus?: "pending" | "sent"
 }
+

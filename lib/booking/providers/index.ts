@@ -10,6 +10,9 @@ import type { BusyWindow, ConfirmedBooking } from "../types"
 export interface MeetingProvider {
   readonly name: string
 
+  /** Retrieve a previously inserted event for idempotent recovery. */
+  find?(bookingId: string): Promise<{ joinUrl: string; externalId?: string } | null>
+
   /** Creates the meeting and returns the link the attendee joins on. */
   create(request: ConfirmedBooking): Promise<{
     joinUrl: string
@@ -37,3 +40,4 @@ export function getProvider(): MeetingProvider {
   if (process.env.GOOGLE_REFRESH_TOKEN) return googleProvider
   return manualProvider
 }
+

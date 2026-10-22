@@ -79,13 +79,13 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
       </motion.p>
 
       <motion.div variants={cell} className="relative border-t border-b border-[#EAEAEA] py-5 mb-8 text-left">
-        <p className="text-[#8A8A8A] text-xs mb-1 font-medium">Confirmation sent to</p>
+        <p className="text-[#8A8A8A] text-xs mb-1 font-medium">{result.emailStatus === "sent" ? "Confirmation sent to" : "Confirmation email queued for"}</p>
         <p className="text-[#0D0505] font-semibold text-sm break-words">{email}</p>
         {guests.length > 0 && (
-          <p className="text-[#8A8A8A] text-xs mt-2 break-words">CC&apos;d: {guests.join(", ")}</p>
+          <p className="text-[#8A8A8A] text-xs mt-2 break-words">Guests: {guests.join(", ")}</p>
         )}
         <p className="text-[#8A8A8A] text-xs mt-3 leading-relaxed">
-          The calendar invite is attached to that email. Need to move it? Just reply — or write to{" "}
+          The calendar invite will arrive by email. Your booking is saved even if delivery is delayed. Need to move it? Just reply — or write to{" "}
           <a href={`mailto:${SETTINGS.email}`} className="text-[#0D0505] font-semibold hover:text-[#FF4B1F]">
             {SETTINGS.email}
           </a>
@@ -136,3 +136,5 @@ const SuccessCard = ({ result, duration, timezone, email, guests, onBookAnother 
 }
 
 export default SuccessCard
+
+
