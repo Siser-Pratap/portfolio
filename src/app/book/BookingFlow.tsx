@@ -11,7 +11,7 @@ import SlotGrid from "@/components/booking/SlotGrid"
 import StepIndicator, { STEP_ORDER, type StepId } from "@/components/booking/StepIndicator"
 import SuccessCard from "@/components/booking/SuccessCard"
 import { container, EASE, riseIn, stepSlide } from "@/lib/booking/motion"
-import type { BookingResult } from "@/lib/booking/types"
+import { bookingResultSchema, type BookingResult } from "@/lib/booking/types"
 
 const BookingFlow = () => {
   const [step, setStep] = useState<StepId>("duration")
@@ -116,7 +116,13 @@ const BookingFlow = () => {
         return
       }
 
-      setResult(body as BookingResult)
+      const confirmed = bookingResultSchema.safeParse(body)
+      if (!confirmed.success) {
+        setError("Your booking wasn't confirmed. Please try again or email me directly.")
+        return
+      }
+
+      setResult(confirmed.data)
     } catch {
       setError("Couldn't reach the server. Check your connection and try again.")
     } finally {

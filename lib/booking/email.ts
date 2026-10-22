@@ -165,7 +165,7 @@ export async function sendBookingEmails(input: BookingEmailInput): Promise<void>
     attendees: [{ name: input.name, email: input.email }, ...input.guests.map((email) => ({ email }))],
   })
 
-  await Promise.all([
+  const deliveries = await Promise.all([
     transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: input.email,
@@ -189,4 +189,10 @@ export async function sendBookingEmails(input: BookingEmailInput): Promise<void>
       icalEvent: { method: "REQUEST", filename: "meeting.ics", content: ics },
     }),
   ])
+
+  // SMTP can resolve successfully when only some recipients were accepted.
+  // Do not tell the visitor everyone was emailed if an invitee or CC was rejected.
+  if (deliveries.some((delivery) => delivery.rejected?.length)) {
+    throw new Error("SMTP rejected one or more booking email recipients")
+  }
 }

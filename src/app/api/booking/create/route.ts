@@ -5,7 +5,7 @@ import { sendBookingEmails } from "@/lib/booking/email"
 import { getProvider } from "@/lib/booking/providers"
 import { checkRateLimit, clientKey } from "@/lib/booking/rate-limit"
 import { formatDateKey, isSlotBookable } from "@/lib/booking/slots"
-import { bookingRequestSchema, type BookingResult, type ConfirmedBooking } from "@/lib/booking/types"
+import { bookingRequestSchema, bookingResultSchema, type ConfirmedBooking } from "@/lib/booking/types"
 import { isMailConfigured } from "@/lib/mailer"
 
 export const runtime = "nodejs"
@@ -28,9 +28,12 @@ export async function POST(req: NextRequest) {
 
   const booking = parsed.data
 
-  // Bots fill every field they find. Answer 200 so they learn nothing.
+  // Never show a confirmation for a submission that will not create or email a meeting.
   if (booking.honeypot) {
-    return NextResponse.json({ ok: true, bookingId: "ignored", joinUrl: "", startsAt: booking.startsAt })
+    return NextResponse.json(
+      { error: "Could not verify this submission. Refresh the page and enter your details again." },
+      { status: 400 },
+    )
   }
 
   const limit = checkRateLimit(clientKey(req.headers))
@@ -57,6 +60,10 @@ export async function POST(req: NextRequest) {
       busy = await provider.busy(from, to)
     } catch (err) {
       console.error("Freebusy lookup failed during create:", err)
+      return NextResponse.json(
+        { error: "Calendar availability is temporarily unavailable. Please try again later." },
+        { status: 503, headers: { "Retry-After": "60", "Cache-Control": "no-store" } },
+      )
     }
   }
 
@@ -92,14 +99,14 @@ export async function POST(req: NextRequest) {
   try {
     const { joinUrl } = await provider.create(confirmed)
 
-    await sendBookingEmails({ ...confirmed, joinUrl })
-
-    const result: BookingResult = {
+    const result = bookingResultSchema.parse({
       ok: true,
       bookingId,
       joinUrl,
       startsAt: startsAt.toISOString(),
-    }
+    })
+
+    await sendBookingEmails({ ...confirmed, joinUrl: result.joinUrl })
 
     console.log(
       `Booking ${bookingId}: ${booking.email} · ${formatDateKey(startsAt, SETTINGS.booking.hostTimezone)} · ${booking.duration}min`,

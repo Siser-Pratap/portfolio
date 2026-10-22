@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { SETTINGS } from "@/constants/settings"
+import { isMeetUrl } from "./format"
 
 const { booking } = SETTINGS
 
@@ -36,13 +37,8 @@ export const bookingRequestSchema = z.object({
   startsAt: z.string().datetime(),
   /** Visitor's IANA timezone, used only for display in emails. */
   timezone: z.string().min(1),
-  /**
-   * Anti-spam: real users never fill this. Deliberately permissive — the
-   * create route inspects it and fakes success, so a bot cannot tell a
-   * rejection from a booking. Validating it here would leak that signal
-   * as a 400.
-   */
-  honeypot: z.string().optional(),
+  /** Anti-spam: a filled field must never produce a booking confirmation. */
+  honeypot: z.string().trim().optional(),
 })
 
 export type BookingRequest = z.infer<typeof bookingRequestSchema>
@@ -78,9 +74,11 @@ export type BusyWindow = {
 }
 
 /** Result of a successful booking. */
-export type BookingResult = {
-  ok: true
-  bookingId: string
-  joinUrl: string
-  startsAt: string
-}
+export const bookingResultSchema = z.object({
+  ok: z.literal(true),
+  bookingId: z.string().regex(/^bk_[a-z0-9]+$/),
+  joinUrl: z.string().refine(isMeetUrl, "A valid Google Meet link is required"),
+  startsAt: z.string().datetime(),
+})
+
+export type BookingResult = z.infer<typeof bookingResultSchema>
