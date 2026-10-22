@@ -49,7 +49,10 @@ export async function createBooking(request: BookingRequest, key: string): Promi
     const result: BookingResult = { ok: true, bookingId: id, joinUrl: meeting.joinUrl, startsAt: booking.startsAt.toISOString(), emailStatus: "pending" }
     // The intent and retry job were persisted before the event was inserted.
     // A worker can recover the event by deterministic ID if this write fails.
-    try { await completeBooking(id, result) } catch (error) { console.error("Booking result persistence needs recovery:", error) }
+    try { await completeBooking(id, result) } catch (error) {
+      if (provider.name === "manual") throw error
+      console.error("Booking result persistence needs recovery:", error)
+    }
     return result
   } finally {
     await releaseBooking(id, nonce).catch((error) => console.error("Booking lease release failed:", error))
@@ -58,6 +61,6 @@ export async function createBooking(request: BookingRequest, key: string): Promi
 
 export async function recoverBooking(booking: ConfirmedBooking): Promise<BookingResult | null> {
   const provider = getProvider()
-  const meeting = provider.name === "manual" ? await provider.create(booking) : await provider.find?.(booking.bookingId)
+  const meeting = provider.name === "manual" ? null : await provider.find?.(booking.bookingId)
   return meeting ? { ok: true, bookingId: booking.bookingId, joinUrl: meeting.joinUrl, startsAt: booking.startsAt.toISOString(), emailStatus: "pending" } : null
 }

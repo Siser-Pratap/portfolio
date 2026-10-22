@@ -37,4 +37,3 @@ export async function route(file, mocks = {}) {
   await mod.evaluate()
   return mod.namespace
 }
-
