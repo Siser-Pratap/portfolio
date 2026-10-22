@@ -86,6 +86,15 @@ async function authedFetch(url: string, init: RequestInit): Promise<Response> {
 export const googleProvider: MeetingProvider = {
   name: "google",
 
+  async find(bookingId: string) {
+    const res = await authedFetch(`${CALENDAR_BASE}/calendars/${encodeURIComponent(calendarId())}/events/${bookingId}`, { method: "GET", cache: "no-store" })
+    if (res.status === 404) return null
+    if (!res.ok) throw new Error(`Calendar event lookup failed (${res.status})`)
+    const event = await res.json() as { id: string; hangoutLink?: string; conferenceData?: { entryPoints?: Array<{ entryPointType?: string; uri?: string }> } }
+    const video = event.conferenceData?.entryPoints?.find((entry) => entry.entryPointType === "video")
+    return { externalId: event.id, joinUrl: event.hangoutLink || video?.uri || SETTINGS.booking.staticMeetUrl }
+  },
+
   async busy(from: Date, to: Date): Promise<BusyWindow[]> {
     const res = await authedFetch(`${CALENDAR_BASE}/freeBusy`, {
       method: "POST",
@@ -110,7 +119,9 @@ export const googleProvider: MeetingProvider = {
       throw new Error(`freeBusy returned calendar errors: ${JSON.stringify(calendar.errors)}`)
     }
 
-    return (calendar?.busy ?? []).map((window) => ({
+    if (!calendar || !Array.isArray(calendar.busy)) throw new Error("Incomplete freeBusy response")
+
+    return calendar.busy.map((window) => ({
       start: new Date(window.start),
       end: new Date(window.end),
     }))
@@ -131,6 +142,7 @@ export const googleProvider: MeetingProvider = {
       {
         method: "POST",
         body: JSON.stringify({
+          id: booking.bookingId,
           summary: booking.subject,
           description,
           start: { dateTime: booking.startsAt.toISOString(), timeZone: tz },
@@ -151,6 +163,10 @@ export const googleProvider: MeetingProvider = {
       },
     )
 
+    if (res.status === 409) {
+      const existing = await googleProvider.find?.(booking.bookingId)
+      if (existing) return existing
+    }
     if (!res.ok) {
       const detail = await res.text().catch(() => "")
       throw new Error(`Calendar event insert failed (${res.status}): ${detail}`)
@@ -171,3 +187,4 @@ export const googleProvider: MeetingProvider = {
     return { joinUrl, externalId: event.id }
   },
 }
+

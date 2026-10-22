@@ -61,11 +61,11 @@ const Hero = () => {
       {/* Services Strip */}
       <div className="absolute bottom-12 left-0 w-full z-20 border-t border-[#0D0505]/10 dark:border-white/10 pt-8">
         <div className="max-w-[1400px] mx-auto px-10 flex flex-wrap justify-between items-center text-[#0D0505]/70 dark:text-white/90 text-sm font-semibold tracking-wide">
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 01</span> Frontend</div>
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 02</span> Backend</div>
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 03</span> Full Stack Software</div>
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 04</span> AI Agents</div>
-          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">// 05</span> ML Models</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">{"// 01"}</span> Frontend</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">{"// 02"}</span> Backend</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">{"// 03"}</span> Full Stack Software</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">{"// 04"}</span> AI Agents</div>
+          <div className="flex items-center gap-2"><span className="text-[#FF4B1F] italic">{"// 05"}</span> ML Models</div>
         </div>
       </div>
     </section>

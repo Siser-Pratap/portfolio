@@ -33,9 +33,11 @@ export async function GET(req: NextRequest) {
     try {
       busy = await provider.busy(from, to)
     } catch (err) {
-      // A calendar outage must not take the booking page down; fall back to
-      // working hours and let the host reconcile a rare double-booking.
       console.error("Freebusy lookup failed:", err)
+      return NextResponse.json(
+        { error: "Calendar availability is temporarily unavailable. Please try again later." },
+        { status: 503, headers: { "Retry-After": "60", "Cache-Control": "no-store" } },
+      )
     }
   }
 

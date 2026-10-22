@@ -1,0 +1,23 @@
+name: Booking regression tests
+on:
+  push:
+    branches: ['validation/**']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: [6379:6379]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: command -v redis-cli || (sudo apt-get update && sudo apt-get install -y redis-tools)
+      - run: node --experimental-vm-modules --test tests/booking-*.test.mjs
+        env:
+          TEST_REDIS: 1

@@ -1,26 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import Groq from "groq-sdk"
 import { SITE } from "@/constants/site"
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
-
-// ─── Rate limiting (in-memory, resets per server instance) ───────────────────
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT = 15
-const WINDOW_MS = 60 * 60 * 1000 // 1 hour
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now()
-  const entry = rateLimitMap.get(ip)
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS })
-    return false
-  }
-  if (entry.count >= RATE_LIMIT) return true
-  entry.count++
-  return false
-}
+import { createBoldMarkerFilter } from "@/lib/chat/plain-text"
+import { chatSchema } from "@/lib/server/chat"
+import { readJson, RequestError } from "@/lib/server/request"
+import { rateLimit } from "@/lib/server/rate-limit"
 
 // ─── System prompt built from real portfolio data ─────────────────────────────
 const SYSTEM_PROMPT = `
@@ -95,29 +79,25 @@ Other: TypeScript (75%), Three.js (88%), Gen-AI (88%), REST API (90%), AWS
 
 // ─── POST handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for") ?? req.headers.get("x-real-ip") ?? "unknown"
-
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: "Too many messages. Please try again in an hour." },
-      { status: 429 }
-    )
+  let input: unknown
+  try { input = await readJson(req, 32 * 1024) } catch (error) {
+    return NextResponse.json({ error: "Invalid request body." }, { status: error instanceof RequestError ? error.status : 400 })
   }
-
-  let messages: { role: "user" | "assistant"; content: string }[]
-
+  const parsed = chatSchema.safeParse(input)
+  if (!parsed.success) return NextResponse.json({ error: "Invalid chat messages." }, { status: 400 })
+  const messages = parsed.data.messages
   try {
-    const body = await req.json()
-    messages = body.messages
-    if (!Array.isArray(messages) || messages.length === 0) throw new Error()
+    const limit = await rateLimit(req.headers, "chat", 15, 300)
+    if (!limit.allowed) return NextResponse.json({ error: "Too many messages. Please try again later." }, { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } })
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 })
+    return NextResponse.json({ error: "Chat is temporarily unavailable." }, { status: 503 })
   }
 
   // Keep only the last 10 turns to avoid ballooning context
   const trimmed = messages.slice(-10)
 
   try {
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
     const stream = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...trimmed],
@@ -128,16 +108,14 @@ export async function POST(req: NextRequest) {
 
     const readable = new ReadableStream({
       async start(controller) {
-        const encoder = new TextEncoder();
-
+        const encoder = new TextEncoder()
+        const filter = createBoldMarkerFilter()
         for await (const chunk of stream) {
-          let text = chunk.choices[0]?.delta?.content ?? "";
-
-          if (text) {
-            text = text.replace(/\*\*/g, "");
-            controller.enqueue(encoder.encode(text));
-          }
+          const text = filter.push(chunk.choices[0]?.delta?.content ?? "")
+          if (text) controller.enqueue(encoder.encode(text))
         }
+        const tail = filter.finish()
+        if (tail) controller.enqueue(encoder.encode(tail))
 
         controller.close();
       },
@@ -155,3 +133,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to reach the model. Please try again." }, { status: 500 })
   }
 }
+
+

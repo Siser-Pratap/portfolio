@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Turnstile from "@/components/Turnstile"
 import { SETTINGS } from "@/constants/settings"
 
 type FormState = {
@@ -9,11 +10,14 @@ type FormState = {
   phone: string
   company: string
   message: string
+  honeypot: string
 }
 
-const initialForm: FormState = { name: "", email: "", phone: "", company: "", message: "" }
+const initialForm: FormState = { name: "", email: "", phone: "", company: "", message: "", honeypot: "" }
 
 const Contact = () => {
+  const [turnstileToken, setTurnstileToken] = useState("")
+  const [captchaReset, setCaptchaReset] = useState(0)
   const [form, setForm] = useState<FormState>(initialForm)
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
@@ -29,7 +33,7 @@ const Contact = () => {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       })
 
       if (res.ok) {
@@ -40,6 +44,9 @@ const Contact = () => {
       }
     } catch {
       setStatus("error")
+    } finally {
+      setTurnstileToken("")
+      setCaptchaReset((key) => key + 1)
     }
   }
 
@@ -84,10 +91,12 @@ const Contact = () => {
             <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[12px] font-semibold text-[#0D0505]">Name *</label>
+                  <label htmlFor="contact-name" className="text-[12px] font-semibold text-[#0D0505]">Name *</label>
                   <input
                     type="text"
+                    id="contact-name"
                     name="name"
+                    maxLength={80}
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Name"
@@ -96,10 +105,12 @@ const Contact = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[12px] font-semibold text-[#0D0505]">Email *</label>
+                  <label htmlFor="contact-email" className="text-[12px] font-semibold text-[#0D0505]">Email *</label>
                   <input
                     type="email"
+                    id="contact-email"
                     name="email"
+                    maxLength={254}
                     value={form.email}
                     onChange={handleChange}
                     placeholder="Email"
@@ -110,10 +121,12 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 mt-4">
-                <label className="text-[12px] font-semibold text-[#0D0505]">Phone Number</label>
+                <label htmlFor="contact-phone" className="text-[12px] font-semibold text-[#0D0505]">Phone Number</label>
                 <input
                   type="tel"
-                  name="phone"
+                  id="contact-phone"
+                    name="phone"
+                    maxLength={40}
                   value={form.phone}
                   onChange={handleChange}
                   placeholder="Phone Number"
@@ -122,10 +135,12 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 mt-4">
-                <label className="text-[12px] font-semibold text-[#0D0505]">Company</label>
+                <label htmlFor="contact-company" className="text-[12px] font-semibold text-[#0D0505]">Company</label>
                 <input
                   type="text"
-                  name="company"
+                  id="contact-company"
+                    name="company"
+                    maxLength={100}
                   value={form.company}
                   onChange={handleChange}
                   placeholder="Company"
@@ -134,9 +149,11 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 mt-4">
-                <label className="text-[12px] font-semibold text-[#0D0505]">How can I help you *</label>
+                <label htmlFor="contact-message" className="text-[12px] font-semibold text-[#0D0505]">How can I help you *</label>
                 <textarea
-                  name="message"
+                  id="contact-message"
+                    name="message"
+                    maxLength={5000}
                   value={form.message}
                   onChange={handleChange}
                   placeholder="Write your message..."
@@ -145,6 +162,11 @@ const Contact = () => {
                   className={`${inputClass} resize-none`}
                 ></textarea>
               </div>
+
+              <div hidden aria-hidden="true">
+                <input name="honeypot" value={form.honeypot} onChange={handleChange} tabIndex={-1} autoComplete="off" aria-label="Leave empty" />
+              </div>
+              <Turnstile onVerify={setTurnstileToken} resetKey={captchaReset} />
 
               {status === "success" && (
                 <p className="text-sm text-green-600 font-medium">Message sent! I&apos;ll get back to you shortly.</p>
@@ -155,7 +177,7 @@ const Contact = () => {
 
               <button
                 type="submit"
-                disabled={status === "loading"}
+                disabled={status === "loading" || !turnstileToken}
                 className="w-full bg-[#0D0505] text-white font-bold py-4 rounded-full mt-8 hover:bg-[#FF4B1F] transition-colors text-sm tracking-wide disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {status === "loading" ? "SENDING..." : "SEND MESSAGE"}
@@ -170,3 +192,4 @@ const Contact = () => {
 }
 
 export default Contact
+

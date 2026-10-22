@@ -20,6 +20,8 @@ const BookingFlow = () => {
   const [slotIso, setSlotIso] = useState<string | null>(null)
   const [details, setDetails] = useState<Details>(emptyDetails)
 
+  const requestIdentity = useRef<{ payload: string; key: string } | null>(null)
+
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<BookingResult | null>(null)
@@ -86,21 +88,14 @@ const BookingFlow = () => {
     setSubmitting(true)
     setError(null)
 
+    const payload = JSON.stringify({ name: details.name, email: details.email, subject: details.subject, notes: details.notes || undefined, guests: details.guests, duration, startsAt: slotIso, timezone, honeypot: details.honeypot })
+    if (requestIdentity.current?.payload !== payload) requestIdentity.current = { payload, key: crypto.randomUUID() }
+
     try {
       const res = await fetch("/api/booking/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: details.name,
-          email: details.email,
-          subject: details.subject,
-          notes: details.notes || undefined,
-          guests: details.guests,
-          duration,
-          startsAt: slotIso,
-          timezone,
-          honeypot: details.honeypot,
-        }),
+        headers: { "Content-Type": "application/json", "Idempotency-Key": requestIdentity.current.key },
+        body: payload,
       })
 
       const body = await res.json().catch(() => ({}))
@@ -125,6 +120,7 @@ const BookingFlow = () => {
   }
 
   const reset = () => {
+    requestIdentity.current = null
     setResult(null)
     setDetails(emptyDetails)
     setSlotIso(null)
@@ -152,7 +148,7 @@ const BookingFlow = () => {
           </motion.h1>
           <motion.p variants={riseVariants} className="text-[#8A8A8A] text-[15px] leading-[1.8] mb-12 max-w-[380px]">
             {result
-              ? "Everything you need is in your inbox — including the calendar invite. See you then."
+              ? "Your time is reserved. The confirmation email is queued; you can also save the calendar invite below."
               : "Pick a slot and I'll send a Google Meet invite straight to your inbox. No account, no back-and-forth."}
           </motion.p>
 
@@ -249,3 +245,4 @@ const BookingFlow = () => {
 }
 
 export default BookingFlow
+
