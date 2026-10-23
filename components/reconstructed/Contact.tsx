@@ -91,9 +91,10 @@ const Contact = () => {
             <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[12px] font-semibold text-[#0D0505]">Name *</label>
+                  <label htmlFor="contact-name" className="text-[12px] font-semibold text-[#0D0505]">Name *</label>
                   <input
                     type="text"
+                    id="contact-name"
                     name="name"
                     maxLength={80}
                     value={form.name}
@@ -104,9 +105,10 @@ const Contact = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[12px] font-semibold text-[#0D0505]">Email *</label>
+                  <label htmlFor="contact-email" className="text-[12px] font-semibold text-[#0D0505]">Email *</label>
                   <input
                     type="email"
+                    id="contact-email"
                     name="email"
                     maxLength={254}
                     value={form.email}
@@ -119,10 +121,11 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 mt-4">
-                <label className="text-[12px] font-semibold text-[#0D0505]">Phone Number</label>
+                <label htmlFor="contact-phone" className="text-[12px] font-semibold text-[#0D0505]">Phone Number</label>
                 <input
                   type="tel"
-                  name="phone"
+                  id="contact-phone"
+                    name="phone"
                     maxLength={40}
                   value={form.phone}
                   onChange={handleChange}
@@ -132,10 +135,11 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 mt-4">
-                <label className="text-[12px] font-semibold text-[#0D0505]">Company</label>
+                <label htmlFor="contact-company" className="text-[12px] font-semibold text-[#0D0505]">Company</label>
                 <input
                   type="text"
-                  name="company"
+                  id="contact-company"
+                    name="company"
                     maxLength={100}
                   value={form.company}
                   onChange={handleChange}
@@ -145,9 +149,10 @@ const Contact = () => {
               </div>
 
               <div className="flex flex-col gap-2 mt-4">
-                <label className="text-[12px] font-semibold text-[#0D0505]">How can I help you *</label>
+                <label htmlFor="contact-message" className="text-[12px] font-semibold text-[#0D0505]">How can I help you *</label>
                 <textarea
-                  name="message"
+                  id="contact-message"
+                    name="message"
                     maxLength={5000}
                   value={form.message}
                   onChange={handleChange}
