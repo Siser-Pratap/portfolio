@@ -15,7 +15,7 @@ declare global {
 export default function Turnstile({ onVerify, resetKey }: { onVerify: (token: string) => void; resetKey: number }) {
   const container = useRef<HTMLDivElement>(null)
   const [ready, setReady] = useState(false)
-  const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  const sitekey = process.env.TURNSTILE_SITE_KEY
   useEffect(() => {
     if (!ready || !sitekey || !container.current || !window.turnstile) return
     const api = window.turnstile
