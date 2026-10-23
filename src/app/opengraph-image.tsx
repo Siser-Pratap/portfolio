@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og"
 import { SITE } from "@/constants/site"
 
 export const runtime = "edge"
-export const alt = "Siser Pratap — Full Stack Developer"
+export const alt = "Siser Pratap"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 

@@ -18,7 +18,7 @@ export const SITE = {
   /** Query variants people actually type. Fed to Person.alternateName in JSON-LD. */
   alternateNames: ["Siser", "Siser Pratap", "siserpratap", "Siser P."],
 
-  title: "Siser Pratap — Full Stack & AI Developer",
+  title: "Siser Pratap",
   description:
     "Siser Pratap is a full stack developer in Gurugram, India, building production web apps and AI systems with React, Next.js, Node.js, Python and FastAPI. Open to freelance work worldwide.",
 
