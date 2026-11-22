@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="100%" height="100%" style="background:#0D0505; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <!-- Radial Ambient Backdrop -->
+    <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF4B1F" stop-opacity="0.85"/>
+      <stop offset="40%" stop-color="#FF6A21" stop-opacity="0.5"/>
+      <stop offset="80%" stop-color="#FF4B1F" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#0D0505" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Core Center Singularity Glow -->
+    <radialGradient id="coreSingularity" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/>
+      <stop offset="25%" stop-color="#FFC285" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FF6A21" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF4B1F" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Linear Gradient for Accents -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF4B1F"/>
+      <stop offset="100%" stop-color="#FF6A21"/>
+    </linearGradient>
+
+    <filter id="neonBloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur stdDeviation="25" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Grids & Dark Space -->
+  <rect width="1600" height="900" fill="#0D0505"/>
+  <circle cx="800" cy="450" r="380" fill="url(#heroGlow)" filter="url(#softGlow)" opacity="0.6"/>
+
+  <!-- Subtle Cyber Tech Grid in Background -->
+  <g opacity="0.08" stroke="#FFFFFF" stroke-width="0.8">
+    <line x1="200" y1="0" x2="200" y2="900"/>
+    <line x1="500" y1="0" x2="500" y2="900"/>
+    <line x1="800" y1="0" x2="800" y2="900"/>
+    <line x1="1100" y1="0" x2="1100" y2="900"/>
+    <line x1="1400" y1="0" x2="1400" y2="900"/>
+    <line x1="0" y1="200" x2="1600" y2="200"/>
+    <line x1="0" y1="450" x2="1600" y2="450"/>
+    <line x1="0" y1="700" x2="1600" y2="700"/>
+  </g>
+
+  <!-- ==================== CENTER 3D AI MODEL ==================== -->
+  <g transform="translate(800, 430)">
+
+    <!-- Outer Orbital Ring 1 (Tilted Gyroscope) -->
+    <ellipse cx="0" cy="0" rx="310" ry="120" fill="none" stroke="#FF6A21" stroke-width="2.5" stroke-dasharray="16 12" transform="rotate(-28)" filter="url(#neonBloom)" opacity="0.85"/>
+    <ellipse cx="0" cy="0" rx="310" ry="120" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="4 24" transform="rotate(-28)" opacity="0.9"/>
+    
+    <!-- Outer Orbital Ring 2 (Counter-tilt) -->
+    <ellipse cx="0" cy="0" rx="270" ry="100" fill="none" stroke="#FF4B1F" stroke-width="2" stroke-dasharray="35 15" transform="rotate(38)" filter="url(#neonBloom)" opacity="0.75"/>
+
+    <!-- Orbital Ring 3 (Equatorial Tech Gauge) -->
+    <ellipse cx="0" cy="0" rx="230" ry="75" fill="none" stroke="#FFB077" stroke-width="1.5" stroke-dasharray="4 8" transform="rotate(-5)" opacity="0.6"/>
+
+    <!-- Core Energy Singularity (Radial sphere) -->
+    <circle cx="0" cy="0" r="140" fill="url(#coreSingularity)" filter="url(#neonBloom)"/>
+
+    <!-- 3D Neural Wireframe Geometry (Icosahedron / Geodesic Lattice) -->
+    <g stroke="#FFA566" stroke-width="2" opacity="0.95" filter="url(#neonBloom)">
+      <!-- Central Pentagon & Faces -->
+      <polygon points="0,-110 85,-45 55,65 -55,65 -85,-45" fill="none" stroke="#FFE0C2" stroke-width="2.5"/>
+      <polygon points="0,-110 0,0 85,-45" fill="#FF6A21" fill-opacity="0.12"/>
+      <polygon points="85,-45 0,0 55,65" fill="#FF4B1F" fill-opacity="0.18"/>
+      <polygon points="55,65 0,0 -55,65" fill="#FF6A21" fill-opacity="0.14"/>
+      <polygon points="-55,65 0,0 -85,-45" fill="#FF4B1F" fill-opacity="0.2"/>
+      <polygon points="-85,-45 0,0 0,-110" fill="#FF8342" fill-opacity="0.15"/>
+      
+      <!-- Radial Spoke Lines to 3D Vertex projections -->
+      <line x1="0" y1="0" x2="0" y2="-110" stroke="#FFFFFF" stroke-width="2.5"/>
+      <line x1="0" y1="0" x2="85" y2="-45" stroke="#FFFFFF" stroke-width="2"/>
+      <line x1="0" y1="0" x2="55" y2="65" stroke="#FFE0C2" stroke-width="2"/>
+      <line x1="0" y1="0" x2="-55" y2="65" stroke="#FFE0C2" stroke-width="2"/>
+      <line x1="0" y1="0" x2="-85" y2="-45" stroke="#FFFFFF" stroke-width="2"/>
+
+      <!-- Outer 3D Node Points -->
+      <circle cx="0" cy="-110" r="6" fill="#FFFFFF"/>
+      <circle cx="85" cy="-45" r="5" fill="#FFFFFF"/>
+      <circle cx="55" cy="65" r="5" fill="#FFFFFF"/>
+      <circle cx="-55" cy="65" r="5" fill="#FFFFFF"/>
+      <circle cx="-85" cy="-45" r="5" fill="#FFFFFF"/>
+      <circle cx="0" cy="0" r="9" fill="#FFFFFF" filter="url(#neonBloom)"/>
+    </g>
+
+    <!-- Floating Synaptic Particles & Circuit Satellites -->
+    <g fill="#FF8A4C">
+      <circle cx="-190" cy="-70" r="3.5" filter="url(#neonBloom)"/>
+      <circle cx="210" cy="40" r="4" filter="url(#neonBloom)"/>
+      <circle cx="160" cy="-130" r="3"/>
+      <circle cx="-140" cy="110" r="3.5"/>
+      <circle cx="230" cy="-80" r="2.5"/>
+      <circle cx="-210" cy="65" r="3"/>
+      <circle cx="90" cy="160" r="3"/>
+      <circle cx="-70" cy="-160" r="4"/>
+    </g>
+
+    <!-- Energy Arcs / Synapse Filaments -->
+    <path d="M-190,-70 Q-100,-140 0,-110" fill="none" stroke="#FF6A21" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.8"/>
+    <path d="M85,-45 Q160,-20 210,40" fill="none" stroke="#FF4B1F" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.7"/>
+    <path d="M-85,-45 Q-160,20 -140,110" fill="none" stroke="#FF9C5E" stroke-width="1.2" stroke-dasharray="2 3" opacity="0.6"/>
+
+    <!-- Model Status Badge Floating Below -->
+    <g transform="translate(0, 190)">
+      <rect x="-115" y="-14" width="230" height="28" rx="14" fill="#140808" stroke="#FF4B1F" stroke-opacity="0.4" stroke-width="1"/>
+      <circle cx="-88" cy="0" r="4" fill="#00FFA3"/>
+      <text x="-74" y="4" font-size="11" font-weight="700" fill="#FFFFFF" letter-spacing="1.5">AI CORE // 60 FPS WEBGL</text>
+    </g>
+  </g>
+
+  <!-- ==================== LEFT TYPOGRAPHY ==================== -->
+  <g transform="translate(100, 360)">
+    <!-- Subtitle Greeting -->
+    <text x="0" y="0" font-size="22" font-weight="500" fill="#E2E8F0" letter-spacing="0.5">
+      Hey! I am Siser Pratap
+    </text>
+
+    <!-- Main Bold Headline -->
+    <text x="0" y="85" font-size="96" font-weight="900" fill="#FFFFFF" letter-spacing="-3">
+      SOFTWARE
+    </text>
+    <text x="0" y="175" font-size="96" font-weight="900" fill="#FFFFFF" letter-spacing="-3">
+      DEVELOPER
+    </text>
+
+    <!-- AI Engineering Sub-badge -->
+    <g transform="translate(0, 215)">
+      <rect x="0" y="0" width="240" height="34" rx="17" fill="#1A0D0D" stroke="#FF6A21" stroke-width="1"/>
+      <text x="20" y="22" font-size="13" font-weight="600" fill="#FF8A4C" letter-spacing="1">
+        ✦ FULL STACK &amp; AI SYSTEMS
+      </text>
+    </g>
+  </g>
+
+  <!-- ==================== RIGHT INFO & CTA ==================== -->
+  <g transform="translate(1180, 410)">
+    <text x="0" y="0" font-size="18" font-weight="400" fill="#CBD5E1" line-height="1.8">
+      <tspan x="0" dy="0">Software innovator crafting digital</tspan>
+      <tspan x="0" dy="28">experiences with bold simplicity,</tspan>
+      <tspan x="0" dy="28">intelligence, and scalable architecture.</tspan>
+    </text>
+
+    <!-- CTA Button -->
+    <g transform="translate(0, 100)">
+      <rect x="0" y="0" width="300" height="58" rx="29" fill="#FFFFFF"/>
+      <text x="28" y="35" font-size="15" font-weight="700" fill="#0D0505">
+        Schedule a Free Call
+      </text>
+      <!-- Arrow Circle -->
+      <circle cx="265" cy="29" r="22" fill="url(#primaryGrad)"/>
+      <text x="260" y="35" font-size="18" font-weight="900" fill="#FFFFFF">↗</text>
+    </g>
+  </g>
+
+  <!-- ==================== BOTTOM SERVICES STRIP ==================== -->
+  <g transform="translate(100, 830)">
+    <line x1="0" y1="-30" x2="1400" y2="-30" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="1"/>
+
+    <!-- Service 01 -->
+    <g transform="translate(0, 0)">
+      <text x="0" y="0" font-size="14" font-weight="700" fill="#FF4B1F" font-style="italic">// 01</text>
+      <text x="45" y="0" font-size="14" font-weight="600" fill="#E2E8F0">Frontend</text>
+    </g>
+
+    <!-- Service 02 -->
+    <g transform="translate(260, 0)">
+      <text x="0" y="0" font-size="14" font-weight="700" fill="#FF4B1F" font-style="italic">// 02</text>
+      <text x="45" y="0" font-size="14" font-weight="600" fill="#E2E8F0">Backend</text>
+    </g>
+
+    <!-- Service 03 -->
+    <g transform="translate(520, 0)">
+      <text x="0" y="0" font-size="14" font-weight="700" fill="#FF4B1F" font-style="italic">// 03</text>
+      <text x="45" y="0" font-size="14" font-weight="600" fill="#E2E8F0">Full Stack Software</text>
+    </g>
+
+    <!-- Service 04 -->
+    <g transform="translate(840, 0)">
+      <text x="0" y="0" font-size="14" font-weight="700" fill="#FF4B1F" font-style="italic">// 04</text>
+      <text x="45" y="0" font-size="14" font-weight="600" fill="#FF6A21">AI Agents</text>
+    </g>
+
+    <!-- Service 05 -->
+    <g transform="translate(1120, 0)">
+      <text x="0" y="0" font-size="14" font-weight="700" fill="#FF4B1F" font-style="italic">// 05</text>
+      <text x="45" y="0" font-size="14" font-weight="600" fill="#FF6A21">ML Models</text>
+    </g>
+  </g>
+</svg>
